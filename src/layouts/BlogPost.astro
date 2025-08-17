@@ -15,35 +15,48 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 	<head>
 		<BaseHead title={title} description={description} />
 		<style>
+			/* Layout container */
 			main {
-				width: calc(100% - 2em);
-				max-width: 100%;
-				margin: 0;
+				width: 100%;
+				max-width: 1200px;
+				margin: 0 auto;
+				padding: 0 1rem;
+				box-sizing: border-box;
 			}
+
+			/* Hero image area */
 			.hero-image {
 				width: 100%;
+				margin: 0 auto 1rem auto;
 			}
 			.hero-image img {
 				display: block;
-				margin: 0 auto;
+				width: 100%;
+				height: auto;
 				border-radius: 12px;
 				box-shadow: var(--box-shadow);
 			}
+
+			/* Prose column */
 			.prose {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 1em;
+				max-width: 720px; /* comfortable measure on desktop */
+				width: 100%;
+				margin: 0 auto 2rem auto;
+				padding: 1rem;
+				box-sizing: border-box;
 				color: rgb(var(--gray-dark));
+				line-height: 1.65;
 			}
+
 			.title {
 				margin-bottom: 1em;
-				padding: 1em 0;
+				padding: 1em 0 0.5em 0;
 				text-align: center;
-				line-height: 1;
+				line-height: 1.1;
 			}
 			.title h1 {
 				margin: 0 0 0.5em 0;
+				font-size: clamp(1.6rem, 2.4vw, 2.6rem);
 			}
 			.date {
 				margin-bottom: 0.5em;
@@ -51,6 +64,88 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 			}
 			.last-updated-on {
 				font-style: italic;
+			}
+
+			/* Make images, iframes and embeds responsive */
+			.prose img,
+			.prose picture,
+			.prose video {
+				max-width: 100%;
+				height: auto;
+				display: block;
+				margin: 0.75rem auto;
+			}
+			.prose iframe {
+				max-width: 100%;
+				display: block;
+				margin: 0.75rem auto;
+			}
+
+			/* Make tables scrollable on small screens */
+			.prose table {
+				width: 100%;
+				border-collapse: collapse;
+				margin: 1rem 0;
+				overflow: auto;
+				display: block;
+			}
+			.prose table th,
+			.prose table td {
+				padding: 0.5rem 0.75rem;
+				text-align: left;
+			}
+
+			/* Code blocks and preformatted text */
+			.prose pre {
+				overflow: auto;
+				border-radius: 8px;
+				padding: 0.75rem 1rem;
+				background: rgba(var(--black), 0.03);
+				margin: 1rem 0;
+			}
+			.prose code {
+				word-break: break-word;
+			}
+
+			/* Links and long words */
+			.prose a {
+				color: var(--accent);
+				text-decoration: underline;
+				word-break: break-word;
+				overflow-wrap: anywhere;
+			}
+
+			/* Blockquotes */
+			.prose blockquote {
+				border-left: 4px solid rgba(var(--black), 0.08);
+				padding: 0.5rem 1rem;
+				color: rgb(var(--gray));
+				margin: 1rem 0;
+			}
+
+			/* Small screens */
+			@media (max-width: 720px) {
+				.prose {
+					padding: 0.75rem;
+					font-size: 0.98rem;
+				}
+				.title h1 { font-size: 1.5rem; }
+				header nav { padding: 0 0.5rem; }
+			}
+
+			/* Medium (tablet) */
+			@media (min-width: 721px) and (max-width: 1024px) {
+				.prose { padding: 1rem 1.25rem; }
+				.title h1 { font-size: 2rem; }
+			}
+
+			/* Utility: ensure main links and header fit */
+			.prose a.button,
+			.prose .button {
+				display: inline-block;
+				padding: 0.5rem 0.75rem;
+				border-radius: 6px;
+				text-decoration: none;
 			}
 		</style>
 	</head>
