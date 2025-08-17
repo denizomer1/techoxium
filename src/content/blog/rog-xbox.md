@@ -1,7 +1,7 @@
 ---
 title: "Rog Xbox Ally Geliyor"
 description: "Xbox artık her yerde"
-pubDate: "17 Aug, 2025"
+pubDate: "August 17, 2025"
 heroImage: "/blog-placeholder-4.png"
 ---
 <center><p>
