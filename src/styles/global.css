@@ -153,3 +153,39 @@ hr {
   /* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
   white-space: nowrap;
 }
+
+/* Animation utilities */
+.animate {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 420ms cubic-bezier(.2,.9,.2,1), transform 420ms cubic-bezier(.2,.9,.2,1);
+}
+.site-loaded .animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+.stagger {
+  transition-delay: calc(var(--index, 0) * 80ms);
+}
+
+/* Accessible focus styles */
+:focus {
+  outline: none;
+}
+
+/* Show clear outline for keyboard users */
+*:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Card focus specifics */
+.card:focus-within {
+  box-shadow: 0 10px 30px rgba(2,6,23,0.12);
+  transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate { transition: none !important; transform: none !important; opacity: 1 !important; }
+}
