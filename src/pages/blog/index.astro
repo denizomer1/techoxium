@@ -6,9 +6,18 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
 import { getCollection } from 'astro:content';
 import FormattedDate from '../../components/FormattedDate.astro';
 
-const posts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+const rawPosts = await getCollection('blog');
+// normalize pubDate to Date for sorting and rendering
+const posts = rawPosts
+	.map((p) => ({
+		...p,
+		data: {
+			...p.data,
+			pubDate: p.data.pubDate instanceof Date ? p.data.pubDate : new Date(p.data.pubDate as any),
+		},
+	}))
+	.filter(p => !(typeof p.data.title === 'string' && p.data.title.startsWith('(duplicate')))
+	.sort((a, b) => Number(b.data.pubDate) - Number(a.data.pubDate));
 ---
 
 <!doctype html>
