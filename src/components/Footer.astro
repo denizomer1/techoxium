@@ -1,9 +1,11 @@
 ---
 const today = new Date();
+import Social from './Social.astro';
 ---
 
 <footer>
 	&copy; {today.getFullYear()} Techoxium. Tüm Hakları Saklıdır.
+	<Social platform="youtube" username="TechOxium" />
 </footer>
 <style>
 	footer {
