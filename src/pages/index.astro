@@ -16,29 +16,89 @@ const posts = (await getCollection('blog'))
 <html lang="en">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+			<style>
+				/* Simple card grid and entrance animation */
+				.grid {
+					display: grid;
+					grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+					gap: 1rem;
+					list-style: none;
+					padding: 0;
+					margin: 0;
+				}
+
+				.card {
+					background: var(--surface, #fff);
+					border-radius: 8px;
+					padding: 1rem;
+					box-shadow: 0 6px 18px rgba(2,6,23,0.06);
+					transform: translateY(8px) scale(0.995);
+					opacity: 0;
+					will-change: transform, opacity;
+				}
+
+				.grid.in-view .card {
+					animation: cardIn 420ms cubic-bezier(.2,.9,.2,1) forwards;
+					animation-delay: var(--d, 0ms);
+				}
+
+				@keyframes cardIn {
+					from { transform: translateY(12px) scale(.995); opacity: 0; }
+					to   { transform: translateY(0) scale(1); opacity: 1; }
+				}
+
+				/* Reduced motion preference */
+				@media (prefers-reduced-motion: reduce) {
+					.card, .grid.in-view .card { animation: none !important; transform: none !important; opacity: 1 !important; }
+				}
+			</style>
 	</head>
 	<body>
 		<Header />
 		<main>
 			<h1>Son Yazılar</h1>
 			<section>
-				<ul>
-					{posts.map((post) => (
-						<li>
-							<a href={`/blog/${post.slug ?? post.id}/`}>
-								{post.data.heroImage && (
-									<img src={post.data.heroImage} alt="" width="720" height="360" />
-								)}
-								<h3>{post.data.title}</h3>
-								<p>
-									<FormattedDate date={post.data.pubDate} />
-								</p>
-							</a>
-						</li>
-					))}
-				</ul>
+					<ul class="grid">
+						{posts.map((post, i) => (
+							<li class="card" style={`--d:${i * 80}ms`}>
+								<a href={`/blog/${post.slug ?? post.id}/`}>
+									{post.data.heroImage && (
+										<img src={post.data.heroImage} alt="" width="720" height="360" />
+									)}
+									<h3>{post.data.title}</h3>
+									<p>
+										<FormattedDate date={post.data.pubDate} />
+									</p>
+								</a>
+							</li>
+						))}
+					</ul>
 			</section>
 		</main>
 		<Footer />
+			<script type="module">
+				// Staggered entrance for .grid cards using IntersectionObserver
+				if (typeof window !== 'undefined') {
+					const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+					const grid = document.querySelector('.grid');
+					if (grid) {
+						if (prefersReduced) {
+							grid.classList.add('in-view');
+						} else if ('IntersectionObserver' in window) {
+							const io = new IntersectionObserver((entries, obs) => {
+								entries.forEach(e => {
+									if (e.isIntersecting) {
+										grid.classList.add('in-view');
+										obs.disconnect();
+									}
+								});
+							}, { threshold: 0.08, rootMargin: '0px 0px -8% 0px' });
+							io.observe(grid);
+						} else {
+							grid.classList.add('in-view');
+						}
+					}
+				}
+			</script>
 	</body>
 </html>
