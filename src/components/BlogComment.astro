@@ -8,26 +8,20 @@ const { pageUrl, pageId } = Astro.props;
 
 <div id="disqus_thread"></div>
 <script is:inline>
-  // this will get the canonical and title tags from the html 
-  let url = document.querySelector("link[rel='canonical']").href;
-  let id = document.querySelector("meta[name='title']").content;
-  // then we use the above if the values were not passed into the component
+  const url = document.querySelector("link[rel='canonical']")?.href;
+  const id = document.querySelector("meta[name='title']")?.content;
+
   function disqus_config() {
     this.page.url = pageUrl === "" ? url : pageUrl;
     this.page.identifier = pageId === "" ? id : pageId;
   }
 
   (function () {
-    // DON'T EDIT BELOW THIS LINE
-    const d = document,
-      s = d.createElement("script");
+    const d = document;
+    const s = d.createElement("script");
     s.src = "https://tekhaza.disqus.com/embed.js";
-    s.setAttribute("data-timestamp", String(+new Date()));
+    s.setAttribute("data-timestamp", String(Date.now()));
     (d.head || d.body).appendChild(s);
   })();
 </script>
-<noscript
-  >Please enable JavaScript to view the <a
-    href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a
-  ></noscript
->
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>

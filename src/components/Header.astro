@@ -5,6 +5,11 @@ import HeaderLink from './HeaderLink.astro';
 <header>
 	<nav>
 		<h2><a href="/blog"><img src="/logo.png" alt="Logo" class="site-logo" /></a></h2>
+		<h2>
+			<a href="/blog" class="logo-link">
+				<img src="/logo.png" alt="Techoxium" class="site-logo" />
+			</a>
+		</h2>
 		<div class="internal-links">
 			<HeaderLink href="/blog">Yazılar</HeaderLink>
 			<HeaderLink href="/about">Hakkımızda</HeaderLink>
@@ -24,11 +29,12 @@ import HeaderLink from './HeaderLink.astro';
 	}
 
 	.site-logo {
-		height: 5em;
-		width: 5em;
+		height: 2.25rem;
+		width: auto;
 		display: block;
 		vertical-align: middle;
 	}
+	.logo-link { display: inline-block; }
 
 	h2 a,
 	h2 a.active {
@@ -50,9 +56,7 @@ import HeaderLink from './HeaderLink.astro';
 		border-bottom-color: var(--accent);
 	}
 	.social-links,
-	.social-links a {
-		display: flex;
-	}
+	.social-links a { display: flex; }
 	@media (max-width: 720px) {
 		.social-links {
 			display: none;
