@@ -2,7 +2,11 @@
   "name": "techoxium",
   "compatibility_date": "2025-04-01",
   "compatibility_flags": ["nodejs_compat"],
-  "#": "This project targets Cloudflare Pages. The previous Workers 'main' and 'assets' fields were removed to avoid confusion. If you deploy as a Worker, restore the appropriate fields.",
+  "main": "./dist/_worker.js/index.js",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS"
+  },
   "observability": {
     "enabled": true
   },

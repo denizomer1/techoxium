@@ -14,7 +14,7 @@
     "publish": true
   },
   "dependencies": {
-  "@astrojs/cloudflare-pages": "3.0.0",
+  "@astrojs/cloudflare": "12.6.0",
     "@astrojs/mdx": "4.3.0",
     "@astrojs/rss": "4.0.11",
     "@astrojs/sitemap": "3.4.1",
@@ -31,7 +31,7 @@
     "check": "astro build && tsc && wrangler deploy --dry-run",
     "deploy": "wrangler deploy",
     "dev": "astro dev",
-  "preview": "astro preview"
+  "preview": "astro build && wrangler dev"
   },
   "engines": {
     "node": ">=18"

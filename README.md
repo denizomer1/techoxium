@@ -10,17 +10,17 @@ Local development
 
 	npm run dev
 
-Build for production (Cloudflare Pages)
+Build for production (Cloudflare Workers)
 
 1. Build:
 
 	npm run build
 
-2. Preview locally:
+2. Preview locally with wrangler:
 
 	npm run preview
 
 Notes
 
-- Cloudflare Pages requires Node 18+. The project `package.json` includes an engines hint.
-- This project is configured to use the `@astrojs/cloudflare-pages` adapter. If you intend to deploy as a Worker, restore Worker configuration in `wrangler.json`.
+- This project uses the `@astrojs/cloudflare` adapter and `wrangler` for local preview and deploy.
+- Ensure you have `wrangler` installed globally or available in devDependencies; `npm run preview` runs `wrangler dev` after building.
