@@ -1,0 +1,64 @@
+---
+const props = Astro.props;
+---
+
+<div class="search-root">
+  <input class="search-input" type="search" placeholder="Ara..." aria-label="Search posts" />
+  <div class="results" hidden></div>
+</div>
+
+<style>
+.search-root { position: relative; max-width: 420px; }
+.search-input { width: 100%; padding: 0.5rem 0.75rem; border-radius: 8px; border: 1px solid rgba(2,6,23,0.08); }
+.results { position: absolute; left: 0; right: 0; top: calc(100% + 6px); background: var(--header-bg, #fff); box-shadow: 0 8px 30px rgba(2,6,23,0.12); border-radius: 8px; overflow: hidden; }
+.result-item { padding: 0.75rem; display: flex; gap: 0.75rem; align-items: center; border-bottom: 1px solid rgba(2,6,23,0.04); transform-origin: top; }
+.result-item:last-child { border-bottom: none; }
+.result-item img { width: 64px; height: 40px; object-fit: cover; border-radius: 6px; }
+.result-item .meta { display: flex; flex-direction: column; }
+.result-item .title { font-weight: 700; margin: 0; }
+.result-item .date { font-size: 0.9rem; color: rgba(2,6,23,0.5); }
+</style>
+
+<script type="module">
+const input = document.querySelector('.search-input');
+const results = document.querySelector('.results');
+let posts = [];
+let timer = null;
+
+async function loadPosts() {
+  try {
+    const res = await fetch('/api/posts.json');
+    posts = await res.json();
+  } catch (e) { posts = []; }
+}
+
+function renderResults(list) {
+  if (!list.length) { results.hidden = true; results.innerHTML = ''; return; }
+  results.hidden = false;
+  results.innerHTML = list.map(p => `
+    <a class=\"result-item\" href=\"/${p.slug}/\">${p.heroImage ? `<img src=\"${p.heroImage}\" alt=\"\"/>` : ''}<div class=\"meta\"><div class=\"title\">${p.title}</div><div class=\"date\">${new Date(p.pubDate).toLocaleDateString()}</div></div></a>
+  `).join('');
+  // simple fade/slide using CSS transitions
+  Array.from(results.children).forEach((c, i) => { c.style.opacity = 0; c.style.transform = 'translateY(-6px)'; setTimeout(()=>{ c.style.transition = '200ms ease'; c.style.opacity=1; c.style.transform='translateY(0)'; }, i*40); });
+}
+
+function search(q) {
+  if (!q) return [];
+  const qq = q.trim().toLowerCase();
+  return posts.filter(p => (p.title||'').toLowerCase().includes(qq) || (p.description||'').toLowerCase().includes(qq)).slice(0,8);
+}
+
+input.addEventListener('input', (e)=>{
+  clearTimeout(timer);
+  timer = setTimeout(()=>{
+    const q = input.value;
+    const res = search(q);
+    renderResults(res);
+  }, 120);
+});
+
+input.addEventListener('focus', ()=>{ if (!posts.length) loadPosts(); });
+
+// close on outside click
+document.addEventListener('click', (e)=>{ if (!e.composedPath().includes(input) && !e.composedPath().includes(results)) { results.hidden = true; } });
+</script>
