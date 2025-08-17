@@ -26,12 +26,15 @@
   },
   "scripts": {
     "astro": "astro",
-    "build": "astro build",
+  "build": "astro build",
     "cf-typegen": "wrangler types",
     "check": "astro build && tsc && wrangler deploy --dry-run",
     "deploy": "wrangler deploy",
     "dev": "astro dev",
-    "preview": "astro build && wrangler dev"
+  "preview": "astro preview"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "type": "module"
 }
