@@ -1,10 +1,3 @@
----
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
-import { getCollection } from 'astro:content';
-import FormattedDate from '../components/FormattedDate.astro';
 
 ---
 import BaseHead from '../components/BaseHead.astro';
@@ -14,17 +7,15 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import { getCollection } from 'astro:content';
 import FormattedDate from '../components/FormattedDate.astro';
 
-const posts = (await getCollection('blog')).map(p => ({...p, data: {...p.data, pubDate: new Date(p.data.pubDate)}})).sort((a,b)=>Number(b.data.pubDate)-Number(a.data.pubDate)).slice(0,6);
+const posts = (await getCollection('blog'))
+	.map((p) => ({ ...p, data: { ...p.data, pubDate: new Date(p.data.pubDate) } }))
+	.sort((a, b) => Number(b.data.pubDate) - Number(a.data.pubDate))
 	.slice(0, 6);
+---
+
+<html lang="en">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-
-			/* reduced motion preference */
-			@media (prefers-reduced-motion: reduce){
-				.card{animation:none;opacity:1;transform:none}
-			}
-		</style>
 	</head>
 	<body>
 		<Header />
@@ -32,12 +23,16 @@ const posts = (await getCollection('blog')).map(p => ({...p, data: {...p.data, p
 			<h1>Son Yazılar</h1>
 			<section>
 				<ul>
-					{posts.map(post => (
+					{posts.map((post) => (
 						<li>
-							<a href={`/blog/${post.id}/`}>
-								{post.data.heroImage && <img src={post.data.heroImage} alt="" width="720" height="360" />}
+							<a href={`/blog/${post.slug ?? post.id}/`}>
+								{post.data.heroImage && (
+									<img src={post.data.heroImage} alt="" width="720" height="360" />
+								)}
 								<h3>{post.data.title}</h3>
-								<p><FormattedDate date={post.data.pubDate} /></p>
+								<p>
+									<FormattedDate date={post.data.pubDate} />
+								</p>
 							</a>
 						</li>
 					))}
@@ -45,29 +40,5 @@ const posts = (await getCollection('blog')).map(p => ({...p, data: {...p.data, p
 			</section>
 		</main>
 		<Footer />
-		<script type="module">
-			// lazy-trigger animations when the grid scrolls into view
-			if (typeof window !== 'undefined') {
-				const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-				const grid = document.querySelector('.grid');
-				if (!grid) return;
-				if (prefersReduced) {
-					grid.classList.add('in-view');
-				} else if ('IntersectionObserver' in window) {
-					const io = new IntersectionObserver((entries, obs) => {
-						entries.forEach(e => {
-							if (e.isIntersecting) {
-								grid.classList.add('in-view');
-								obs.disconnect();
-							}
-						});
-					}, {threshold: 0.12, rootMargin: '0px 0px -8% 0px'});
-					io.observe(grid);
-				} else {
-					// fallback: trigger immediately
-					grid.classList.add('in-view');
-				}
-			}
-		</script>
 	</body>
 </html>
