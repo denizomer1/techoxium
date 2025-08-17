@@ -208,3 +208,36 @@ hr {
 @media (prefers-reduced-motion: reduce) {
   .animate { transition: none !important; transform: none !important; opacity: 1 !important; }
 }
+
+/* Dark-mode content tweaks: increase contrast and darken surfaces for blog content */
+body.dark main,
+body.dark .prose {
+  background: transparent;
+  color: #e6eef8; /* lighter text for reading */
+}
+
+/* Make code blocks and pre tags darker and higher contrast */
+body.dark pre {
+  background: #0b0d0f; /* very dark surface */
+  color: #e6eef8;
+  border: 1px solid rgba(255,255,255,0.04);
+}
+body.dark code {
+  background-color: rgba(255,255,255,0.03);
+  color: #f3f6fb;
+}
+
+/* Blockquotes and horizontal rules: subtle, darker surfaces */
+body.dark blockquote {
+  background: rgba(255,255,255,0.02);
+  border-left-color: rgba(123,159,255,0.9);
+  color: #e6eef8;
+}
+body.dark hr {
+  border-top-color: rgba(255,255,255,0.06);
+}
+
+/* Links in dark mode: slightly brighter accent */
+body.dark a { color: #9bb6ff; }
+body.dark a:hover { color: #cfe0ff; }
+
