@@ -1,0 +1,13 @@
+---
+export async function get({ params }) {
+  const slug = params.slug || '';
+  // Permanent redirect to the new root-level post path
+  return new Response(null, {
+    status: 301,
+    headers: {
+      Location: `/${slug}/`,
+    },
+  });
+}
+
+---

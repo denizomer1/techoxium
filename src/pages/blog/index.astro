@@ -101,8 +101,8 @@ const posts = rawPosts
 				<ul>
 					{
 						posts.map((post, i) => (
-									<li class="stagger card" style={`--index:${i}`} tabindex="0" role="link" data-href={`/blog/${post.slug ?? post.id}/`}>
-										<a href={`/blog/${post.slug ?? post.id}/`}>
+									<li class="stagger card" style={`--index:${i}`} tabindex="0" role="link" data-href={`/${post.slug ?? post.id}/`}>
+										<a href={`/${post.slug ?? post.id}/`}>
 									{post.data.heroImage && <img width={720} height={360} src={post.data.heroImage} alt="" />}
 									<h4 class="title">{post.data.title}</h4>
 									<p class="date"><FormattedDate date={post.data.pubDate} /></p>
