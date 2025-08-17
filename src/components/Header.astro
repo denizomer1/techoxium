@@ -1,11 +1,10 @@
 ---
 import HeaderLink from './HeaderLink.astro';
-import { SITE_TITLE } from '../consts';
 ---
 
 <header>
 	<nav>
-		<h2><a href="/blog">{SITE_TITLE}</a></h2>
+		<h2><a href="/blog"><img src="/logo.png" alt="Logo" style="height: 2em; vertical-align: middle;" /></a></h2>
 		<div class="internal-links">
 			<HeaderLink href="/blog">Yazılar</HeaderLink>
 			<HeaderLink href="/about">Hakkımızda</HeaderLink>
