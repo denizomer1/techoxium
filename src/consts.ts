@@ -3,5 +3,5 @@
 
 import logo from "../public/logo.png";
 
-export const SITE_TITLE = logo;
+export const SITE_TITLE = "TechOxium";
 export const SITE_DESCRIPTION = "a blog about technology.";
