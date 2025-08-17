@@ -44,10 +44,10 @@ body {
   line-height: 1.7;
 }
 main {
-  width: 720px;
-  max-width: calc(100% - 2em);
-  margin: auto;
-  padding: 3em 1em;
+  max-width: 1100px;
+  width: min(95%, 1100px);
+  margin: 0 auto;
+  padding: 2.5rem 1rem;
 }
 h1,
 h2,
@@ -60,13 +60,13 @@ h6 {
   line-height: 1.2;
 }
 h1 {
-  font-size: 3.052em;
+  font-size: clamp(1.8rem, 3.6vw, 3.2rem);
 }
 h2 {
-  font-size: 2.441em;
+  font-size: clamp(1.4rem, 3.0vw, 2.1rem);
 }
 h3 {
-  font-size: 1.953em;
+  font-size: clamp(1.15rem, 2.2vw, 1.6rem);
 }
 h4 {
   font-size: 1.563em;
@@ -132,8 +132,14 @@ hr {
     font-size: 18px;
   }
   main {
-    padding: 1em;
+    padding: 1.25rem 0.75rem;
   }
+}
+
+/* utility spacing */
+.container {
+  width: min(95%, 1100px);
+  margin: 0 auto;
 }
 
 .sr-only {

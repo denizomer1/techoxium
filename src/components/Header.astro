@@ -9,6 +9,7 @@ import HeaderLink from './HeaderLink.astro';
 				<img src="/logo.png" alt="Techoxium" class="site-logo" />
 			</a>
 		</h2>
+		<button class="nav-toggle" aria-expanded="false" aria-label="Toggle navigation">☰</button>
 		<div class="internal-links">
 			<HeaderLink href="/about">Hakkımızda</HeaderLink>
 		</div>
@@ -59,5 +60,34 @@ import HeaderLink from './HeaderLink.astro';
 		.social-links {
 			display: none;
 		}
+		.internal-links {
+			display: none;
+			position: absolute;
+			top: 64px;
+			right: 8px;
+			background: white;
+			box-shadow: 0 8px 24px rgba(2,6,23,0.12);
+			border-radius: 8px;
+			padding: 0.5rem 0.75rem;
+		}
+		.internal-links.show {
+			display: block;
+		}
+		.nav-toggle { display: inline-flex; align-items:center; justify-content:center; padding:0.5rem 0.75rem; font-size:1.25rem; }
+		.logo-link { margin-right: auto; }
 	}
 </style>
+
+<script>
+if (typeof window !== 'undefined') {
+  const btn = document.querySelector('.nav-toggle');
+  const links = document.querySelector('.internal-links');
+  if (btn && links) {
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!expanded));
+      links.classList.toggle('show');
+    });
+  }
+}
+</script>
