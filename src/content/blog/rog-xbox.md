@@ -2,7 +2,7 @@
 title: "Rog Xbox Ally Geliyor"
 description: "Xbox artık her yerde"
 pubDate: "August 17, 2025"
-heroImage: "/blog-placeholder-4."
+heroImage: "/blog-placeholder-4.png"
 ---
 <p>
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/SOKm9dDOSC8?si=pNyDDutvsDpp-Lkh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
