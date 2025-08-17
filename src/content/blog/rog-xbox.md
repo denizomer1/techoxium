@@ -6,7 +6,7 @@ heroImage: "/blog-placeholder-4.png"
 ---
 <p>
 <div class="video-wrap">
-<iframe src="https://www.youtube-nocookie.com/embed/SOKm9dDOSC8?si=pNyDDutvsDpp-Lkh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/SOKm9dDOSC8?si=lRZuHOxq6693-hxx" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 </p>
 <p>
