@@ -78,9 +78,9 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 						<hr />
 					</div>
 				</div>
- <BlogComment pageUrl={Astro.url.pathname} pageId={Astro.props.slug ?? title} />
- <BlogComment pageUrl="" pageId="" />
 		</main>
 		<Footer />
+		 <BlogComment pageUrl={Astro.url.pathname} pageId={Astro.props.slug ?? title} />
+ <BlogComment pageUrl="" pageId="" />
 	</body>
 </html>
