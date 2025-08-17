@@ -1,7 +1,7 @@
 ---
 title: "yeni yazı"
 description: "yenii"
-pubDate: "August 17, 2025"
+pubDate: "August 18, 2025"
 heroImage: "/blog-placeholder-3.jpg"
 ---
 <center><p>
