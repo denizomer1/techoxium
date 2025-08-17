@@ -57,8 +57,8 @@ body {
   transition: background 0.3s, color 0.3s;
 }
 main {
-  max-width: 1100px;
-  width: min(95%, 1100px);
+  max-width: 960px;
+  width: min(95%, 960px);
   margin: 0 auto;
   padding: 2.5rem 1rem;
 }
@@ -263,4 +263,52 @@ body.dark .grid .card img {
 }
 body.dark .grid .card h3 { color: #ffffff; margin: 0.25rem 0 0.4rem; }
 body.dark .grid .card p { color: #aebdd8; margin: 0; }
+
+/* Light-mode: adopt denser card/content visuals similar to dark mode */
+body:not(.dark) main,
+body:not(.dark) .prose {
+  color: rgb(var(--gray-dark));
+}
+
+/* Cards used across the site (home/blog lists) */
+.card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 10px 30px rgba(2,6,23,0.06);
+  border: 1px solid rgba(2,6,23,0.04);
+}
+
+/* Make images and headings pop on light mode like dark mode */
+body:not(.dark) .card img {
+  border-radius: 8px;
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  margin-bottom: 0.5rem;
+}
+
+/* Light-mode code / pre styling to look like inverted dark blocks */
+pre {
+  background: #f6f8fb;
+  color: #0b0f12;
+  border: 1px solid rgba(2,6,23,0.04);
+}
+code {
+  background-color: rgba(var(--gray-light), 1);
+  color: #0b0f12;
+}
+
+/* Blockquotes and horizontal rules in light mode: subtle surface */
+blockquote {
+  background: rgba(34,41,57,0.03);
+  border-left-color: var(--accent);
+  color: rgb(var(--black));
+}
+hr { border-top-color: rgba(2,6,23,0.06); }
+
+/* Slightly stronger link accent in light mode */
+a { color: var(--accent); }
+a:hover { color: var(--accent-dark); }
 
