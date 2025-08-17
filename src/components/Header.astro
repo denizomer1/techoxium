@@ -2,20 +2,16 @@
 import HeaderLink from './HeaderLink.astro';
 ---
 
-<header data-aos="fade-down">
+<header>
    <nav>
-	   <h2 data-aos="zoom-in">
+	   <h2>
 		   <a href="/" class="logo-link">
 			   <img src="/logo.png" alt="Techoxium" class="site-logo" />
 		   </a>
 	   </h2>
-	   <button class="nav-toggle" aria-expanded="false" aria-label="Toggle navigation" data-aos="fade-left">☰</button>
-	   <div class="dropdown">
-		   <button class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Menü ▼</button>
-		   <div class="dropdown-menu">
-			   <HeaderLink href="/about">Hakkımızda</HeaderLink>
-			   <!-- Add more links here -->
-		   </div>
+	   <button class="nav-toggle" aria-expanded="false" aria-label="Toggle navigation">☰</button>
+	   <div class="internal-links">
+		   <HeaderLink href="/about">Hakkımızda</HeaderLink>
 	   </div>
 	   <button class="dark-toggle" aria-label="Toggle dark mode">🌙</button>
    </nav>
@@ -30,49 +26,7 @@ header {
 }
 h2 {
 	margin: 0;
-	font-size: 1em;
-}
-.site-logo {
-	height: 2.25rem;
-	width: auto;
-	display: block;
-	vertical-align: middle;
-}
-.logo-link { display: inline-block; }
-h2 a,
-h2 a.active {
-	text-decoration: none;
-}
-nav {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 1rem;
-}
-nav a {
-	padding: 1em 0.5em;
-	color: var(--nav-link, var(--black));
-	border-bottom: 4px solid transparent;
-	text-decoration: none;
-	transition: color 0.3s;
-}
-nav a.active {
-	text-decoration: none;
-	border-bottom-color: var(--accent);
-}
-.dropdown {
-	position: relative;
-	display: inline-block;
-}
-.dropdown-toggle {
-	background: none;
-	border: none;
-	font-size: 1em;
-	cursor: pointer;
-	padding: 1em 0.5em;
-	color: var(--nav-link, var(--black));
-	transition: color 0.3s;
-}
+	// ...existing code...
 .dropdown-menu {
 	display: none;
 	position: absolute;
@@ -119,24 +73,7 @@ nav a.active {
 </style>
 
 <script type="module">
-import '../scripts/aos-init.js';
 if (typeof window !== 'undefined') {
-   // Dropdown menu logic
-   const dropdown = document.querySelector('.dropdown');
-   const toggle = document.querySelector('.dropdown-toggle');
-   if (dropdown && toggle) {
-	   toggle.addEventListener('click', (e) => {
-		   e.stopPropagation();
-		   dropdown.classList.toggle('open');
-		   toggle.setAttribute('aria-expanded', dropdown.classList.contains('open'));
-	   });
-	   document.addEventListener('click', (e) => {
-		   if (!dropdown.contains(e.target)) {
-			   dropdown.classList.remove('open');
-			   toggle.setAttribute('aria-expanded', 'false');
-		   }
-	   });
-   }
    // Dark mode logic
    const darkBtn = document.querySelector('.dark-toggle');
    darkBtn.addEventListener('click', () => {
