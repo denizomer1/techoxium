@@ -1,37 +1,18 @@
 ---
 const { link, platform } = Astro.props;
 
-// Simplified explicit icon map — place these files in `public/` or `public/icons/`.
+// Default icon map using files present in `public/`.
 const ICONS = {
-  yt: '/yt.svg',
-  twitter: '/twitter.svg',
-  github: '/github.svg',
-  instagram: '/instagram.svg',
-  facebook: '/facebook.svg',
-  linkedin: '/linkedin.svg',
+  yt: '/yt.png',
+  nxt: '/nxt.svg',
 };
 
-const candidates = [];
-if (platform) {
-  if (ICONS[platform]) candidates.push(ICONS[platform]);
-  // common fallbacks in public folders
-  candidates.push(`/icons/${platform}.svg`, `/icons/${platform}.png`, `/${platform}.svg`, `/${platform}.png`);
-}
-
-const srcsJson = JSON.stringify(candidates);
-const firstSrc = candidates.length ? candidates[0] : '/favicon.svg';
+const firstSrc = ICONS[platform] ?? '/favicon.svg';
 
 ---
 
 <a class="social-link" href={link} aria-label={platform}>
-  <img
-    src={firstSrc}
-    alt={platform}
-    class="social-icon"
-    data-srcs={srcsJson}
-    data-idx="0"
-    onerror="(function(e){const el=e.target; const srcs=JSON.parse(el.getAttribute('data-srcs')||'[]'); let idx=parseInt(el.getAttribute('data-idx')||'0')+1; if(idx<srcs.length && srcs[idx]){el.src=srcs[idx]; el.setAttribute('data-idx', idx);} else {el.style.display='none';}})(event)"
-  />
+  <img src={firstSrc} alt={platform} class="social-icon" />
 </a>
 
 <style>
