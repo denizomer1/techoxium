@@ -1,11 +1,30 @@
 ---
-interface Props {
-	date: Date;
+const rawDate = Astro.props?.date;
+
+// normalize to Date object when possible
+let dateObj: Date | null = null;
+if (rawDate) {
+	dateObj = rawDate instanceof Date ? rawDate : new Date(rawDate as any);
+	if (Number.isNaN(dateObj.getTime())) dateObj = null;
 }
 
-const { date } = Astro.props;
+function formatDate(d: Date) {
+	try {
+		return new Intl.DateTimeFormat('en-US', {
+			year: 'numeric',
+			month: 'short',
+			day: 'numeric',
+		}).format(d);
+	} catch (e) {
+		return d.toDateString();
+	}
+}
+
 ---
 
-<time datetime={date.toISOString()}>
-	{date.toLocaleDateString('en-us', { year: 'numeric', month: 'short', day: 'numeric' })}
-</time>
+{dateObj ? (
+	<time datetime={dateObj.toISOString()}>{formatDate(dateObj)}</time>
+) : (
+	<!-- empty or invalid date -->
+	<span aria-hidden="true"></span>
+)}
