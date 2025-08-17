@@ -1,13 +1,72 @@
 ---
+import fs from 'fs';
+import path from 'path';
 const { link, platform } = Astro.props;
+
+// Server-side scan of `public/` and `public/icons/` to build iconMap
+const iconMap = {};
+try {
+  const publicDir = path.join(process.cwd(), 'public');
+  const entries = fs.readdirSync(publicDir);
+  for (const f of entries) {
+    const ext = path.extname(f).toLowerCase();
+    if (!['.svg', '.png', '.jpg', '.jpeg', '.webp', '.gif'].includes(ext)) continue;
+    const base = path.basename(f, ext).toLowerCase();
+    iconMap[base] = `/${f.replace(/\\/g, '/')}`;
+  }
+  const iconsDir = path.join(publicDir, 'icons');
+  if (fs.existsSync(iconsDir)) {
+    const icons = fs.readdirSync(iconsDir);
+    for (const f of icons) {
+      const ext = path.extname(f).toLowerCase();
+      if (!['.svg', '.png', '.jpg', '.jpeg', '.webp', '.gif'].includes(ext)) continue;
+      const base = path.basename(f, ext).toLowerCase();
+      iconMap[base] = `/icons/${f.replace(/\\/g, '/')}`;
+    }
+  }
+} catch (e) {
+  // ignore errors reading public dir
+}
+
+const aliasMap = { youtube: 'yt', tw: 'twitter', gh: 'github', ig: 'instagram', fb: 'facebook' ,
+  linkedin: 'li', discord: 'dc', reddit: 'rd', tiktok: 'tt', pinterest: 'pt', telegram: 'tg',
+  whatsapp: 'wa', snapchat: 'sc', tumblr: 'tb', vk: 'vk', wechat: 'wc', qq: 'qq', baidu: 'bd',
+  quora: 'qr', medium: 'md', stackoverflow: 'so', devto: 'dt', hackernews: 'hn' ,nextsosyal: 'nxt'};
+const candidates = [];
+if (platform) {
+  if (iconMap[platform]) candidates.push(iconMap[platform]);
+  const alias = aliasMap[platform];
+  if (alias && iconMap[alias] && !candidates.includes(iconMap[alias])) candidates.push(iconMap[alias]);
+  candidates.push(`/icons/${platform}.svg`, `/icons/${platform}.png`, `/${platform}.svg`, `/${platform}.png`);
+}
+
+const srcsJson = JSON.stringify(candidates);
+const firstSrc = candidates.length ? candidates[0] : '/favicon.svg';
 ---
-<a href={`${link}`}>{platform}</a>
+
+<a class="social-link" href={link} aria-label={platform}>
+  <img
+    src={firstSrc}
+    alt={platform}
+    class="social-icon"
+    data-srcs={srcsJson}
+    data-idx="0"
+    onerror="(function(e){const el=e.target; const srcs=JSON.parse(el.getAttribute('data-srcs')||'[]'); let idx=parseInt(el.getAttribute('data-idx')||'0')+1; if(idx<srcs.length && srcs[idx]){el.src=srcs[idx]; el.setAttribute('data-idx', idx);} else {el.style.display='none';}})(event)"
+  />
+</a>
 
 <style>
-  a {
-    padding: 0.5rem 1rem;
-    color: white;
-    background-color: #000000;
+  .social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem;
     text-decoration: none;
+  }
+  .social-icon {
+    height: 1.5rem;
+    width: auto;
+    display: block;
+    filter: none;
   }
 </style>
