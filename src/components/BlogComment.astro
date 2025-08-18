@@ -1,27 +1,42 @@
 ---
-interface Props {
-  pageUrl?: string;
-  pageId?: string;
-}
+interface Props { pageUrl?: string; pageId?: string; }
 const { pageUrl = '', pageId = '' } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site);
-const finalUrl = pageUrl || canonical.toString();
-// Use pathname (no trailing slash) as stable identifier if none passed
-const identifier = pageId || Astro.url.pathname.replace(/\/$/, '');
 ---
 <div id="disqus_thread"></div>
 <script is:inline>
-  var disqus_config = function () {
-    this.page.url = ${JSON.stringify(finalUrl)}; // canonical URL
-    this.page.identifier = ${JSON.stringify(identifier)}; // unique identifier
-  };
-  (function() { // DON'T EDIT BELOW THIS LINE
-    if (window.__disqus_loaded) return; // safety to avoid duplicate loads
-    window.__disqus_loaded = true;
-    var d = document, s = d.createElement('script');
-    s.src = 'https://tekhaza.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
+  (function() {
+    const PROVIDED_URL = ${JSON.stringify(pageUrl)};
+    const PROVIDED_ID = ${JSON.stringify(pageId)};
+    function resolveUrl() {
+      return PROVIDED_URL || document.querySelector('link[rel="canonical"]')?.href || window.location.href;
+    }
+    function resolveId() {
+      return PROVIDED_ID || window.location.pathname.replace(/\/$/, '') || 'index';
+    }
+    window.disqus_config = function () {
+      this.page.url = resolveUrl();
+      this.page.identifier = resolveId();
+    };
+    function inject() {
+      if (document.getElementById('dsq-embed-scr')) return;
+      const d = document, s = d.createElement('script');
+      s.src = 'https://tekhaza.disqus.com/embed.js';
+      s.id = 'dsq-embed-scr';
+      s.async = true;
+      s.setAttribute('data-timestamp', Date.now().toString());
+      s.onload = () => console.debug('[disqus] embed loaded');
+      s.onerror = () => console.warn('[disqus] failed to load embed.js');
+      (d.head || d.body).appendChild(s);
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', inject);
+    } else {
+      inject();
+    }
+    // Retry once after 3s if thread still empty (network hiccup)
+    setTimeout(() => {
+      if (!document.getElementById('dsq-embed-scr')) inject();
+    }, 3000);
   })();
 </script>
-<noscript>Lütfen JavaScript'i etkinleştirin: <a href="https://disqus.com/?ref_noscript">Disqus yorumlarını görmek için</a>.</noscript>
+<noscript>Lütfen JavaScript'i etkinleştirin: <a href="https://disqus.com/?ref_noscript">yorumları görmek için</a>.</noscript>
