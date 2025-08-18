@@ -1,52 +1,27 @@
 ---
 interface Props {
-  pageUrl: string;
-  pageId: string;
+  pageUrl?: string;
+  pageId?: string;
 }
-const { pageUrl, pageId } = Astro.props;
+const { pageUrl = '', pageId = '' } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const finalUrl = pageUrl || canonical.toString();
+// Use pathname (no trailing slash) as stable identifier if none passed
+const identifier = pageId || Astro.url.pathname.replace(/\/$/, '');
 ---
-
-<div class="embed-wrapper" id="disqus-embed">
-  <div id="disqus_status" class="disqus-status">Yorumlar yükleniyor...</div>
-  <div id="disqus_thread"></div>
-</div>
-
+<div id="disqus_thread"></div>
 <script is:inline>
-  // Server-provided defaults baked into the page at build time
-  const PAGE_URL = ${JSON.stringify(pageUrl)};
-  const PAGE_ID = ${JSON.stringify(pageId)};
-
-  const canonicalUrl = () => document.querySelector("link[rel='canonical']")?.href;
-  const metaTitle = () => document.querySelector("meta[name='title']")?.content;
-
-  (function loadDisqus() {
-    if (window.__disqus_loading) return;
-    window.__disqus_loading = true;
-
-    const disqusUrl = (PAGE_URL && PAGE_URL !== "") ? PAGE_URL : (canonicalUrl() || window.location.href);
-    const identifier = (PAGE_ID && PAGE_ID !== "") ? PAGE_ID : (metaTitle() || window.location.pathname.replace(/\/$/, ''));
-
-    // Disqus expects a global var named disqus_config
-    var disqus_config = function () { // eslint-disable-line no-unused-vars
-      this.page.url = disqusUrl;
-      this.page.identifier = identifier;
-    };
-    window.disqus_config = disqus_config; // also expose on window for safety
-
-    const script = document.createElement('script');
-    script.src = 'https://tekhaza.disqus.com/embed.js';
-    script.async = true;
-    script.setAttribute('data-timestamp', Date.now().toString());
-    script.onload = () => {
-      const st = document.getElementById('disqus_status');
-      if (st) st.remove();
-    };
-    script.onerror = () => {
-      const st = document.getElementById('disqus_status');
-      if (st) st.textContent = 'Yorumlar yüklenemedi.';
-    };
-    (document.head || document.body).appendChild(script);
+  var disqus_config = function () {
+    this.page.url = ${JSON.stringify(finalUrl)}; // canonical URL
+    this.page.identifier = ${JSON.stringify(identifier)}; // unique identifier
+  };
+  (function() { // DON'T EDIT BELOW THIS LINE
+    if (window.__disqus_loaded) return; // safety to avoid duplicate loads
+    window.__disqus_loaded = true;
+    var d = document, s = d.createElement('script');
+    s.src = 'https://tekhaza.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
   })();
 </script>
-
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<noscript>Lütfen JavaScript'i etkinleştirin: <a href="https://disqus.com/?ref_noscript">Disqus yorumlarını görmek için</a>.</noscript>
