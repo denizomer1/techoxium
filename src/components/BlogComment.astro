@@ -5,14 +5,22 @@ const { pageUrl = '', pageId = '', enableCount = false } = Astro.props;
 ---
 <div id="disqus_thread"></div>
 <script is:inline>
+  // Minimal, legacy-friendly Disqus embed (no optional chaining / template interp)
   var disqus_config = function () {
-    this.page.url = ${JSON.stringify(pageUrl)} || document.querySelector('link[rel="canonical"]')?.href || window.location.href;
-    this.page.identifier = ${JSON.stringify(pageId)} || window.location.pathname.replace(/\/$/, '') || 'index';
+    try {
+      var loc = window.location;
+      this.page.url = loc.protocol + '//' + loc.host + loc.pathname; // canonical-ish
+      this.page.identifier = loc.pathname.replace(/\/$/, '') || 'index';
+    } catch (e) { console.warn('[Disqus] config error', e); }
   };
   (function() { // DON'T EDIT BELOW THIS LINE
+    if (window.DISQUS) { window.DISQUS.reset({ reload: true, config: disqus_config }); return; }
     var d = document, s = d.createElement('script');
     s.src = 'https://tekhaza.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
+    s.setAttribute('data-timestamp', Date.now());
+    s.async = true;
+    s.onload = function(){ console.debug('[Disqus] embed loaded'); };
+    s.onerror = function(){ console.warn('[Disqus] failed to load embed.js'); };
     (d.head || d.body).appendChild(s);
   })();
 </script>
