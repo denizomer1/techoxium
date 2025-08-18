@@ -1,18 +1,26 @@
 ---
-const { link, platform } = Astro.props;
+// Props typing for clarity (Astro allows TS in the frontmatter)
+interface Props {
+  link: string;
+  platform: string; // keep flexible; falls back if unknown
+}
+const { link, platform } = Astro.props as Props;
 
-// Default icon map using files present in `public/`.
+// Minimal icon map; extend here if new platforms are added.
 const ICONS = {
   yt: '/yt.png',
-  nxt: '/nxt.svg',
-};
-
-const firstSrc = ICONS[platform] ?? '/favicon-alt.svg';
-
+  nxt: '/nxt.svg'
+} as const;
 ---
 
-<a class="social-link" href={link} aria-label={platform}>
-  <img src={firstSrc} alt={platform} class="social-icon" />
+<a class="social-link" href={link} aria-label={platform} rel="noopener noreferrer" target="_blank">
+  <img
+    src={ICONS[platform as keyof typeof ICONS] ?? '/favicon-alt.svg'}
+    alt={platform}
+    class="social-icon"
+    loading="lazy"
+    decoding="async"
+  />
 </a>
 
 <style>

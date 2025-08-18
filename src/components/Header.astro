@@ -61,46 +61,21 @@ body.dark { --header-bg: rgba(20,20,22,0.6); --nav-link: #f3f3f3; }
 </style>
 
 <script>
-// Simple dark/light toggle: default follows system until user chooses.
+// Theme + mobile nav (small self-executing module)
 (() => {
-	if (typeof window === 'undefined') return;
-	const media = window.matchMedia('(prefers-color-scheme: dark)');
-	const btn = document.querySelector('.dark-toggle');
-
-	function storedPref(){
-		const v = localStorage.getItem('theme');
-		return v === 'dark' || v === 'light' ? v : null;
-	}
-	function apply(mode){
-		document.body.classList.toggle('dark', mode === 'dark');
-	}
-	function currentEffective(){
-		return storedPref() || (media.matches ? 'dark' : 'light');
-	}
-	function updateUI(){
-		if(!btn) return;
-		const dark = document.body.classList.contains('dark');
-		btn.textContent = dark ? '☀️' : '🌙';
-		btn.setAttribute('aria-label', dark ? 'Açık moda geç' : 'Koyu moda geç');
-	}
-
-	// Init
-	apply(currentEffective());
-	updateUI();
-	media.addEventListener('change', () => { if (!storedPref()){ apply(currentEffective()); updateUI(); } });
-	btn && btn.addEventListener('click', () => {
-		const next = currentEffective() === 'dark' ? 'light' : 'dark';
-		localStorage.setItem('theme', next);
-		apply(next); updateUI();
-	});
-
-	// Mobile nav toggle
-	const navBtn = document.querySelector('.nav-toggle');
-	const links = document.querySelector('.internal-links');
-	navBtn && links && navBtn.addEventListener('click', () => {
-		const expanded = navBtn.getAttribute('aria-expanded') === 'true';
-		navBtn.setAttribute('aria-expanded', String(!expanded));
-		links.classList.toggle('show');
-	});
+	if (!globalThis.document) return;
+	const d = globalThis.document;
+	const btn = d.querySelector('.dark-toggle');
+	const media = globalThis.matchMedia && globalThis.matchMedia('(prefers-color-scheme: dark)');
+	const pref = () => { const v = globalThis.localStorage?.getItem('theme'); return v === 'dark' || v === 'light' ? v : null; };
+	const effective = () => pref() || (media && media.matches ? 'dark' : 'light');
+	const apply = (m) => d.body.classList.toggle('dark', m === 'dark');
+	const update = () => { if(!btn) return; const dark = d.body.classList.contains('dark'); btn.textContent = dark ? '☀️' : '🌙'; btn.setAttribute('aria-label', dark ? 'Açık moda geç' : 'Koyu moda geç'); };
+	apply(effective()); update();
+	media && media.addEventListener('change', () => { if (!pref()) { apply(effective()); update(); } });
+	btn && btn.addEventListener('click', () => { const next = effective() === 'dark' ? 'light' : 'dark'; globalThis.localStorage?.setItem('theme', next); apply(next); update(); });
+	const navBtn = d.querySelector('.nav-toggle');
+	const links = d.querySelector('.internal-links');
+		navBtn && links && navBtn.addEventListener('click', () => { const expanded = navBtn.getAttribute('aria-expanded') === 'true'; navBtn.setAttribute('aria-expanded', globalThis.String(!expanded)); links.classList.toggle('show'); });
 })();
 </script>

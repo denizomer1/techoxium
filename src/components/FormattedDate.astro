@@ -1,30 +1,15 @@
 ---
-const rawDate = Astro.props?.date;
-
-// normalize to Date object when possible
-let dateObj: Date | null = null;
-if (rawDate) {
-	dateObj = rawDate instanceof Date ? rawDate : new Date(rawDate as any);
-	if (Number.isNaN(dateObj.getTime())) dateObj = null;
+const A:any = (globalThis as any).Astro;
+const value = A?.props?.date;
+let d: any = null;
+if (value) {
+	const tmp = value instanceof globalThis.Date ? value : new globalThis.Date(value);
+	if (!globalThis.Number.isNaN(tmp.getTime())) d = tmp;
 }
-
-function formatDate(d: Date) {
-	try {
-		return new Intl.DateTimeFormat('en-US', {
-			year: 'numeric',
-			month: 'short',
-			day: 'numeric',
-		}).format(d);
-	} catch (e) {
-		return d.toDateString();
-	}
+let formatted = '';
+if (d) {
+	try { formatted = new globalThis.Intl.DateTimeFormat('en-US',{year:'numeric',month:'short',day:'numeric'}).format(d); }
+	catch { formatted = d.toDateString(); }
 }
-
 ---
-
-{dateObj ? (
-	<time datetime={dateObj.toISOString()}>{formatDate(dateObj)}</time>
-) : (
-	<!-- empty or invalid date -->
-	<span aria-hidden="true"></span>
-)}
+{d ? <time datetime={d.toISOString()}>{formatted}</time> : <span aria-hidden="true"></span>}
