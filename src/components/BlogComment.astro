@@ -91,7 +91,27 @@ const { pageUrl = '', pageId = '', enableCount = false } = Astro.props;
       // Safety timeout
       setTimeout(function(){ if(!loaded){ console.warn('[Disqus] timeout'); showReload(); } }, 12000);
     }
-  function finalize(){ loaded = true; setState('ready'); }
+  function finalize(){
+    loaded = true; setState('ready');
+    if (window.innerWidth <= 430) {
+      var shellEl = document.querySelector('.comments-shell');
+      shellEl && shellEl.classList.add('compact');
+      // Clamp tall iframe height periodically while Disqus expands
+    // Add expand button for small devices
+    addExpandControl();
+      var attempts = 0; var clampTimer = setInterval(function(){
+        attempts++;
+        var ifr = document.querySelector('#disqus_thread iframe');
+        if (!ifr) return;
+        var maxH = Math.round(window.innerHeight * 0.7); // 70% viewport
+        if (ifr.offsetHeight > maxH) {
+          ifr.style.height = maxH + 'px';
+          ifr.style.maxHeight = maxH + 'px';
+        }
+        if (attempts > 14) clearInterval(clampTimer);
+      }, 500);
+    }
+  }
 
     // IntersectionObserver for auto-load when scrolled near
     function setupObserver(){
@@ -106,9 +126,47 @@ const { pageUrl = '', pageId = '', enableCount = false } = Astro.props;
     loadBtn && loadBtn.addEventListener('click', inject);
     reloadBtn && reloadBtn.addEventListener('click', function(){ loaded=false; loading=false; inject(); });
 
-    // Small device optimization: immediate load on very narrow screens (avoid double tap confusion)
-    if (window.innerWidth <= 430) { inject(); }
-    else { setupObserver(); }
+  // Always use observer/manual load; no immediate auto-load on small screens to avoid large blank area
+  setupObserver();
+
+    function addExpandControl(){
+      if (document.getElementById('comments-expand-btn')) return;
+      var shellEl = document.getElementById('comments-shell');
+      if (!shellEl) return;
+      var btnWrap = document.createElement('div');
+      btnWrap.className = 'comments-expand-wrap';
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.id = 'comments-expand-btn';
+      btn.className = 'comments-expand-btn';
+      btn.setAttribute('aria-expanded','false');
+      btn.setAttribute('aria-controls','disqus_thread');
+      btn.textContent = 'Tam ekran';
+      btn.addEventListener('click', function(){
+        var ifr = document.querySelector('#disqus_thread iframe');
+        var expanded = btn.getAttribute('aria-expanded') === 'true';
+        if (!expanded) {
+          btn.setAttribute('aria-expanded','true');
+          btn.textContent = 'Daralt';
+          shellEl.classList.add('expanded');
+          if (ifr) { ifr.style.height=''; ifr.style.maxHeight=''; }
+          window.scrollTo({ top: shellEl.getBoundingClientRect().top + window.scrollY - 56, behavior: 'smooth' });
+        } else {
+          btn.setAttribute('aria-expanded','false');
+            btn.textContent = 'Tam ekran';
+            shellEl.classList.remove('expanded');
+            // Re-apply clamp
+            var ifr2 = document.querySelector('#disqus_thread iframe');
+            if (ifr2) {
+              var maxH = Math.round(window.innerHeight * 0.7);
+              ifr2.style.height = maxH + 'px';
+              ifr2.style.maxHeight = maxH + 'px';
+            }
+        }
+      });
+      btnWrap.appendChild(btn);
+      shellEl.appendChild(btnWrap);
+    }
 
     // If user scrolls fast and misses intersection (rare), fallback to manual button remains.
   })();
