@@ -22,10 +22,50 @@ const date = pubDate ? (pubDate instanceof Date ? pubDate : new Date(pubDate)) :
 </li>
 
 <style>
-.post-card { list-style:none; }
-.post-card__link { display:block; text-decoration:none; color:inherit; }
-.post-card__image { display:block; width:100%; height:auto; border-radius:12px; }
-.post-card__title { margin:0.5rem 0 0.25rem; font-size:1rem; line-height:1.2; }
-.post-card__date { margin:0; font-size:0.85rem; color:rgba(2,6,23,0.55); }
-.post-card--large .post-card__title { font-size:1.35rem; }
+/* Modern animated card */
+.post-card { 
+  list-style:none; position:relative; 
+  --card-bg: rgba(255,255,255,0.9);
+  --card-border: rgba(2,6,23,0.08);
+  --card-shadow: 0 4px 10px -2px rgba(2,6,23,0.08), 0 8px 28px -4px rgba(2,6,23,0.08);
+  background: var(--card-bg); 
+  border: 1px solid var(--card-border); 
+  border-radius: 16px; 
+  padding: 0.9rem 0.9rem 1rem; 
+  box-shadow: var(--card-shadow);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  overflow:hidden;
+  transform: translateY(14px) scale(.97);
+  opacity:0;
+  will-change: transform, opacity, box-shadow;
+  transition: transform .6s cubic-bezier(.2,.9,.2,1), opacity .6s cubic-bezier(.2,.9,.2,1), box-shadow .35s ease, border-color .35s ease;
+  transition-delay: var(--d,0ms);
+}
+.grid.in-view .post-card, .post-list.in-view .post-card { opacity:1; transform: translateY(0) scale(1); }
+.post-card__link { display:block; text-decoration:none; color:inherit; height:100%; }
+.post-card__image { display:block; width:100%; height:auto; border-radius:12px; aspect-ratio: 16/9; object-fit:cover; background:#f2f4f7; }
+.post-card__title { margin:0.75rem 0 0.35rem; font-size:1.05rem; line-height:1.2; letter-spacing:.3px; }
+.post-card--large .post-card__title { font-size:1.4rem; }
+.post-card__date { margin:0; font-size:0.76rem; font-weight:500; letter-spacing:.5px; text-transform:uppercase; color:rgba(2,6,23,0.55); }
+.post-card:hover, .post-card:focus-within { 
+  transform: translateY(-4px) scale(1.015); 
+  box-shadow: 0 8px 26px -4px rgba(2,6,23,0.18), 0 18px 42px -8px rgba(2,6,23,0.18);
+  border-color: rgba(2,6,23,0.15);
+}
+.post-card:active { transform: translateY(-1px) scale(1.01); }
+/* Accent ring using pseudo border */
+.post-card::before { content:""; position:absolute; inset:0; pointer-events:none; border:2px solid transparent; border-radius:inherit; transition: border-color .4s ease, opacity .4s ease; }
+.post-card:hover::before, .post-card:focus-within::before { border-color: var(--accent); opacity:.9; }
+@media (prefers-reduced-motion: reduce) { 
+  .post-card { transition:none; transform:none !important; opacity:1 !important; }
+  .post-card:hover, .post-card:focus-within { transform:none; }
+}
+body.dark .post-card { 
+  --card-bg: rgba(15,18,25,0.55); 
+  --card-border: rgba(255,255,255,0.12); 
+  --card-shadow: 0 4px 14px -2px rgba(0,0,0,0.5), 0 14px 38px -6px rgba(0,0,0,0.55); 
+  color:#e6eef8;
+}
+body.dark .post-card__date { color: rgba(255,255,255,0.55); }
+body.dark .post-card:hover, body.dark .post-card:focus-within { border-color: rgba(123,159,255,0.7); }
 </style>
