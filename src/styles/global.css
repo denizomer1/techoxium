@@ -416,10 +416,10 @@ body.dark .comments-toggle-btn:hover { background: rgba(255,255,255,0.16); }
   max-height: none !important; 
   object-fit: contain !important; 
   width: 100% !important;
-  min-height: 320px; /* reduced to lessen empty tap zone */
   background: transparent !important;
   pointer-events: auto !important; /* ensure taps propagate */
   touch-action: manipulation;
+  transition: height 160ms ease;
 }
 /* Prevent any nested element from causing horizontal scroll */
 #disqus_thread, #disqus_thread * { box-sizing: border-box; }
@@ -479,12 +479,10 @@ body.dark #disqus_thread { color-scheme: dark; }
 @media (max-width: 430px) {
   .comments-block { padding-left: 0; padding-right: 0; }
   #disqus_thread { -webkit-overflow-scrolling: touch; }
-  #disqus_thread iframe { min-height: 400px; }
 }
 
 /* Extra narrow (old iPhones <=360 logical width) */
 @media (max-width: 360px) {
-  #disqus_thread iframe { min-height: 440px; }
 }
 
 
