@@ -10,12 +10,16 @@ const posts = (await getCollection('blog'))
 	.map((p) => ({ ...p, data: { ...p.data, pubDate: new Date(p.data.pubDate) } }))
 	.sort((a, b) => Number(b.data.pubDate) - Number(a.data.pubDate))
 	.slice(0, 6);
+const [firstPost, ...restPosts] = posts;
 ---
 
 <html lang="en">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 					<style>
+						.featured-list { list-style:none; margin:0 0 1.75rem; padding:0; }
+						.featured-list .post-card { box-shadow:0 14px 46px -10px rgba(2,6,23,0.25), 0 8px 22px -8px rgba(2,6,23,0.12); padding:1.1rem 1.15rem 1.35rem; }
+						.featured-list .post-card__title { font-size:clamp(1.6rem,3vw,2.25rem); letter-spacing:.5px; }
 						.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1.15rem; list-style:none; margin:0; padding:0; }
 						@media (min-width:1400px){ .grid { grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); } }
 					</style>
@@ -25,15 +29,26 @@ const posts = (await getCollection('blog'))
 		<main>
 			<h1>Son Yazılar</h1>
 			<section>
-					<ul class="grid in-view"><!-- 'in-view' added server-side for immediate visibility; JS may re-trigger animation later -->
-						{posts.map((post, i) => (
+					{firstPost && (
+						<ul class="featured-list in-view">
 							<PostCard
-								index={i}
+								index={0}
+								href={`/${firstPost.slug ?? firstPost.id}/`}
+								title={firstPost.data.title}
+								pubDate={firstPost.data.pubDate}
+								heroImage={firstPost.data.heroImage}
+								large={true}
+							/>
+						</ul>
+					)}
+					<ul class="grid in-view">
+						{restPosts.map((post, i) => (
+							<PostCard
+								index={i+1}
 								href={`/${post.slug ?? post.id}/`}
 								title={post.data.title}
 								pubDate={post.data.pubDate}
 								heroImage={post.data.heroImage}
-								large={i === 0}
 							/>
 						))}
 					</ul>
