@@ -17,7 +17,15 @@ const { title, description, image = '' } = Astro.props;
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <!-- Force consistent light theme rendering (prevent browser auto-darkening) -->
 <meta name="color-scheme" content="light" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta name="theme-color" content="#2337ff" />
+<!-- Favicon & app icons -->
+<!-- Primary favicon now uses site logo raster; keep SVG as fallback -->
+<link rel="icon" type="image/png" sizes="32x32" href="/logo.png" />
+<link rel="icon" type="image/png" sizes="64x64" href="/logo.png" />
+<link rel="icon" type="image/png" sizes="128x128" href="/logo.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/logo.png" />
+<link rel="icon" type="image/svg+xml" href="/favicon-alt.svg" />
+<link rel="manifest" href="/site.webmanifest" />
 <meta name="generator" content={Astro.generator} />
 <!-- CSP now delivered via server middleware header (see src/middleware.ts) -->
 
