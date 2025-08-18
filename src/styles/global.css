@@ -369,4 +369,8 @@ a:hover { color: var(--accent-dark); }
 /* Utility: use this around manual embeds in markdown */
 /* Example in markdown: <div class="embed-wrapper" data-aspect="1/1">...iframe...</div> */
 
+/* Disqus specific tweaks: let it expand vertically and use full width */
+.embed-wrapper#disqus-embed { aspect-ratio: auto; min-height: 420px; }
+.embed-wrapper#disqus-embed #disqus_thread { width: 100%; height: 100%; }
+
 

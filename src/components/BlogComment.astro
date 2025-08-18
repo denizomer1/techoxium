@@ -6,7 +6,9 @@ interface Props {
 const { pageUrl, pageId } = Astro.props;
 ---
 
-<div id="disqus_thread"></div>
+<div class="embed-wrapper" data-aspect="4/3" id="disqus-embed">
+  <div id="disqus_thread"></div>
+</div>
 <script is:inline>
   const url = document.querySelector("link[rel='canonical']")?.href;
   const id = document.querySelector("meta[name='title']")?.content;
