@@ -15,7 +15,7 @@ import Search from './Search.astro';
 	   <div class="internal-links">
 		   <Search />
 	   </div>
-		<button class="dark-toggle" aria-label="Tema: sistem" data-mode="system">🌙</button>
+		<button class="dark-toggle" aria-label="Koyu modu aç/kapat">🌙</button>
    </nav>
 </header>
 <style>
@@ -61,51 +61,40 @@ body.dark { --header-bg: rgba(20,20,22,0.6); --nav-link: #f3f3f3; }
 </style>
 
 <script>
-// Robust tri-state theme switcher: dark -> light -> system.
+// Simple dark/light toggle: default follows system until user chooses.
 (() => {
 	if (typeof window === 'undefined') return;
 	const media = window.matchMedia('(prefers-color-scheme: dark)');
-	const VALID = new Set(['dark','light','system']);
+	const btn = document.querySelector('.dark-toggle');
 
-	function readPref(){
+	function storedPref(){
 		const v = localStorage.getItem('theme');
-		return VALID.has(v||'') ? v : 'system';
-	}
-	function effective(mode){
-		return mode === 'system' ? (media.matches ? 'dark' : 'light') : mode;
+		return v === 'dark' || v === 'light' ? v : null;
 	}
 	function apply(mode){
-		document.body.classList.toggle('dark', effective(mode) === 'dark');
-		document.documentElement.dataset.theme = mode;
+		document.body.classList.toggle('dark', mode === 'dark');
 	}
-	function cycle(mode){
-		if (mode === 'dark') return 'light';
-		if (mode === 'light') return 'system';
-		return 'dark';
+	function currentEffective(){
+		return storedPref() || (media.matches ? 'dark' : 'light');
 	}
-	const btn = document.querySelector('.dark-toggle');
 	function updateUI(){
 		if(!btn) return;
-		const pref = readPref();
 		const dark = document.body.classList.contains('dark');
 		btn.textContent = dark ? '☀️' : '🌙';
-		let label = 'Tema: sistem (otomatik)';
-		if (pref === 'dark') label = 'Tema: koyu';
-		else if (pref === 'light') label = 'Tema: açık';
-		btn.setAttribute('aria-label', label);
-		btn.dataset.mode = pref;
+		btn.setAttribute('aria-label', dark ? 'Açık moda geç' : 'Koyu moda geç');
 	}
+
 	// Init
-	apply(readPref());
+	apply(currentEffective());
 	updateUI();
-	media.addEventListener('change', () => { if (readPref()==='system'){ apply('system'); updateUI(); } });
+	media.addEventListener('change', () => { if (!storedPref()){ apply(currentEffective()); updateUI(); } });
 	btn && btn.addEventListener('click', () => {
-		const next = cycle(readPref());
+		const next = currentEffective() === 'dark' ? 'light' : 'dark';
 		localStorage.setItem('theme', next);
 		apply(next); updateUI();
 	});
 
-	// Mobile nav
+	// Mobile nav toggle
 	const navBtn = document.querySelector('.nav-toggle');
 	const links = document.querySelector('.internal-links');
 	navBtn && links && navBtn.addEventListener('click', () => {
