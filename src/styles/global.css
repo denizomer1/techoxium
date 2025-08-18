@@ -371,4 +371,43 @@ a:hover { color: var(--accent-dark); }
   .embed-wrapper#disqus-embed { min-height: 240px; }
 }
 
+/* ---------------- Disqus Responsive Layout ---------------- */
+.comments-block { 
+  margin-top: 3rem; 
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+}
+.comments-block .comments-title { 
+  margin: 0 0 1rem 0; 
+  font-size: clamp(1.2rem, 2.2vw, 1.6rem); 
+  line-height: 1.2;
+  text-align: left;
+}
+#disqus_thread { 
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden; 
+}
+/* Undo generic iframe constraints inside the prose for Disqus so it can size naturally */
+#disqus_thread iframe { 
+  height: auto !important; 
+  max-height: none !important; 
+  object-fit: contain !important; 
+  width: 100% !important;
+}
+/* Prevent any nested element from causing horizontal scroll */
+#disqus_thread, #disqus_thread * { box-sizing: border-box; }
+
+@media (max-width: 640px) {
+  .comments-block { margin-top: 2.25rem; }
+  .comments-block .comments-title { font-size: 1.25rem; }
+}
+@media (min-width: 1280px) {
+  .comments-block { margin-top: 3.5rem; }
+}
+
+/* Dark mode readability adjustments for potential Disqus injected backgrounds */
+body.dark #disqus_thread { color-scheme: dark; }
+
 

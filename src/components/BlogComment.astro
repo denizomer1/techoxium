@@ -3,7 +3,10 @@
 interface Props { pageUrl?: string; pageId?: string; enableCount?: boolean }
 const { pageUrl = '', pageId = '', enableCount = false } = Astro.props;
 ---
-<div id="disqus_thread"></div>
+<section class="comments-block" aria-labelledby="comments-title">
+  <h2 id="comments-title" class="comments-title">Yorumlar</h2>
+  <div id="disqus_thread"></div>
+</section>
 <script is:inline>
   // Minimal, legacy-friendly Disqus embed (no optional chaining / template interp)
   var disqus_config = function () {
