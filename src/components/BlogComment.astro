@@ -6,6 +6,7 @@ const { pageUrl = '', pageId = '', enableCount = false } = Astro.props;
 <section class="comments-block" aria-labelledby="comments-title" data-state="idle" data-collapsed="false">
   <div class="comments-header-row">
     <h2 id="comments-title" class="comments-title">Yorumlar</h2>
+  <button type="button" id="comments-theme-toggle" class="comments-theme-toggle" aria-pressed="false" title="Toggle comments theme">🌓</button>
     <button type="button" id="comments-toggle" class="comments-toggle-btn" aria-expanded="true" aria-controls="comments-shell">
       <span class="chevron" aria-hidden="true">▾</span>
       <span class="toggle-label">Gizle</span>
@@ -29,6 +30,31 @@ const { pageUrl = '', pageId = '', enableCount = false } = Astro.props;
     <a href="https://tekhaza.disqus.com" target="_blank" rel="noopener">Disqus'ta aç</a>
   </div>
 </section>
+<style>
+  /* Host-level styles to make comments dark-mode friendly */
+  .comments-block{
+    background: transparent;
+    color: inherit;
+    padding: 0.5rem 0;
+  }
+  .comments-header-row{display:flex;align-items:center;gap:0.5rem}
+  .comments-theme-toggle{background:transparent;border:0;padding:0.25rem 0.5rem;border-radius:6px;cursor:pointer}
+  .comments-theme-toggle:hover{background:rgba(0,0,0,0.04)}
+  .comments-shell{margin-top:0.75rem}
+  .comments-skeleton .sk-row{background:linear-gradient(90deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.02) 50%, rgba(0,0,0,0.06) 100%);height:14px;border-radius:6px;margin:8px 0}
+
+  /* Dark theme overrides when host indicates dark mode */
+  .comments-block[data-theme="dark"]{ color: #e6eef8 }
+  .comments-block[data-theme="dark"] .comments-theme-toggle{ color: #f5f7fb }
+  .comments-block[data-theme="dark"] .comments-skeleton .sk-row{ background: linear-gradient(90deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 50%, rgba(255,255,255,0.06) 100%); }
+  .comments-block[data-theme="dark"] .comments-load-btn,
+  .comments-block[data-theme="dark"] .comments-reload-btn,
+  .comments-block[data-theme="dark"] .comments-expand-btn{
+    background: rgba(255,255,255,0.06); color: #fff; border: 1px solid rgba(255,255,255,0.06);
+  }
+  .comments-shell.compact{ max-height: 420px; overflow: auto; }
+  .comments-shell.expanded{ position:relative }
+</style>
 <script is:inline>
   // Disqus configuration (set before script inject)
   var disqus_config = function () {
@@ -38,6 +64,7 @@ const { pageUrl = '', pageId = '', enableCount = false } = Astro.props;
       this.page.identifier = loc.pathname.replace(/\/$/, '') || 'index';
       this.page.title = document.title;
       this.language = 'tr';
+  try { this.page.theme = document.querySelector('.comments-block')?.getAttribute('data-theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); } catch(e) {}
       this.callbacks = this.callbacks || {};
       this.callbacks.onNewComment = [function(comment){
         try { console.debug('[Disqus] Yeni yorum', comment && comment.id); } catch(e){}
@@ -56,6 +83,16 @@ const { pageUrl = '', pageId = '', enableCount = false } = Astro.props;
   var toggleBtn = document.getElementById('comments-toggle');
   var shell = document.getElementById('comments-shell');
     var loaded = false; var loading = false; var observerCreated = false;
+    var themeToggle = document.getElementById('comments-theme-toggle');
+    // Initialize theme from system or saved preference
+    var saved = localStorage.getItem('commentsTheme');
+    function applyTheme(t){
+      var tb = t === 'dark' ? 'dark' : 'light';
+      stateEl && stateEl.setAttribute('data-theme', tb);
+      localStorage.setItem('commentsTheme', tb);
+    }
+    applyTheme(saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+    if (themeToggle) themeToggle.addEventListener('click', function(){ var cur = stateEl.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'; applyTheme(cur); });
     // Collapse / expand logic
     function applyCollapsed(coll){
       if(!shell || !toggleBtn || !stateEl) return;
@@ -83,7 +120,9 @@ const { pageUrl = '', pageId = '', enableCount = false } = Astro.props;
       if (loaded || loading) return; loading = true; setState('loading'); hideSkeleton();
       if (window.DISQUS) { window.DISQUS.reset({ reload: true, config: disqus_config }); finalize(); return; }
       var d=document,s=d.createElement('script');
-      s.src='https://tekhaza.disqus.com/embed.js';
+    // Append theme param for Disqus if possible (best-effort)
+    var themeParam = (stateEl && stateEl.getAttribute('data-theme')) === 'dark' ? '?theme=dark' : '';
+    s.src='https://tekhaza.disqus.com/embed.js' + themeParam;
       s.async=true; s.setAttribute('data-timestamp', Date.now());
       s.onload=function(){ finalize(); };
       s.onerror=function(){ console.warn('[Disqus] yükleme hatası'); showReload(); };
