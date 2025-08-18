@@ -10,7 +10,6 @@ const { pageUrl = '', pageId = '', enableCount = false } = Astro.props;
       <span class="chevron" aria-hidden="true">▾</span>
       <span class="toggle-label">Gizle</span>
     </button>
-  <button type="button" id="comments-filter-toggle" class="comments-filter-toggle" hidden aria-pressed="true" title="Koyu görünüm filtresini değiştir">🎨</button>
   </div>
   <div class="comments-shell" id="comments-shell">
     <div class="comments-skeleton" id="comments-skeleton" aria-hidden="true">
@@ -53,20 +52,7 @@ const { pageUrl = '', pageId = '', enableCount = false } = Astro.props;
   }
   .comments-shell.compact{ max-height: 420px; overflow: auto; }
   .comments-shell.expanded{ position:relative }
-    /* Experimental: attempt to make Disqus iframe blend with dark theme by applying a filter.
-       This is fragile and may produce artifacts depending on Disqus styles; it's applied only when
-       the host `data-theme="dark"` is set and after the iframe is available. */
-    .comments-block[data-theme="dark"] .disqus-thread iframe.darkified {
-      /* Stronger inversion to push body bg dark and text light.
-         Caveat: embedded images/videos will also invert. */
-      filter: invert(1) hue-rotate(180deg) brightness(1.05) contrast(0.92) saturate(0.9);
-      background-color: #050810;
-    }
-    .disqus-thread iframe { transition: filter 300ms ease, opacity 200ms ease; }
-  .comments-filter-toggle{background:transparent;border:1px solid rgba(0,0,0,0.15);padding:0.35rem 0.55rem;border-radius:6px;cursor:pointer;font-size:0.85rem;line-height:1;}
-  .comments-block[data-theme="dark"] .comments-filter-toggle{border-color:rgba(255,255,255,0.2);color:#f1f5f9}
-  .comments-filter-toggle:hover{background:rgba(0,0,0,0.05)}
-  .comments-block[data-theme="dark"] .comments-filter-toggle:hover{background:rgba(255,255,255,0.1)}
+    /* Removed experimental iframe inversion for stability */
 </style>
 <script is:inline>
   // Disqus configuration (set before script inject)
@@ -110,9 +96,6 @@ const { pageUrl = '', pageId = '', enableCount = false } = Astro.props;
       try { t = localStorage.getItem('theme'); } catch(e) { t = null; }
       if(!t){ t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : (document.body && document.body.classList && document.body.classList.contains('dark') ? 'dark' : 'light'); }
       stateEl && stateEl.setAttribute('data-theme', t);
-  // Show filter toggle only in dark mode
-  var ft = document.getElementById('comments-filter-toggle');
-  if(ft){ ft.hidden = t !== 'dark'; }
     }
     // initialize
     try { syncCommentsTheme(); } catch(e) {}
@@ -179,35 +162,8 @@ const { pageUrl = '', pageId = '', enableCount = false } = Astro.props;
   }
 
     // Apply experimental dark filter to Disqus iframe when theme is dark
-    function updateIframeTheme(){
-      try{
-        var ifr = document.querySelector('#disqus_thread iframe');
-        var isDark = stateEl && stateEl.getAttribute('data-theme') === 'dark';
-  var filterPref = true;
-  try { var stored = localStorage.getItem('commentsFilter'); if(stored === 'off') filterPref = false; } catch(e){}
-  if(ifr){ ifr.classList.toggle('darkified', !!isDark && filterPref); }
-      }catch(e){}
-    }
-
-    // Run after finalize and when theme changes
-    var themeObserver = function(){ updateIframeTheme(); };
-    // call once on finalize path
-    var origFinalize = finalize;
-    finalize = function(){ origFinalize(); updateIframeTheme(); };
-    // listen for storage events to update iframe when theme changes
-    window.addEventListener && window.addEventListener('storage', function(e){ if(e.key === 'theme'){ syncCommentsTheme(); updateIframeTheme(); } });
-    // Filter toggle interaction
-    var filterBtn = document.getElementById('comments-filter-toggle');
-    if(filterBtn){
-      try { var stored = localStorage.getItem('commentsFilter'); if(stored === 'off'){ filterBtn.setAttribute('aria-pressed','false'); } } catch(e){}
-      filterBtn.addEventListener('click', function(){
-        var pressed = filterBtn.getAttribute('aria-pressed') === 'true';
-        var next = !pressed;
-        filterBtn.setAttribute('aria-pressed', String(next));
-        try { localStorage.setItem('commentsFilter', next ? 'on' : 'off'); } catch(e){}
-        updateIframeTheme();
-      });
-    }
+  // Keep in sync on storage (theme) changes
+  window.addEventListener && window.addEventListener('storage', function(e){ if(e.key === 'theme'){ syncCommentsTheme(); } });
 
     // IntersectionObserver for auto-load when scrolled near
     function setupObserver(){
