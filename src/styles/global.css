@@ -47,7 +47,7 @@ body {
   margin: 0;
   padding: 0;
   text-align: left;
-  background: linear-gradient(var(--gray-gradient)) no-repeat;
+  background: linear-gradient(var(--gray-gradient)) no-repeat #ffffff;
   background-size: 100% 600px;
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -241,7 +241,8 @@ body.dark hr {
 body.dark a { color: #9bb6ff; }
 body.dark a:hover { color: #cfe0ff; }
 
-/* Home page blog list - dark mode adjustments */
+/* Explicit light mode class to lock design if browser attempts auto-darkening */
+body.light { background: #ffffff; color: rgb(var(--gray-dark)); }
 /* body.dark .grid -- no wrapper styles required */
 
 body.dark .grid .card {
