@@ -1,3 +1,2 @@
-export function resolveEnv(localsOrAstro: any){
-  return (localsOrAstro?.runtime?.env) || (localsOrAstro?.cloudflare?.env) || (globalThis as any).process?.env || {};
-}
+// Environment resolution helper removed during rollback.
+export function resolveEnv(_locals: any){ return {}; }
