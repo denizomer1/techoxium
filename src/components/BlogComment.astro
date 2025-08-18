@@ -1,42 +1,20 @@
 ---
-interface Props { pageUrl?: string; pageId?: string; }
-const { pageUrl = '', pageId = '' } = Astro.props;
+/** Disqus universal embed component */
+interface Props { pageUrl?: string; pageId?: string; enableCount?: boolean }
+const { pageUrl = '', pageId = '', enableCount = false } = Astro.props;
 ---
 <div id="disqus_thread"></div>
 <script is:inline>
-  (function() {
-    const PROVIDED_URL = ${JSON.stringify(pageUrl)};
-    const PROVIDED_ID = ${JSON.stringify(pageId)};
-    function resolveUrl() {
-      return PROVIDED_URL || document.querySelector('link[rel="canonical"]')?.href || window.location.href;
-    }
-    function resolveId() {
-      return PROVIDED_ID || window.location.pathname.replace(/\/$/, '') || 'index';
-    }
-    window.disqus_config = function () {
-      this.page.url = resolveUrl();
-      this.page.identifier = resolveId();
-    };
-    function inject() {
-      if (document.getElementById('dsq-embed-scr')) return;
-      const d = document, s = d.createElement('script');
-      s.src = 'https://tekhaza.disqus.com/embed.js';
-      s.id = 'dsq-embed-scr';
-      s.async = true;
-      s.setAttribute('data-timestamp', Date.now().toString());
-      s.onload = () => console.debug('[disqus] embed loaded');
-      s.onerror = () => console.warn('[disqus] failed to load embed.js');
-      (d.head || d.body).appendChild(s);
-    }
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', inject);
-    } else {
-      inject();
-    }
-    // Retry once after 3s if thread still empty (network hiccup)
-    setTimeout(() => {
-      if (!document.getElementById('dsq-embed-scr')) inject();
-    }, 3000);
+  var disqus_config = function () {
+    this.page.url = ${JSON.stringify(pageUrl)} || document.querySelector('link[rel="canonical"]')?.href || window.location.href;
+    this.page.identifier = ${JSON.stringify(pageId)} || window.location.pathname.replace(/\/$/, '') || 'index';
+  };
+  (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://tekhaza.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
   })();
 </script>
+{ enableCount && <script id="dsq-count-scr" src="//tekhaza.disqus.com/count.js" async></script> }
 <noscript>Lütfen JavaScript'i etkinleştirin: <a href="https://disqus.com/?ref_noscript">yorumları görmek için</a>.</noscript>
