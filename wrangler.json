@@ -17,6 +17,7 @@
     "INITIAL_ADMIN_PASS": "admin123"
   },
   "kv_namespaces": [
-    { "binding": "BLOG_DATA", "id": "__KV_NAMESPACE_ID__" }
+    { "binding": "BLOG_DATA", "id": "__KV_NAMESPACE_ID__" },
+    { "binding": "SESSION", "id": "__SESSION_KV_ID__" }
   ]
 }
