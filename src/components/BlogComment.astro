@@ -7,6 +7,7 @@ const { pageUrl, pageId } = Astro.props;
 ---
 
 <div class="embed-wrapper" id="disqus-embed">
+  <div id="disqus_status" class="disqus-status">Yorumlar yükleniyor...</div>
   <div id="disqus_thread"></div>
 </div>
 
@@ -18,28 +19,34 @@ const { pageUrl, pageId } = Astro.props;
   const canonicalUrl = () => document.querySelector("link[rel='canonical']")?.href;
   const metaTitle = () => document.querySelector("meta[name='title']")?.content;
 
-  function installDisqus() {
-    if (window.__disqus_loaded) return;
-    window.__disqus_loaded = true;
+  (function loadDisqus() {
+    if (window.__disqus_loading) return;
+    window.__disqus_loading = true;
 
-    window.disqus_config = function () {
-      this.page.url = PAGE_URL && PAGE_URL !== "" ? PAGE_URL : (canonicalUrl() || window.location.href);
-      this.page.identifier = PAGE_ID && PAGE_ID !== "" ? PAGE_ID : (metaTitle() || window.location.pathname);
+    const disqusUrl = (PAGE_URL && PAGE_URL !== "") ? PAGE_URL : (canonicalUrl() || window.location.href);
+    const identifier = (PAGE_ID && PAGE_ID !== "") ? PAGE_ID : (metaTitle() || window.location.pathname.replace(/\/$/, ''));
+
+    // Disqus expects a global var named disqus_config
+    var disqus_config = function () { // eslint-disable-line no-unused-vars
+      this.page.url = disqusUrl;
+      this.page.identifier = identifier;
     };
+    window.disqus_config = disqus_config; // also expose on window for safety
 
-    const d = document;
-    const s = d.createElement('script');
-    s.src = 'https://tekhaza.disqus.com/embed.js';
-    s.async = true;
-    s.setAttribute('data-timestamp', String(Date.now()));
-    (d.head || d.body).appendChild(s);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', installDisqus);
-  } else {
-    installDisqus();
-  }
+    const script = document.createElement('script');
+    script.src = 'https://tekhaza.disqus.com/embed.js';
+    script.async = true;
+    script.setAttribute('data-timestamp', Date.now().toString());
+    script.onload = () => {
+      const st = document.getElementById('disqus_status');
+      if (st) st.remove();
+    };
+    script.onerror = () => {
+      const st = document.getElementById('disqus_status');
+      if (st) st.textContent = 'Yorumlar yüklenemedi.';
+    };
+    (document.head || document.body).appendChild(script);
+  })();
 </script>
 
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
