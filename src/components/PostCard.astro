@@ -3,21 +3,35 @@ import FormattedDate from './FormattedDate.astro';
 interface Props {
   href: string;
   title: string;
+  description?: string;
   pubDate?: Date | string;
   heroImage?: string;
   index?: number; // for stagger animation delay
   large?: boolean; // optional style variant
+  clampLines?: number;
 }
-const { href, title, pubDate, heroImage, index = 0, large = false } = Astro.props as Props;
+const { href, title, description = '', pubDate, heroImage, index = 0, large = false, clampLines = 3 } = Astro.props as Props;
 const date = pubDate ? (pubDate instanceof Date ? pubDate : new Date(pubDate)) : undefined;
 ---
 <li class={`post-card${large ? ' post-card--large' : ''}`} style={index ? `--d:${index * 80}ms` : ''}>
   <a href={href} aria-label={title} class="post-card__link">
     {heroImage && (
-      <img src={heroImage} alt={title} width={large ? 1020 : 720} height={large ? 510 : 360} loading={large ? 'eager' : 'lazy'} fetchpriority={large ? 'high' : 'auto'} decoding="async" class="post-card__image" />
+      <img
+        src={heroImage}
+        alt={title}
+        width={large ? 1020 : 720}
+        height={large ? 510 : 360}
+        loading={large ? 'eager' : 'lazy'}
+        fetchpriority={large ? 'high' : 'auto'}
+        decoding="async"
+        class="post-card__image"
+        sizes={large ? "(max-width: 860px) 100vw, (max-width:1200px) 70vw, 1020px" : "(max-width: 520px) 100vw, (max-width: 900px) 50vw, 360px"}
+        srcset={`${heroImage} 480w, ${heroImage} 720w, ${heroImage} 1020w`}
+      />
     )}
-    <h3 class="post-card__title">{title}</h3>
-    {date && <p class="post-card__date"><FormattedDate date={date} /></p>}
+  <h3 class="post-card__title">{title}</h3>
+  {date && <p class="post-card__date"><FormattedDate date={date} /></p>}
+  {description && <p class="post-card__desc" style={`--lines:${clampLines}`}>{description}</p>}
   </a>
 </li>
 
@@ -63,5 +77,9 @@ body.dark .post-card {
   color:#e6eef8;
 }
 body.dark .post-card__date { color: rgba(255,255,255,0.55); }
+body.dark .post-card__desc { color: rgba(255,255,255,0.65); }
 body.dark .post-card:hover, body.dark .post-card:focus-within { border-color: rgba(123,159,255,0.7); }
+/* Description */
+.post-card__desc { margin:0.5rem 0 0; font-size:.78rem; line-height:1.45; color:rgba(2,6,23,0.7); display:-webkit-box; -webkit-box-orient: vertical; overflow:hidden; -webkit-line-clamp: var(--lines,3); }
+.post-card--large .post-card__desc { font-size:.9rem; line-height:1.5; }
 </style>

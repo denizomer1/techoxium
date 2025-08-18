@@ -52,15 +52,17 @@ body {
   word-wrap: break-word;
   overflow-wrap: break-word;
   color: rgb(var(--gray-dark));
-  font-size: 20px;
+  font-size: clamp(18px, 0.95vw + 14px, 20px); /* fluid base size for phones -> desktops */
   line-height: 1.7;
   transition: background 0.3s, color 0.3s;
+  padding-left: env(safe-area-inset-left); /* iOS notch */
+  padding-right: env(safe-area-inset-right);
 }
 main {
   max-width: 960px;
   width: min(95%, 960px);
   margin: 0 auto;
-  padding: 2.5rem 1rem;
+  padding: 2.5rem clamp(.85rem, 2.5vw, 1.25rem);
 }
 h1,
 h2,
@@ -492,5 +494,41 @@ body.dark #disqus_thread { color-scheme: dark; }
 /* Extra narrow (old iPhones <=360 logical width) */
 @media (max-width: 360px) {
 }
+
+/* ---------------- Additional Responsive Enhancements ---------------- */
+/* Utility wrapper for wider pages */
+.wrap { width:100%; margin-inline:auto; max-width:82rem; padding-inline:1.1rem; }
+@media (min-width:1600px){ .wrap { max-width:90rem; } }
+@media (max-width:520px){ .wrap { padding-inline:.85rem; } }
+
+/* Prose width scales down for smaller devices to maintain readable measure */
+.prose { max-width:72ch; }
+@media (max-width:900px){ .prose { max-width:68ch; } }
+@media (max-width:700px){ .prose { max-width:62ch; } }
+@media (max-width:560px){ .prose { font-size:0.96rem; } }
+@media (max-width:420px){ .prose { font-size:0.92rem; } }
+
+/* Responsive media elements */
+picture, video { display:block; max-width:100%; height:auto; }
+iframe { max-width:100%; }
+
+/* Prevent layout shift on very narrow devices by slightly tightening headings */
+@media (max-width:460px){
+  h1 { letter-spacing:-0.5px; }
+  h2 { letter-spacing:-0.25px; }
+}
+
+/* Touch device hover adjustments */
+@media (hover:none){
+  .card:hover, .card:focus-within { transform:none; }
+  .card:active { transform: scale(.985); }
+}
+
+/* Improve code scroll on mobile */
+pre { -webkit-overflow-scrolling: touch; }
+
+/* Dark mode subtle improvement for long paragraphs */
+body.dark .prose p { color: #dbe4ef; }
+
 
 
