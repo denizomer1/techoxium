@@ -25,7 +25,7 @@ const posts = (await getCollection('blog'))
 		<main>
 			<h1>Son Yazılar</h1>
 			<section>
-					<ul class="grid">
+					<ul class="grid in-view"><!-- 'in-view' added server-side for immediate visibility; JS may re-trigger animation later -->
 						{posts.map((post, i) => (
 							<PostCard
 								index={i}

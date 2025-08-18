@@ -29,7 +29,7 @@ const posts = rawPosts
 		<Header />
 		<main>
 			<section>
-				<ul class="post-list">
+				<ul class="post-list in-view"><!-- server-side visibility -->
 					{posts.map((post, i) => (
 						<PostCard
 							index={i}
@@ -48,12 +48,19 @@ const posts = rawPosts
 			// Animate blog list cards when entering viewport (reuse same pattern as home)
 			if (typeof window !== 'undefined') {
 				const list = document.querySelector('.post-list');
-				if (list) {
-					const show = () => list.classList.add('in-view');
-					if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { show(); }
-					else if ('IntersectionObserver' in window) {
-						new IntersectionObserver((ents, io) => { ents.forEach(e=>{ if(e.isIntersecting){ show(); io.disconnect(); } }); }, { threshold:0.08 }).observe(list);
-					} else show();
+				if (list && !list.dataset.animApplied) {
+					// If we want animation, remove and re-add after a tick
+					if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+						list.classList.remove('in-view');
+						requestAnimationFrame(()=>{
+							if ('IntersectionObserver' in window) {
+								new IntersectionObserver((ents, io) => { ents.forEach(e=>{ if(e.isIntersecting){ list.classList.add('in-view'); io.disconnect(); } }); }, { threshold:0.08 }).observe(list);
+							} else {
+								list.classList.add('in-view');
+							}
+						});
+					}
+					list.dataset.animApplied = '1';
 				}
 			}
 		</script>
