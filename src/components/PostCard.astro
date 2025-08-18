@@ -35,13 +35,9 @@ const date = pubDate ? (pubDate instanceof Date ? pubDate : new Date(pubDate)) :
   box-shadow: var(--card-shadow);
   backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
   overflow:hidden;
-  transform: translateY(14px) scale(.97);
-  opacity:0;
-  will-change: transform, opacity, box-shadow;
-  transition: transform .6s cubic-bezier(.2,.9,.2,1), opacity .6s cubic-bezier(.2,.9,.2,1), box-shadow .35s ease, border-color .35s ease;
-  transition-delay: var(--d,0ms);
+  will-change: transform, box-shadow;
+  transition: transform .45s cubic-bezier(.2,.9,.2,1), box-shadow .35s ease, border-color .35s ease;
 }
-.grid.in-view .post-card, .post-list.in-view .post-card { opacity:1; transform: translateY(0) scale(1); }
 .post-card__link { display:block; text-decoration:none; color:inherit; height:100%; }
 .post-card__image { display:block; width:100%; height:auto; border-radius:12px; aspect-ratio: 16/9; object-fit:cover; background:#f2f4f7; }
 .post-card__title { margin:0.75rem 0 0.35rem; font-size:1.05rem; line-height:1.2; letter-spacing:.3px; }
