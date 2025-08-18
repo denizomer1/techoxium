@@ -17,6 +17,8 @@ const { title, description, image = '' } = Astro.props;
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <meta name="generator" content={Astro.generator} />
+<!-- Content Security Policy (allow Disqus, YouTube, Google accounts frames) -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://*.disqus.com https://*.disquscdn.com https://www.youtube.com https://www.gstatic.com https://accounts.google.com; connect-src 'self' https://*.disqus.com https://*.disquscdn.com https://www.youtube.com https://accounts.google.com; img-src 'self' data: https://*.disqus.com https://*.disquscdn.com https://referrer.disqus.com https://i.ytimg.com https://www.google.com https://www.gstatic.com https://accounts.google.com; style-src 'self' 'unsafe-inline' https://*.disquscdn.com; frame-src https://*.disqus.com https://disqus.com https://www.youtube.com https://accounts.google.com; child-src https://*.disqus.com https://www.youtube.com;" />
 
 <!-- Font preloads -->
 <link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin />

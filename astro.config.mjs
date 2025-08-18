@@ -7,7 +7,8 @@ import cloudflare from "@astrojs/cloudflare";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://example.com",
+  // Set to deployed domain so Disqus & canonical URLs are stable
+  site: "https://techoxium.denizomer10.workers.dev",
   integrations: [mdx(), sitemap()],
   adapter: cloudflare({
     platformProxy: {
