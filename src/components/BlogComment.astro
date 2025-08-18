@@ -91,8 +91,7 @@ const { pageUrl = '', pageId = '', enableCount = false } = Astro.props;
       // Safety timeout
       setTimeout(function(){ if(!loaded){ console.warn('[Disqus] timeout'); showReload(); } }, 12000);
     }
-    function finalize(){ loaded = true; setState('ready'); setTimeout(focusContainer, 50); }
-    function focusContainer(){ try { container && container.focus(); } catch(e){} }
+  function finalize(){ loaded = true; setState('ready'); }
 
     // IntersectionObserver for auto-load when scrolled near
     function setupObserver(){
