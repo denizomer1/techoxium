@@ -9,7 +9,7 @@ const { pageUrl, pageId } = Astro.props;
 <div class="embed-wrapper" id="disqus-embed">
   <div class="disqus-placeholder">
     <p>Comments are powered by Disqus.</p>
-    <button class="disqus-load-button" aria-label="Load comments">Show comments</button>
+    <button class="disqus-load-button" aria-label="yorumları göster">yorumları göster</button>
   </div>
   <div id="disqus_thread" style="display:none;"></div>
 </div>
@@ -48,22 +48,35 @@ const { pageUrl, pageId } = Astro.props;
 
   // Hook up manual load button
   document.addEventListener('DOMContentLoaded', function () {
-    const btn = document.querySelector('#disqus-embed .disqus-load-button');
-    if (btn) btn.addEventListener('click', installDisqus, { once: true });
-
-    // Also auto-load when the placeholder becomes visible (user scrolled to it)
-    const wrapper = document.getElementById('disqus-embed');
-    if ('IntersectionObserver' in window && wrapper) {
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            installDisqus();
-            io.disconnect();
+      (function setupDisqusLoader() {
+        function bind() {
+          const btn = document.querySelector('#disqus-embed .disqus-load-button');
+          if (btn) {
+            btn.addEventListener('click', installDisqus, { once: true });
+            btn.setAttribute('aria-label', 'yorumları göster'); // Change button label to Turkish
           }
-        });
-      }, { rootMargin: '200px' });
-      io.observe(wrapper);
-    }
+
+          // Also auto-load when the placeholder becomes visible (user scrolled to it)
+          const wrapper = document.getElementById('disqus-embed');
+          if ('IntersectionObserver' in window && wrapper) {
+            const io = new IntersectionObserver((entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  installDisqus();
+                  io.disconnect();
+                }
+              });
+            }, { rootMargin: '200px' });
+            io.observe(wrapper);
+          }
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', bind);
+        } else {
+          bind();
+        }
+      })();
   });
 </script>
 
