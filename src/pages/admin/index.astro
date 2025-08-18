@@ -1,0 +1,248 @@
+---
+// Basic admin page placeholder with login form and post list placeholder.
+import { getCollection } from 'astro:content';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+const posts = await getCollection('blog');
+---
+<html lang="en">
+  <head>
+    <title>Admin Panel</title>
+    <meta name="robots" content="noindex" />
+    <style>
+      body { font-family: system-ui, sans-serif; margin:0; }
+      .admin-shell { display:flex; min-height:100vh; }
+      aside { width: 240px; background: #111827; color:#f1f5f9; padding:1rem; }
+      main { flex:1; padding:1rem 1.25rem 4rem; }
+      h1 { font-size:1.4rem; margin:0 0 1rem; }
+      form.login { display:flex; flex-direction:column; gap:0.75rem; max-width:260px; }
+      input[type=text], input[type=password] { padding:0.6rem 0.7rem; border:1px solid #334155; background:#1e293b; color:#f1f5f9; border-radius:6px; }
+      input[type=text]:focus, input[type=password]:focus { outline:2px solid #6366f1; }
+      button { background:#6366f1; border:none; color:#fff; padding:0.6rem 0.9rem; border-radius:6px; cursor:pointer; font-weight:600; }
+      button:hover { background:#4f46e5; }
+      .posts-list { list-style:none; padding:0; margin:1rem 0 0; display:grid; gap:0.5rem; }
+      .posts-list li { background:#f8fafc; padding:0.6rem 0.7rem; border:1px solid #e2e8f0; border-radius:6px; display:flex; justify-content:space-between; align-items:center; }
+      .posts-list li span { flex:1; }
+      .actions button { margin-left:0.4rem; background:#64748b; }
+      .actions button.delete { background:#dc2626; }
+      .actions button.delete:hover { background:#b91c1c; }
+      .hidden { display:none !important; }
+      .status { font-size:0.8rem; color:#475569; margin-top:0.5rem; min-height:1em; }
+      .editor-area { margin-top:1.25rem; }
+      textarea.editor { width:100%; min-height:240px; font-family:monospace; font-size:0.85rem; padding:0.75rem; border:1px solid #cbd5e1; border-radius:6px; }
+      @media (max-width:900px){ .admin-shell { flex-direction:column; } aside { width:auto; display:flex; gap:1rem; align-items:center; } }
+    </style>
+  </head>
+  <body>
+    <div class="admin-shell">
+      <aside>
+        <h1>Admin</h1>
+        <div id="login-block">
+          <form class="login" id="login-form">
+            <input name="username" type="text" placeholder="Kullanıcı" autocomplete="username" required />
+            <input name="password" type="password" placeholder="Parola" autocomplete="current-password" required />
+            <button type="submit">Giriş Yap</button>
+            <div class="status" id="login-status"></div>
+          </form>
+        </div>
+        <div id="user-info" class="hidden">
+          <div id="whoami"></div>
+          <button id="logout-btn" type="button" style="margin-top:0.5rem;background:#334155;">Çıkış</button>
+        </div>
+      </aside>
+      <main>
+        <section id="posts-section" class="hidden">
+          <h2>Blog Yazıları</h2>
+          <ul class="posts-list" id="posts-list">
+            {posts.map(p => <li><span>{p.data.title}</span><span class="actions"><button data-id={p.id} class="edit" type="button">Düzenle</button><button data-id={p.id} class="delete delete" type="button">Sil</button></span></li>)}
+          </ul>
+          <div class="editor-area hidden" id="editor-area">
+            <h3 id="editor-title">Düzenle</h3>
+            <textarea class="editor" id="editor"></textarea>
+            <div style="margin-top:0.75rem;display:flex;gap:0.5rem;">
+              <button id="save-btn" type="button">Kaydet</button>
+              <button id="cancel-btn" type="button" style="background:#475569;">İptal</button>
+            </div>
+            <div class="status" id="save-status"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script type="module">
+      const loginForm = document.getElementById('login-form');
+      const loginBlock = document.getElementById('login-block');
+      const userInfo = document.getElementById('user-info');
+      const whoami = document.getElementById('whoami');
+      const statusEl = document.getElementById('login-status');
+      const postsSection = document.getElementById('posts-section');
+      const editorArea = document.getElementById('editor-area');
+      const editor = document.getElementById('editor');
+      const editorTitle = document.getElementById('editor-title');
+      const saveStatus = document.getElementById('save-status');
+      const logoutBtn = document.getElementById('logout-btn');
+      const postsList = document.getElementById('posts-list');
+      const saveBtn = document.getElementById('save-btn');
+      const cancelBtn = document.getElementById('cancel-btn');
+      let currentPostId = null;
+  // User management elements (injected dynamically)
+  const userPanel = document.createElement('section');
+  userPanel.id = 'users-section';
+  userPanel.innerHTML = `<h2>Kullanıcılar</h2><div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:flex-end;margin:.5rem 0 1rem;">\n        <div style=\"display:flex;flex-direction:column;\"><label style=\"font-size:.7rem;letter-spacing:.05em;\">Yeni Kullanıcı</label><input id=\"new-user\" type=\"text\" placeholder=\"kullanıcı adı\" style=\"padding:.4rem .5rem;border:1px solid #334155;background:#1e293b;color:#fff;border-radius:4px;\"/></div>\n        <div style=\"display:flex;flex-direction:column;\"><label style=\"font-size:.7rem;letter-spacing:.05em;\">Parola</label><input id=\"new-pass\" type=\"password\" placeholder=\"parola\" style=\"padding:.4rem .5rem;border:1px solid #334155;background:#1e293b;color:#fff;border-radius:4px;\"/></div>\n        <div style=\"display:flex;flex-direction:column;\"><label style=\"font-size:.7rem;letter-spacing:.05em;\">Rol</label><select id=\"new-role\" style=\"padding:.45rem .5rem;border:1px solid #334155;background:#1e293b;color:#fff;border-radius:4px;\"><option value=\"guest\">guest</option><option value=\"admin\">admin</option></select></div>\n        <button id=\"create-user-btn\" type=\"button\" style=\"background:#0d9488;\">Oluştur</button>\n      </div><table id=\"users-table\" style=\"width:100%;border-collapse:collapse;font-size:.8rem;\"><thead><tr style=\"text-align:left;background:#1e293b;color:#fff;\"><th style=\"padding:.4rem .5rem;\">Kullanıcı</th><th style=\"padding:.4rem .5rem;\">Rol</th><th style=\"padding:.4rem .5rem;\">Oluşturuldu</th><th style=\"padding:.4rem .5rem;\"></th></tr></thead><tbody></tbody></table><div class=\"status\" id=\"user-status\"></div>`;
+  document.querySelector('main').prepend(userPanel);
+  const usersTableBody = userPanel.querySelector('tbody');
+  const createUserBtn = document.getElementById('create-user-btn');
+  const newUserInput = document.getElementById('new-user');
+  const newPassInput = document.getElementById('new-pass');
+  const newRoleSelect = document.getElementById('new-role');
+  const userStatus = document.getElementById('user-status');
+
+      async function login(e){
+        e.preventDefault();
+        statusEl.textContent = 'Giriş yapılıyor...';
+        const fd = new FormData(loginForm);
+        const res = await fetch('/api/login', { method:'POST', body: fd });
+        const json = await res.json();
+        if(!res.ok){ statusEl.textContent = json.error || 'Hata'; return; }
+        statusEl.textContent = 'Başarılı';
+        loginBlock.classList.add('hidden');
+        await afterLogin();
+        whoami.textContent = json.user.username + ' ('+json.user.role+')';
+      }
+      loginForm.addEventListener('submit', login);
+
+      logoutBtn.addEventListener('click', async () => {
+        await fetch('/api/logout', { method:'POST' });
+        userInfo.classList.add('hidden');
+        postsSection.classList.add('hidden');
+        loginBlock.classList.remove('hidden');
+        whoami.textContent='';
+        editorArea.classList.add('hidden');
+        currentPostId = null;
+      });
+
+      async function loadPosts(){
+        const res = await fetch('/api/posts');
+        if(!res.ok) return; // unauthorized
+        const arr = await res.json();
+        postsList.innerHTML = '';
+        for(const p of arr){
+          const li = document.createElement('li');
+          li.innerHTML = `<span>${p.title}</span><span class="actions"><button data-id="${p.id}" class="edit" type="button">Düzenle</button><button data-id="${p.id}" class="delete delete" type="button">Sil</button></span>`;
+          postsList.appendChild(li);
+        }
+      }
+
+      async function openEditor(id){
+        currentPostId = id;
+        editorArea.classList.remove('hidden');
+        editor.value = 'Yükleniyor...';
+        const res = await fetch(`/api/posts/${encodeURIComponent(id)}`);
+        if(!res.ok){ editor.value = 'Bulunamadı'; return; }
+        const data = await res.json();
+        if(data.content){
+          editor.value = data.content;
+        } else {
+          editor.value = `# ${data.data?.title || id}\n\n(Statik içerik dosyasını düzenlemek için önce buraya içeriği yapıştırın ve kaydedin.)`;
+        }
+      }
+
+      postsList?.addEventListener('click', (e) => {
+        const btn = e.target.closest('button');
+        if(!btn) return;
+        const id = btn.getAttribute('data-id');
+        if(btn.classList.contains('edit')){
+          openEditor(id);
+        } else if(btn.classList.contains('delete')){
+          if(confirm('Silmek istediğinize emin misiniz?')){
+            fetch(`/api/posts/${encodeURIComponent(id)}`, { method:'DELETE' }).then(r=>{ if(r.ok){ loadPosts(); if(currentPostId===id){ editorArea.classList.add('hidden'); } }});
+          }
+        }
+      });
+
+      saveBtn?.addEventListener('click', async () => {
+        if(!currentPostId) return;
+        saveStatus.textContent = 'Kaydediliyor...';
+        const res = await fetch(`/api/posts/${encodeURIComponent(currentPostId)}`, { method:'PUT', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify({ content: editor.value }) });
+        if(res.ok){ saveStatus.textContent = 'Kaydedildi'; } else { saveStatus.textContent = 'Hata'; }
+      });
+
+      cancelBtn?.addEventListener('click', () => {
+        editorArea.classList.add('hidden');
+        currentPostId = null;
+      });
+
+      async function afterLogin(){
+        userInfo.classList.remove('hidden');
+        postsSection.classList.remove('hidden');
+        await loadPosts();
+        await loadUsers();
+      }
+
+      async function loadUsers(){
+        const res = await fetch('/api/users');
+        if(!res.ok) return;
+        const arr = await res.json();
+        usersTableBody.innerHTML = '';
+        for(const u of arr){
+          const tr = document.createElement('tr');
+            tr.innerHTML = `<td style="padding:.4rem .5rem;border:1px solid #e2e8f0;">${u.username}</td><td style="padding:.4rem .5rem;border:1px solid #e2e8f0;"><select data-user="${u.username}" class="role-select" style="padding:.25rem .4rem;">${['guest','admin'].map(r=>`<option value=\"${r}\" ${r===u.role?'selected':''}>${r}</option>`).join('')}</select></td><td style="padding:.4rem .5rem;border:1px solid #e2e8f0;">${new Date(u.created).toLocaleString()}</td><td style="padding:.4rem .5rem;border:1px solid #e2e8f0;"><button class="reset-pass" data-user="${u.username}" style="background:#6366f1;">Parola</button><button class="del-user" data-user="${u.username}" style="background:#dc2626;margin-left:.4rem;">Sil</button></td>`;
+          usersTableBody.appendChild(tr);
+        }
+      }
+
+      createUserBtn.addEventListener('click', async () => {
+        const username = newUserInput.value.trim();
+        const password = newPassInput.value;
+        const role = newRoleSelect.value;
+        if(!username || !password){ userStatus.textContent = 'Eksik alan'; return; }
+        userStatus.textContent = 'Oluşturuluyor...';
+        const res = await fetch('/api/users', { method:'POST', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify({ username, password, role }) });
+        if(res.ok){ userStatus.textContent = 'Oluşturuldu'; newUserInput.value=''; newPassInput.value=''; await loadUsers(); } else { userStatus.textContent = 'Hata'; }
+      });
+
+      usersTableBody.addEventListener('change', async (e) => {
+        const sel = e.target.closest('.role-select');
+        if(!sel) return;
+        const username = sel.getAttribute('data-user');
+        const role = sel.value;
+        userStatus.textContent = 'Güncelleniyor...';
+        const res = await fetch(`/api/users/${encodeURIComponent(username)}`, { method:'PATCH', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify({ role }) });
+        userStatus.textContent = res.ok ? 'Rol güncellendi' : 'Hata';
+      });
+
+      usersTableBody.addEventListener('click', async (e) => {
+        const reset = e.target.closest('.reset-pass');
+        const del = e.target.closest('.del-user');
+        if(reset){
+          const username = reset.getAttribute('data-user');
+          const pw = prompt('Yeni parola?');
+          if(!pw) return;
+          userStatus.textContent = 'Parola güncelleniyor...';
+          const res = await fetch(`/api/users/${encodeURIComponent(username)}`, { method:'PATCH', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify({ password: pw }) });
+          userStatus.textContent = res.ok ? 'Parola güncellendi' : 'Hata';
+        } else if(del){
+          const username = del.getAttribute('data-user');
+          if(confirm('Silinsin mi?')){
+            userStatus.textContent = 'Siliniyor...';
+            const res = await fetch(`/api/users/${encodeURIComponent(username)}`, { method:'DELETE' });
+            if(res.ok){ userStatus.textContent = 'Silindi'; await loadUsers(); } else { userStatus.textContent = 'Hata'; }
+          }
+        }
+      });
+
+      // Could add auto-login detection here by hitting a lightweight whoami endpoint later.
+      // Auto login detection
+      (async () => {
+        try {
+          const res = await fetch('/api/whoami');
+          if(res.ok){
+            const data = await res.json();
+            whoami.textContent = data.user.username + ' ('+data.user.role+')';
+            loginBlock.classList.add('hidden');
+            await afterLogin();
+          }
+        } catch {}
+      })();
+    </script>
+  </body>
+</html>

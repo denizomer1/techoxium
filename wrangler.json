@@ -11,4 +11,12 @@
     "enabled": true
   },
   "upload_source_maps": true
+  ,"vars": {
+    "SESSION_SECRET": "change_this_secret",
+    "INITIAL_ADMIN_USER": "admin",
+    "INITIAL_ADMIN_PASS": "admin123"
+  },
+  "kv_namespaces": [
+    { "binding": "BLOG_DATA", "id": "__KV_NAMESPACE_ID__" }
+  ]
 }

@@ -1,4 +1,5 @@
 import type { MiddlewareHandler } from 'astro';
+import { getSession, getUser } from './lib/auth';
 
 // Inject a CSP header (report-only first) so we can iterate safely.
 // After verifying no needed resources are blocked, switch to "Content-Security-Policy".
@@ -18,6 +19,35 @@ const cspDirectives = [
 ];
 
 export const onRequest: MiddlewareHandler = async (context, next) => {
+  const { request, locals, url } = context;
+  // Attach env
+  const env: any = (locals as any)?.runtime?.env || (locals as any)?.cloudflare?.env || (globalThis as any).process?.env || {};
+  // Parse session cookie
+  const cookie = request.headers.get('Cookie') || '';
+  const match = cookie.match(/__session=([^;]+)/);
+  if(match){
+    const sid = decodeURIComponent(match[1]);
+    try {
+      const sess = await getSession(env, sid);
+      if(sess){
+        const user = await getUser(env, sess.username);
+        (locals as any).session = sess;
+        (locals as any).user = user;
+      }
+    } catch {}
+  }
+
+  // Protect admin routes & modifying APIs
+  const pathname = new URL(url).pathname;
+  const isApi = pathname.startsWith('/api/');
+  const publicApi = ['/api/login', '/api/logout'];
+  const needsAuth = pathname.startsWith('/admin') || (isApi && !publicApi.includes(pathname));
+  if(needsAuth){
+    if(!(locals as any).user){
+      return new Response('Unauthorized', { status: 401 });
+    }
+  }
+
   const response = await next();
   const csp = cspDirectives.join('; ');
   response.headers.set('Content-Security-Policy-Report-Only', csp);
