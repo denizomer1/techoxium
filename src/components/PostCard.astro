@@ -16,18 +16,21 @@ const date = pubDate ? (pubDate instanceof Date ? pubDate : new Date(pubDate)) :
 <li class={`post-card${large ? ' post-card--large' : ''}`} style={index ? `--d:${index * 80}ms` : ''}>
   <a href={href} aria-label={title} class="post-card__link">
     {heroImage && (
-      <img
-        src={heroImage}
-        alt={title}
-        width={large ? 1020 : 720}
-        height={large ? 510 : 360}
-        loading={large ? 'eager' : 'lazy'}
-        fetchpriority={large ? 'high' : 'auto'}
-        decoding="async"
-        class="post-card__image"
-        sizes={large ? "(max-width: 860px) 100vw, (max-width:1200px) 70vw, 1020px" : "(max-width: 520px) 100vw, (max-width: 900px) 50vw, 360px"}
-        srcset={`${heroImage} 480w, ${heroImage} 720w, ${heroImage} 1020w`}
-      />
+      <div class="post-card__media" data-colorize>
+        <div class="post-card__ph" aria-hidden="true"></div>
+        <img
+          src={heroImage}
+          alt={title}
+          width={large ? 1020 : 720}
+          height={large ? 510 : 360}
+          loading={large ? 'eager' : 'lazy'}
+          fetchpriority={large ? 'high' : 'auto'}
+          decoding="async"
+          class="post-card__image"
+          sizes={large ? "(max-width: 860px) 100vw, (max-width:1200px) 70vw, 1020px" : "(max-width: 520px) 100vw, (max-width: 900px) 50vw, 360px"}
+          srcset={`${heroImage} 480w, ${heroImage} 720w, ${heroImage} 1020w`}
+        />
+      </div>
     )}
   <h3 class="post-card__title">{title}</h3>
   {date && <p class="post-card__date"><FormattedDate date={date} /></p>}
@@ -53,7 +56,16 @@ const date = pubDate ? (pubDate instanceof Date ? pubDate : new Date(pubDate)) :
   transition: transform .45s cubic-bezier(.2,.9,.2,1), box-shadow .35s ease, border-color .35s ease;
 }
 .post-card__link { display:block; text-decoration:none; color:inherit; height:100%; }
-.post-card__image { display:block; width:100%; height:auto; border-radius:12px; aspect-ratio: 16/9; object-fit:cover; background:#f2f4f7; }
+.post-card__media { position:relative; margin:0 0 .75rem; padding:0.9rem 0.9rem 0.75rem; background:#f5f7fa; border:1px solid rgba(2,6,23,0.06); border-radius:18px; box-shadow:0 4px 14px -4px rgba(2,6,23,0.08),0 10px 30px -8px rgba(2,6,23,0.06); box-sizing:border-box; overflow:hidden; }
+.post-card--large .post-card__media { padding:1.05rem 1.05rem 0.85rem; }
+.post-card__image { display:block; width:100%; height:auto; border-radius:14px; aspect-ratio: 16/9; object-fit:cover; background:#eceff3; box-shadow:none; }
+/* Skeleton placeholder */
+.post-card__ph { position:absolute; inset:0; margin:0; border-radius:inherit; background:linear-gradient(120deg, var(--sk1, rgba(2,6,23,.06)), var(--sk2, rgba(2,6,23,.12)), var(--sk1, rgba(2,6,23,.06))); background-size:200% 100%; animation:postCardShimmer 1.4s linear infinite; }
+.post-card__media.loaded .post-card__ph { opacity:0; visibility:hidden; transition:opacity .5s ease .1s, visibility .5s step-end .2s; }
+@keyframes postCardShimmer { 0%{background-position:0 0;} 100%{background-position:-200% 0;} }
+/* Dominant color effect when available */
+.post-card__media.colorized { background: linear-gradient(180deg, var(--img-dominant, #f5f7fa), rgba(0,0,0,0.08)); }
+body.dark .post-card__media.colorized { background: linear-gradient(180deg, var(--img-dominant, #161b21), rgba(0,0,0,0.45)); }
 .post-card__title { margin:0.75rem 0 0.35rem; font-size:1.05rem; line-height:1.2; letter-spacing:.3px; }
 .post-card--large .post-card__title { font-size:1.4rem; }
 .post-card__date { margin:0; font-size:0.76rem; font-weight:500; letter-spacing:.5px; text-transform:uppercase; color:rgba(2,6,23,0.55); }
@@ -76,7 +88,9 @@ body.dark .post-card {
   --card-shadow: 0 4px 14px -2px rgba(0,0,0,0.5), 0 14px 38px -6px rgba(0,0,0,0.55); 
   color:#e6eef8;
 }
-body.dark .post-card__image { filter: brightness(0.92) contrast(1.05) saturate(.95); border:1px solid rgba(255,255,255,0.08); }
+body.dark .post-card__media { background:linear-gradient(180deg,#161b21,#12171d); border-color:rgba(255,255,255,0.07); box-shadow:0 6px 22px -4px rgba(0,0,0,0.55),0 18px 48px -10px rgba(0,0,0,0.55); --sk1: rgba(255,255,255,0.05); --sk2: rgba(255,255,255,0.12); }
+body.dark .post-card--large .post-card__media { padding:1.05rem 1.05rem 0.85rem; }
+body.dark .post-card__image { filter:brightness(.94) contrast(1.05) saturate(.95); background:#1b2027; border-radius:14px; }
 body.dark .post-card__date { color: rgba(255,255,255,0.55); }
 body.dark .post-card__desc { color: rgba(255,255,255,0.65); }
 body.dark .post-card:hover, body.dark .post-card:focus-within { border-color: rgba(123,159,255,0.7); }
@@ -84,3 +98,36 @@ body.dark .post-card:hover, body.dark .post-card:focus-within { border-color: rg
 .post-card__desc { margin:0.5rem 0 0; font-size:.78rem; line-height:1.45; color:rgba(2,6,23,0.7); display:-webkit-box; -webkit-box-orient: vertical; overflow:hidden; -webkit-line-clamp: var(--lines,3); }
 .post-card--large .post-card__desc { font-size:.9rem; line-height:1.5; }
 </style>
+
+<script>
+// Dominant color extraction + skeleton removal
+document.addEventListener('DOMContentLoaded', () => {
+  const medias = document.querySelectorAll('.post-card__media[data-colorize]');
+  const sampleStep = 20; // stride in RGBA array (multiple of 4)
+  medias.forEach(media => {
+    const img = media.querySelector('img');
+    if(!img) return;
+    const handle = () => {
+      // mark loaded to fade out skeleton
+      media.classList.add('loaded');
+      try {
+        const c = document.createElement('canvas');
+        const ctx = c.getContext('2d', { willReadFrequently: true });
+        if(!ctx) return;
+        const w = c.width = Math.min(48, img.naturalWidth || 48);
+        const h = c.height = Math.min(48, img.naturalHeight || 48);
+        ctx.drawImage(img, 0, 0, w, h);
+        const { data } = ctx.getImageData(0,0,w,h);
+        let r=0,g=0,b=0,count=0;
+        for(let i=0;i<data.length;i+=sampleStep){ r+=data[i]; g+=data[i+1]; b+=data[i+2]; count++; }
+        if(!count) return;
+        r = Math.round(r/count); g = Math.round(g/count); b = Math.round(b/count);
+        const color = `rgb(${r},${g},${b})`;
+        media.style.setProperty('--img-dominant', color);
+        media.classList.add('colorized');
+      } catch(e) { /* silent fallback */ }
+    };
+    if(img.complete && img.naturalWidth) handle(); else img.addEventListener('load', handle, { once:true });
+  });
+});
+</script>
