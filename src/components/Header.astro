@@ -50,6 +50,13 @@ h2 { margin: 0; }
 nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
 
 .internal-links { display: flex; gap: 0.5rem; align-items: center; }
+/* Base (desktop) nav list + links */
+.drawer-header { display:none; }
+.drawer-content { display:flex; gap:1rem; align-items:center; }
+.nav-list { list-style:none; margin:0; padding:0; display:flex; gap:0.65rem; align-items:center; }
+.nav-link { display:inline-block; padding:.45rem .65rem; border-radius:8px; font-weight:600; text-decoration:none; color:inherit; letter-spacing:.3px; line-height:1.1; transition: background .3s, color .3s; }
+.nav-link:hover, .nav-link:focus-visible { background:rgba(2,6,23,0.06); }
+body.dark .nav-link:hover, body.dark .nav-link:focus-visible { background:rgba(255,255,255,0.08); }
 /* Link hover styles removed (no static header links currently) */
 
 .nav-toggle { display: none; }
