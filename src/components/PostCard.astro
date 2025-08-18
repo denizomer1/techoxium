@@ -1,0 +1,31 @@
+---
+import FormattedDate from './FormattedDate.astro';
+interface Props {
+  href: string;
+  title: string;
+  pubDate?: Date | string;
+  heroImage?: string;
+  index?: number; // for stagger animation delay
+  large?: boolean; // optional style variant
+}
+const { href, title, pubDate, heroImage, index = 0, large = false } = Astro.props as Props;
+const date = pubDate ? (pubDate instanceof Date ? pubDate : new Date(pubDate)) : undefined;
+---
+<li class={`post-card${large ? ' post-card--large' : ''}`} style={index ? `--d:${index * 80}ms` : ''}>
+  <a href={href} aria-label={title} class="post-card__link">
+    {heroImage && (
+      <img src={heroImage} alt={title} width={large ? 1020 : 720} height={large ? 510 : 360} loading={large ? 'eager' : 'lazy'} fetchpriority={large ? 'high' : 'auto'} decoding="async" class="post-card__image" />
+    )}
+    <h3 class="post-card__title">{title}</h3>
+    {date && <p class="post-card__date"><FormattedDate date={date} /></p>}
+  </a>
+</li>
+
+<style>
+.post-card { list-style:none; }
+.post-card__link { display:block; text-decoration:none; color:inherit; }
+.post-card__image { display:block; width:100%; height:auto; border-radius:12px; }
+.post-card__title { margin:0.5rem 0 0.25rem; font-size:1rem; line-height:1.2; }
+.post-card__date { margin:0; font-size:0.85rem; color:rgba(2,6,23,0.55); }
+.post-card--large .post-card__title { font-size:1.35rem; }
+</style>
