@@ -6,9 +6,9 @@ import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import BlogComment from '../components/BlogComment.astro';
 
-type Props = CollectionEntry<'blog'>['data'];
-
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+type DataProps = CollectionEntry<'blog'>['data'];
+interface LayoutProps extends DataProps { postSlug?: string }
+const { title, description, pubDate, updatedDate, heroImage, postSlug } = Astro.props as LayoutProps;
 ---
 
 <html lang="en">
@@ -194,10 +194,16 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 						<hr />
 					</div>
 					<slot/>
-					<BlogComment pageUrl="" pageId="" />
+					{/** Provide stable canonical URL & identifier for Disqus */}
+					<BlogComment
+						pageUrl={Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : ''}
+						pageId={postSlug || Astro.url.pathname.replace(/\/$/, '')}
+					/>
 				</div>
 
 		</main>
 		<Footer />
+		{/** Optional comment count script (safe to include once per page) */}
+		<script id="dsq-count-scr" src="//tekhaza.disqus.com/count.js" async></script>
 	</body>
 </html>
