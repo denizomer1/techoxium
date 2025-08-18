@@ -366,45 +366,6 @@ a:hover { color: var(--accent-dark); }
 /* make images inside embeds scale nicely */
 .embed-wrapper img, .prose iframe img { width: 100%; height: auto; object-fit: cover; }
 
-/* Utility: use this around manual embeds in markdown */
-/* Example in markdown: <div class="embed-wrapper" data-aspect="1/1">...iframe...</div> */
-
-/* Disqus specific tweaks: let it expand vertically and use full width */
-.embed-wrapper#disqus-embed { aspect-ratio: auto; min-height: 420px; }
-.embed-wrapper#disqus-embed #disqus_thread { width: 100%; height: 100%; }
-
-/* Extra mobile safety for Disqus: contain overflow and allow vertical scrolling */
-.embed-wrapper#disqus-embed {
-  overflow: hidden;
-}
-.embed-wrapper#disqus-embed iframe,
-.embed-wrapper#disqus-embed .post-message,
-.embed-wrapper#disqus-embed .post-body {
-  max-width: 100% !important;
-}
-.embed-wrapper#disqus-embed .post-stream {
-  overflow-wrap: anywhere;
-}
-.embed-wrapper#disqus-embed .comments-wrapper {
-  word-break: break-word;
-}
-
-@media (max-width: 420px) {
-  .embed-wrapper#disqus-embed { min-height: 320px; }
-  .embed-wrapper#disqus-embed iframe { width: 100% !important; }
-}
-
-/* Additional safety: ensure images and media inside Disqus scale down */
-.embed-wrapper#disqus-embed img,
-.embed-wrapper#disqus-embed picture,
-.embed-wrapper#disqus-embed video {
-  max-width: 100% !important;
-  height: auto !important;
-}
-.embed-wrapper#disqus-embed * {
-  box-sizing: border-box;
-}
-
 @media (max-width: 380px) {
   /* tighter min-height for very small devices (e.g., iPhone SE / older phones) */
   .embed-wrapper#disqus-embed { min-height: 240px; }
