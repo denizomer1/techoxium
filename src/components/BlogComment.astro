@@ -6,24 +6,65 @@ interface Props {
 const { pageUrl, pageId } = Astro.props;
 ---
 
-<div class="embed-wrapper" data-aspect="4/3" id="disqus-embed">
-  <div id="disqus_thread"></div>
+<div class="embed-wrapper" id="disqus-embed">
+  <div class="disqus-placeholder">
+    <p>Comments are powered by Disqus.</p>
+    <button class="disqus-load-button" aria-label="Load comments">Show comments</button>
+  </div>
+  <div id="disqus_thread" style="display:none;"></div>
 </div>
-<script is:inline>
-  const url = document.querySelector("link[rel='canonical']")?.href;
-  const id = document.querySelector("meta[name='title']")?.content;
 
-  function disqus_config() {
-    this.page.url = pageUrl === "" ? url : pageUrl;
-    this.page.identifier = pageId === "" ? id : pageId;
+<script is:inline>
+  // Server-provided defaults baked into the page at build time
+  const PAGE_URL = ${JSON.stringify(pageUrl)};
+  const PAGE_ID = ${JSON.stringify(pageId)};
+
+  const canonicalUrl = () => document.querySelector("link[rel='canonical']")?.href;
+  const metaTitle = () => document.querySelector("meta[name='title']")?.content;
+
+  function installDisqus() {
+    if (window.__disqus_loaded) return;
+    window.__disqus_loaded = true;
+
+    // Provide the Disqus config function on window before loading the script
+    window.disqus_config = function () {
+      this.page.url = PAGE_URL && PAGE_URL !== "" ? PAGE_URL : (canonicalUrl() || window.location.href);
+      this.page.identifier = PAGE_ID && PAGE_ID !== "" ? PAGE_ID : (metaTitle() || window.location.pathname);
+    };
+
+    const d = document;
+    const s = d.createElement('script');
+    s.src = 'https://tekhaza.disqus.com/embed.js';
+    s.async = true;
+    s.setAttribute('data-timestamp', String(Date.now()));
+    (d.head || d.body).appendChild(s);
+
+    // Reveal the thread and hide the placeholder
+    const placeholder = document.querySelector('#disqus-embed .disqus-placeholder');
+    const thread = document.getElementById('disqus_thread');
+    if (placeholder) placeholder.style.display = 'none';
+    if (thread) thread.style.display = '';
   }
 
-  (function () {
-    const d = document;
-    const s = d.createElement("script");
-    s.src = "https://tekhaza.disqus.com/embed.js";
-    s.setAttribute("data-timestamp", String(Date.now()));
-    (d.head || d.body).appendChild(s);
-  })();
+  // Hook up manual load button
+  document.addEventListener('DOMContentLoaded', function () {
+    const btn = document.querySelector('#disqus-embed .disqus-load-button');
+    if (btn) btn.addEventListener('click', installDisqus, { once: true });
+
+    // Also auto-load when the placeholder becomes visible (user scrolled to it)
+    const wrapper = document.getElementById('disqus-embed');
+    if ('IntersectionObserver' in window && wrapper) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            installDisqus();
+            io.disconnect();
+          }
+        });
+      }, { rootMargin: '200px' });
+      io.observe(wrapper);
+    }
+  });
 </script>
+
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
