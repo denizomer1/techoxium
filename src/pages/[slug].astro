@@ -1,6 +1,5 @@
 ---
-// @ts-nocheck
-import { getCollection, render } from 'astro:content';
+import { type CollectionEntry, getCollection, render } from 'astro:content';
 import BlogPost from '../layouts/BlogPost.astro';
 
 export async function getStaticPaths() {
@@ -8,9 +7,16 @@ export async function getStaticPaths() {
   return posts.map((post) => ({ params: { slug: post.slug ?? post.id }, props: post }));
 }
 
-const A:any = (globalThis as any).Astro;
-const post = A?.props as any;
-const { Content } = await render(post);
+type BlogEntry = CollectionEntry<'blog'>;
+const post = Astro.props as BlogEntry | undefined;
+let Content: any;
+if (post) {
+  const rendered = await render(post);
+  Content = rendered.Content;
+} else {
+  console.warn('[slug].astro: post undefined during build');
+}
+---
 ---
 ---
 
