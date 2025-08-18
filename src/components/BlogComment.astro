@@ -6,6 +6,10 @@ const { pageUrl = '', pageId = '', enableCount = false } = Astro.props;
 <section class="comments-block" aria-labelledby="comments-title">
   <h2 id="comments-title" class="comments-title">Yorumlar</h2>
   <div id="disqus_thread"></div>
+  <div class="comments-fallback" id="comments-fallback" style="margin-top:0.75rem; font-size:0.85rem; line-height:1.4;">
+    <button id="reload-disqus" type="button" style="background:none;border:1px solid rgba(2,6,23,0.25);padding:0.4rem 0.75rem;border-radius:6px;cursor:pointer;">Yorumları yeniden yükle</button>
+    <span style="margin-left:0.5rem;">veya <a href="https://tekhaza.disqus.com" target="_blank" rel="noopener">Disqus sayfasını aç</a>.</span>
+  </div>
 </section>
 <script is:inline>
   // Minimal, legacy-friendly Disqus embed (no optional chaining / template interp)
@@ -25,6 +29,39 @@ const { pageUrl = '', pageId = '', enableCount = false } = Astro.props;
     s.onload = function(){ console.debug('[Disqus] embed loaded'); };
     s.onerror = function(){ console.warn('[Disqus] failed to load embed.js'); };
     (d.head || d.body).appendChild(s);
+  })();
+
+  // Mobile interaction watchdog: if not focusable in 4s, offer reload link
+  (function(){
+    var tried = false;
+    function markInteractive(){
+      var fb = document.getElementById('comments-fallback');
+      if (fb) fb.style.display = 'none';
+    }
+    // Basic heuristic: poll for iframe presence and height
+    var t = setInterval(function(){
+      var ifr = document.querySelector('#disqus_thread iframe');
+      if (ifr && ifr.contentWindow) {
+        markInteractive();
+        clearInterval(t);
+      }
+    }, 500);
+    setTimeout(function(){ clearInterval(t); }, 8000);
+    // Reload button
+    var reloadBtn = document.getElementById('reload-disqus');
+    if (reloadBtn) reloadBtn.addEventListener('click', function(){
+      if (tried) { location.reload(); return; }
+      tried = true;
+      if (window.DISQUS) {
+        window.DISQUS.reset({ reload: true, config: disqus_config });
+      } else {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://tekhaza.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', Date.now());
+        s.async = true;
+        (d.head || d.body).appendChild(s);
+      }
+    });
   })();
 </script>
 { enableCount && <script id="dsq-count-scr" src="//tekhaza.disqus.com/count.js" async></script> }

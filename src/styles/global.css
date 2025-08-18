@@ -390,9 +390,9 @@ a:hover { color: var(--accent-dark); }
   /* Allow internal sizing & touch events; previously overflow hidden could interfere on some mobile browsers */
   overflow: visible; 
   position: relative;
-  z-index: 10; /* lift above any nearby positioned ancestors */
-  isolation: isolate; /* create a new stacking context */
   -webkit-tap-highlight-color: transparent;
+  -webkit-overflow-scrolling: touch;
+  touch-action: auto;
 }
 /* Undo generic iframe constraints inside the prose for Disqus so it can size naturally */
 #disqus_thread iframe { 
@@ -402,8 +402,6 @@ a:hover { color: var(--accent-dark); }
   width: 100% !important;
   min-height: 420px; /* ensure tappable area on small devices */
   background: transparent !important;
-  position: relative !important;
-  z-index: 11 !important; /* above container */
   pointer-events: auto !important; /* ensure taps propagate */
   touch-action: manipulation;
 }
