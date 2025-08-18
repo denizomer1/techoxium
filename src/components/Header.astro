@@ -1,6 +1,6 @@
 ---
-import HeaderLink from './HeaderLink.astro';
 import Search from './Search.astro';
+---
 ---
 
 <header>
@@ -39,8 +39,7 @@ h2 { margin: 0; }
 nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
 
 .internal-links { display: flex; gap: 0.5rem; align-items: center; }
-.internal-links a { padding: 0.5rem 0.5rem; border-radius: 8px; transition: background 180ms, color 180ms; }
-.internal-links a:hover { background: rgba(0,0,0,0.04); }
+/* Link hover styles removed (no static header links currently) */
 
 .nav-toggle { display: none; }
 

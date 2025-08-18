@@ -8,16 +8,8 @@ export async function getStaticPaths() {
 }
 
 type BlogEntry = CollectionEntry<'blog'>;
-const post = Astro.props as BlogEntry | undefined;
-let Content: any;
-if (post) {
-  const rendered = await render(post);
-  Content = rendered.Content;
-} else {
-  console.warn('[slug].astro: post undefined during build');
-}
----
----
+const post = Astro.props as BlogEntry;
+const { Content } = await render(post);
 ---
 
 <BlogPost {...post.data} postSlug={post.slug ?? post.id}>

@@ -1,5 +1,4 @@
 ---
-// @ts-nocheck
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -7,12 +6,10 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import { getCollection } from 'astro:content';
 import FormattedDate from '../components/FormattedDate.astro';
 
-const G:any = globalThis;
 const posts = (await getCollection('blog'))
-	.map((p) => ({ ...p, data: { ...p.data, pubDate: new G.Date(p.data.pubDate) } }))
-	.sort((a, b) => G.Number(b.data.pubDate) - G.Number(a.data.pubDate))
+	.map((p) => ({ ...p, data: { ...p.data, pubDate: new Date(p.data.pubDate) } }))
+	.sort((a, b) => Number(b.data.pubDate) - Number(a.data.pubDate))
 	.slice(0, 6);
----
 ---
 
 <html lang="en">

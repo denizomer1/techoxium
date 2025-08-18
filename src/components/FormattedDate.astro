@@ -1,15 +1,7 @@
 ---
-const A:any = (globalThis as any).Astro;
-const value = A?.props?.date;
-let d: any = null;
-if (value) {
-	const tmp = value instanceof globalThis.Date ? value : new globalThis.Date(value);
-	if (!globalThis.Number.isNaN(tmp.getTime())) d = tmp;
-}
-let formatted = '';
-if (d) {
-	try { formatted = new globalThis.Intl.DateTimeFormat('en-US',{year:'numeric',month:'short',day:'numeric'}).format(d); }
-	catch { formatted = d.toDateString(); }
-}
+interface Props { date?: Date | string }
+const { date } = Astro.props as Props;
+const d = date ? (date instanceof Date ? date : new Date(date)) : undefined;
+const formatted = d ? new Intl.DateTimeFormat('en-US',{year:'numeric',month:'short',day:'numeric'}).format(d) : '';
 ---
 {d ? <time datetime={d.toISOString()}>{formatted}</time> : <span aria-hidden="true"></span>}
