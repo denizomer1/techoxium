@@ -1,6 +1,8 @@
 ---
 // Admin panel removed. Serve 404.
-import { Astro } from 'astro';
 export const prerender = true;
-return new Response('Not Found', { status: 404 });
 ---
+<html lang="en">
+  <head><meta http-equiv="refresh" content="0; url=/" /></head>
+  <body></body>
+</html>

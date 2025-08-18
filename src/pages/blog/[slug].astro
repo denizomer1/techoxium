@@ -1,14 +1,14 @@
 ---
-export const prerender = false;
-export async function get({ params }) {
-  const slug = params.slug || '';
-  // Permanent redirect to the new root-level post path
-  return new Response(null, {
-    status: 301,
-    headers: {
-      Location: `/${slug}/`,
-    },
-  });
+// Static (prerendered) redirect pages for legacy /blog/<slug> URLs.
+// We enumerate all blog posts at build time and emit a 301 redirect file for each.
+import { getCollection } from 'astro:content';
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((p) => ({ params: { slug: p.slug ?? p.id }, props: { slug: p.slug ?? p.id } }));
 }
 
+const { slug } = Astro.props as { slug: string };
+return Astro.redirect(`/${slug}/`, 301);
 ---
