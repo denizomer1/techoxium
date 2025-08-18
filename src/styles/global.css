@@ -378,7 +378,22 @@ a:hover { color: var(--accent-dark); }
   width: 100%;
   max-width: 100%;
   position: relative;
+  --comments-border: rgba(2,6,23,0.12);
+  --comments-btn-bg: #ffffff;
+  --comments-btn-border: rgba(2,6,23,0.2);
+  --comments-btn-hover: rgba(2,6,23,0.05);
 }
+.comments-header-row { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:0.75rem; }
+.comments-toggle-btn { font: inherit; cursor: pointer; border:1px solid var(--comments-btn-border); background: var(--comments-btn-bg); padding:0.45rem 0.85rem; border-radius:8px; }
+.comments-toggle-btn:hover { background: var(--comments-btn-hover); }
+body.dark .comments-toggle-btn { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.18); color:#f3f3f3; }
+body.dark .comments-toggle-btn:hover { background: rgba(255,255,255,0.16); }
+.comments-toggle-btn .chevron { display:inline-block; transition: transform 260ms cubic-bezier(.4,.2,.2,1); margin-right:4px; }
+.comments-block[data-collapsed="true"] .comments-toggle-btn .chevron { transform: rotate(-90deg); }
+
+/* Collapse animation */
+.comments-block #comments-shell { transition: max-height 320ms cubic-bezier(.4,.2,.2,1), opacity 220ms ease; will-change: max-height; }
+.comments-block[data-collapsed="true"] #comments-shell { opacity:0; }
 .comments-block .comments-title { 
   margin: 0 0 1rem 0; 
   font-size: clamp(1.2rem, 2.2vw, 1.6rem); 
@@ -408,6 +423,46 @@ a:hover { color: var(--accent-dark); }
 }
 /* Prevent any nested element from causing horizontal scroll */
 #disqus_thread, #disqus_thread * { box-sizing: border-box; }
+
+/* Custom comments shell additions */
+.comments-shell { border: 1px solid var(--comments-border); border-radius: 12px; padding: 0.75rem 0.75rem 0.25rem; background: rgba(255,255,255,0.85); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+body.dark .comments-shell { background: rgba(30,30,34,0.6); border-color: rgba(255,255,255,0.1); }
+.comments-block[data-state="loading"] .comments-shell { opacity: 0.85; }
+.comments-block[data-state="ready"] .comments-actions { display: none; }
+
+/* Skeleton */
+.comments-skeleton { display: grid; gap: 8px; margin-bottom: 0.75rem; }
+.sk-row { height: 14px; background: linear-gradient(90deg, rgba(2,6,23,0.08), rgba(2,6,23,0.15), rgba(2,6,23,0.08)); background-size: 300% 100%; border-radius: 6px; animation: skPulse 1.4s ease-in-out infinite; }
+.sk-row.sk-title { height: 18px; width: 55%; }
+.sk-row.sk-short { width: 35%; }
+body.dark .sk-row { background: linear-gradient(90deg, rgba(255,255,255,0.07), rgba(255,255,255,0.15), rgba(255,255,255,0.07)); }
+@keyframes skPulse { 0%{background-position:0 0;} 50%{background-position:100% 0;} 100%{background-position:0 0;} }
+
+/* Action buttons */
+.comments-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+.comments-actions button { font: inherit; cursor: pointer; border-radius: 8px; padding: 0.55rem 0.85rem; border: 1px solid var(--comments-btn-border); background: var(--comments-btn-bg); display: inline-flex; align-items: center; gap: 0.4rem; }
+.comments-actions button:hover { background: var(--comments-btn-hover); }
+body.dark .comments-actions button { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.18); color: #f3f3f3; }
+body.dark .comments-actions button:hover { background: rgba(255,255,255,0.16); }
+.comments-load-btn::before { content: '💬'; }
+.comments-reload-btn::before { content: '↻'; }
+
+/* Alt link (external open) */
+.comments-alt-link { margin-top: 0.75rem; font-size: 0.85rem; }
+.comments-alt-link a { color: var(--accent); }
+body.dark .comments-alt-link a { color: #9bb6ff; }
+
+/* Focus management */
+.disqus-thread:focus { outline: 3px solid var(--accent); outline-offset: 4px; border-radius: 6px; }
+
+/* Mobile refinements */
+@media (max-width: 480px) {
+  .comments-shell { padding: 0.6rem 0.55rem 0.3rem; border-radius: 10px; }
+  .comments-actions button { flex: 1 1 auto; justify-content: center; font-size: 0.9rem; }
+  .comments-skeleton { gap:6px; }
+  .sk-row { height: 12px; }
+  .sk-row.sk-title { height: 16px; }
+}
 
 @media (max-width: 640px) {
   .comments-block { margin-top: 2.25rem; }

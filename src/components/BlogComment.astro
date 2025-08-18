@@ -3,65 +3,115 @@
 interface Props { pageUrl?: string; pageId?: string; enableCount?: boolean }
 const { pageUrl = '', pageId = '', enableCount = false } = Astro.props;
 ---
-<section class="comments-block" aria-labelledby="comments-title">
-  <h2 id="comments-title" class="comments-title">Yorumlar</h2>
-  <div id="disqus_thread"></div>
-  <div class="comments-fallback" id="comments-fallback" style="margin-top:0.75rem; font-size:0.85rem; line-height:1.4;">
-    <button id="reload-disqus" type="button" style="background:none;border:1px solid rgba(2,6,23,0.25);padding:0.4rem 0.75rem;border-radius:6px;cursor:pointer;">Yorumları yeniden yükle</button>
-    <span style="margin-left:0.5rem;">veya <a href="https://tekhaza.disqus.com" target="_blank" rel="noopener">Disqus sayfasını aç</a>.</span>
+<section class="comments-block" aria-labelledby="comments-title" data-state="idle" data-collapsed="false">
+  <div class="comments-header-row">
+    <h2 id="comments-title" class="comments-title">Yorumlar</h2>
+    <button type="button" id="comments-toggle" class="comments-toggle-btn" aria-expanded="true" aria-controls="comments-shell">
+      <span class="chevron" aria-hidden="true">▾</span>
+      <span class="toggle-label">Gizle</span>
+    </button>
+  </div>
+  <div class="comments-shell" id="comments-shell">
+    <div class="comments-skeleton" id="comments-skeleton" aria-hidden="true">
+      <div class="sk-row sk-title"></div>
+      <div class="sk-row"></div>
+      <div class="sk-row"></div>
+      <div class="sk-row sk-short"></div>
+    </div>
+    <div class="comments-actions" id="comments-actions">
+      <button type="button" id="load-comments" class="comments-load-btn">Yorumları Yükle</button>
+      <button type="button" id="reload-comments" class="comments-reload-btn" hidden>Tekrar Dene</button>
+    </div>
+    <div id="disqus_thread" class="disqus-thread" role="region" aria-label="Disqus yorumları" tabindex="-1"></div>
+  </div>
+  <noscript>Lütfen JavaScript'i etkinleştirin: <a href="https://disqus.com/?ref_noscript">yorumları görmek için</a>.</noscript>
+  <div class="comments-alt-link" id="comments-alt-link" hidden>
+    <a href="https://tekhaza.disqus.com" target="_blank" rel="noopener">Disqus'ta aç</a>
   </div>
 </section>
 <script is:inline>
-  // Minimal, legacy-friendly Disqus embed (no optional chaining / template interp)
+  // Disqus configuration (set before script inject)
   var disqus_config = function () {
     try {
       var loc = window.location;
-      this.page.url = loc.protocol + '//' + loc.host + loc.pathname; // canonical-ish
+      this.page.url = loc.protocol + '//' + loc.host + loc.pathname; // canonical
       this.page.identifier = loc.pathname.replace(/\/$/, '') || 'index';
+      this.page.title = document.title;
+      this.language = 'tr';
+      this.callbacks = this.callbacks || {};
+      this.callbacks.onNewComment = [function(comment){
+        try { console.debug('[Disqus] Yeni yorum', comment && comment.id); } catch(e){}
+      }];
     } catch (e) { console.warn('[Disqus] config error', e); }
   };
-  (function() { // DON'T EDIT BELOW THIS LINE
-    if (window.DISQUS) { window.DISQUS.reset({ reload: true, config: disqus_config }); return; }
-    var d = document, s = d.createElement('script');
-    s.src = 'https://tekhaza.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', Date.now());
-    s.async = true;
-    s.onload = function(){ console.debug('[Disqus] embed loaded'); };
-    s.onerror = function(){ console.warn('[Disqus] failed to load embed.js'); };
-    (d.head || d.body).appendChild(s);
-  })();
 
-  // Mobile interaction watchdog: if not focusable in 4s, offer reload link
   (function(){
-    var tried = false;
-    function markInteractive(){
-      var fb = document.getElementById('comments-fallback');
-      if (fb) fb.style.display = 'none';
+    if (typeof window === 'undefined') return;
+  var stateEl = document.querySelector('.comments-block');
+    var loadBtn = document.getElementById('load-comments');
+    var reloadBtn = document.getElementById('reload-comments');
+    var skeleton = document.getElementById('comments-skeleton');
+    var altLink = document.getElementById('comments-alt-link');
+    var container = document.getElementById('disqus_thread');
+  var toggleBtn = document.getElementById('comments-toggle');
+  var shell = document.getElementById('comments-shell');
+    var loaded = false; var loading = false; var observerCreated = false;
+    // Collapse / expand logic
+    function applyCollapsed(coll){
+      if(!shell || !toggleBtn || !stateEl) return;
+      stateEl.setAttribute('data-collapsed', coll ? 'true' : 'false');
+      toggleBtn.setAttribute('aria-expanded', coll ? 'false' : 'true');
+      var labelEl = toggleBtn.querySelector('.toggle-label');
+      if(labelEl) labelEl.textContent = coll ? 'Göster' : 'Gizle';
+      if(coll){ shell.style.maxHeight = '0'; shell.style.overflow = 'hidden'; }
+      else { shell.style.maxHeight = ''; shell.style.overflow = ''; }
     }
-    // Basic heuristic: poll for iframe presence and height
-    var t = setInterval(function(){
-      var ifr = document.querySelector('#disqus_thread iframe');
-      if (ifr && ifr.contentWindow) {
-        markInteractive();
-        clearInterval(t);
-      }
-    }, 500);
-    setTimeout(function(){ clearInterval(t); }, 8000);
-    // Reload button
-    var reloadBtn = document.getElementById('reload-disqus');
-    if (reloadBtn) reloadBtn.addEventListener('click', function(){
-      if (tried) { location.reload(); return; }
-      tried = true;
-      if (window.DISQUS) {
-        window.DISQUS.reset({ reload: true, config: disqus_config });
-      } else {
-        var d = document, s = d.createElement('script');
-        s.src = 'https://tekhaza.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', Date.now());
-        s.async = true;
-        (d.head || d.body).appendChild(s);
-      }
+    var storedCollapse = localStorage.getItem('commentsCollapsed') === '1';
+    applyCollapsed(storedCollapse);
+    toggleBtn && toggleBtn.addEventListener('click', function(){
+      var isColl = stateEl.getAttribute('data-collapsed') === 'true';
+      var next = !isColl; localStorage.setItem('commentsCollapsed', next ? '1' : '0');
+      applyCollapsed(next);
+      if(!loaded && !next) { inject(); }
     });
+
+    function setState(s){ if(stateEl) stateEl.setAttribute('data-state', s); }
+    function showReload(){ if(reloadBtn){ reloadBtn.hidden = false; } if(loadBtn){ loadBtn.hidden = true; } if(skeleton){ skeleton.style.display='none'; } altLink && (altLink.hidden=false); setState('error'); }
+    function hideSkeleton(){ skeleton && (skeleton.style.display='none'); loadBtn && (loadBtn.hidden=true); }
+
+    function inject(){
+      if (loaded || loading) return; loading = true; setState('loading'); hideSkeleton();
+      if (window.DISQUS) { window.DISQUS.reset({ reload: true, config: disqus_config }); finalize(); return; }
+      var d=document,s=d.createElement('script');
+      s.src='https://tekhaza.disqus.com/embed.js';
+      s.async=true; s.setAttribute('data-timestamp', Date.now());
+      s.onload=function(){ finalize(); };
+      s.onerror=function(){ console.warn('[Disqus] yükleme hatası'); showReload(); };
+      (d.head||d.body).appendChild(s);
+      // Safety timeout
+      setTimeout(function(){ if(!loaded){ console.warn('[Disqus] timeout'); showReload(); } }, 12000);
+    }
+    function finalize(){ loaded = true; setState('ready'); setTimeout(focusContainer, 50); }
+    function focusContainer(){ try { container && container.focus(); } catch(e){} }
+
+    // IntersectionObserver for auto-load when scrolled near
+    function setupObserver(){
+      if (!('IntersectionObserver' in window) || observerCreated) return; observerCreated = true;
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(ent){ if(ent.isIntersecting){ inject(); io.disconnect(); } });
+      }, { rootMargin: '200px 0px' });
+      io.observe(container);
+    }
+
+    // Event bindings
+    loadBtn && loadBtn.addEventListener('click', inject);
+    reloadBtn && reloadBtn.addEventListener('click', function(){ loaded=false; loading=false; inject(); });
+
+    // Small device optimization: immediate load on very narrow screens (avoid double tap confusion)
+    if (window.innerWidth <= 430) { inject(); }
+    else { setupObserver(); }
+
+    // If user scrolls fast and misses intersection (rare), fallback to manual button remains.
   })();
 </script>
 { enableCount && <script id="dsq-count-scr" src="//tekhaza.disqus.com/count.js" async></script> }
