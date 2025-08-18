@@ -15,7 +15,7 @@ import Search from './Search.astro';
 	   <div class="internal-links">
 		   <Search />
 	   </div>
-	   <button class="dark-toggle" aria-label="Toggle dark mode">🌙</button>
+		<button class="dark-toggle" aria-label="Tema: sistem" data-mode="system">🌙</button>
    </nav>
 </header>
 <style>
@@ -63,20 +63,56 @@ body.dark { --header-bg: rgba(20,20,22,0.6); --nav-link: #f3f3f3; }
 <script>
 if (typeof window !== 'undefined') {
 	(function initTheme() {
-		const stored = localStorage.getItem('theme');
-		const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-		if (stored === 'dark' || (!stored && prefersDark)) document.body.classList.add('dark');
+		const media = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
+		const stored = localStorage.getItem('theme'); // 'light' | 'dark' | 'system' | null
+		const prefersDark = media && media.matches;
+
+		// Apply initial theme
+		function applyTheme(mode){
+			const effective = mode === 'system' || !mode ? (prefersDark ? 'dark' : 'light') : mode;
+			document.body.classList.toggle('dark', effective === 'dark');
+		}
+		applyTheme(stored);
+
+		// React to system changes when in system mode (or no stored preference yet)
+		if (media) {
+			media.addEventListener('change', (e) => {
+				const current = localStorage.getItem('theme');
+				if (!current || current === 'system') {
+					document.body.classList.toggle('dark', e.matches);
+					updateIconAndLabel();
+				}
+			});
+		}
 	})();
 
 	const darkBtn = document.querySelector('.dark-toggle');
+	function cycleMode(current){
+		if (current === 'dark') return 'light';
+		if (current === 'light') return 'system';
+		return 'dark'; // system -> dark
+	}
+	function updateIconAndLabel(){
+		if(!darkBtn) return;
+		const storedPref = localStorage.getItem('theme') || 'system';
+		const bodyDark = document.body.classList.contains('dark');
+		darkBtn.textContent = bodyDark ? '☀️' : '🌙';
+		let label;
+		if (storedPref === 'system') label = 'Tema: sistem (otomatik)';
+		else if (storedPref === 'dark') label = 'Tema: koyu';
+		else label = 'Tema: açık';
+		darkBtn.setAttribute('aria-label', label);
+		darkBtn.dataset.mode = storedPref;
+	}
 	if (darkBtn) {
-		const updateIcon = () => { darkBtn.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙'; };
 		darkBtn.addEventListener('click', () => {
-			const isDark = document.body.classList.toggle('dark');
-			localStorage.setItem('theme', isDark ? 'dark' : 'light');
-			updateIcon();
+			const current = localStorage.getItem('theme') || 'system';
+			const next = cycleMode(current);
+			localStorage.setItem('theme', next);
+			applyTheme(next);
+			updateIconAndLabel();
 		});
-		updateIcon();
+		updateIconAndLabel();
 	}
 
 	// mobile nav toggle
