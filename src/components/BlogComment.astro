@@ -46,38 +46,39 @@ const { pageUrl, pageId } = Astro.props;
     if (thread) thread.style.display = '';
   }
 
-  // Hook up manual load button
-  document.addEventListener('DOMContentLoaded', function () {
-      (function setupDisqusLoader() {
-        function bind() {
-          const btn = document.querySelector('#disqus-embed .disqus-load-button');
-          if (btn) {
-            btn.addEventListener('click', installDisqus, { once: true });
-            btn.setAttribute('aria-label', 'yorumları göster'); // Change button label to Turkish
-          }
+  (function setupDisqusLoader() {
+    function bind() {
+      const btn = document.querySelector('#disqus-embed .disqus-load-button');
+      if (btn) {
+        btn.addEventListener('click', () => {
+          console.debug('[disqus] button clicked');
+          installDisqus();
+        }, { once: true });
+        btn.setAttribute('aria-label', 'yorumları göster');
+      }
 
-          // Also auto-load when the placeholder becomes visible (user scrolled to it)
-          const wrapper = document.getElementById('disqus-embed');
-          if ('IntersectionObserver' in window && wrapper) {
-            const io = new IntersectionObserver((entries) => {
-              entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                  installDisqus();
-                  io.disconnect();
-                }
-              });
-            }, { rootMargin: '200px' });
-            io.observe(wrapper);
-          }
-        }
+      // Auto-load when near viewport
+      const wrapper = document.getElementById('disqus-embed');
+      if ('IntersectionObserver' in window && wrapper) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              console.debug('[disqus] auto load via IntersectionObserver');
+              installDisqus();
+              io.disconnect();
+            }
+          });
+        }, { rootMargin: '200px' });
+        io.observe(wrapper);
+      }
+    }
 
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', bind);
-        } else {
-          bind();
-        }
-      })();
-  });
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', bind);
+    } else {
+      bind();
+    }
+  })();
 </script>
 
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
