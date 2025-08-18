@@ -61,69 +61,57 @@ body.dark { --header-bg: rgba(20,20,22,0.6); --nav-link: #f3f3f3; }
 </style>
 
 <script>
-if (typeof window !== 'undefined') {
-	(function initTheme() {
-		const media = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
-		const stored = localStorage.getItem('theme'); // 'light' | 'dark' | 'system' | null
-		const prefersDark = media && media.matches;
+// Robust tri-state theme switcher: dark -> light -> system.
+(() => {
+	if (typeof window === 'undefined') return;
+	const media = window.matchMedia('(prefers-color-scheme: dark)');
+	const VALID = new Set(['dark','light','system']);
 
-		// Apply initial theme
-		function applyTheme(mode){
-			const effective = mode === 'system' || !mode ? (prefersDark ? 'dark' : 'light') : mode;
-			document.body.classList.toggle('dark', effective === 'dark');
-		}
-		applyTheme(stored);
-
-		// React to system changes when in system mode (or no stored preference yet)
-		if (media) {
-			media.addEventListener('change', (e) => {
-				const current = localStorage.getItem('theme');
-				if (!current || current === 'system') {
-					document.body.classList.toggle('dark', e.matches);
-					updateIconAndLabel();
-				}
-			});
-		}
-	})();
-
-	const darkBtn = document.querySelector('.dark-toggle');
-	function cycleMode(current){
-		if (current === 'dark') return 'light';
-		if (current === 'light') return 'system';
-		return 'dark'; // system -> dark
+	function readPref(){
+		const v = localStorage.getItem('theme');
+		return VALID.has(v||'') ? v : 'system';
 	}
-	function updateIconAndLabel(){
-		if(!darkBtn) return;
-		const storedPref = localStorage.getItem('theme') || 'system';
-		const bodyDark = document.body.classList.contains('dark');
-		darkBtn.textContent = bodyDark ? '☀️' : '🌙';
-		let label;
-		if (storedPref === 'system') label = 'Tema: sistem (otomatik)';
-		else if (storedPref === 'dark') label = 'Tema: koyu';
-		else label = 'Tema: açık';
-		darkBtn.setAttribute('aria-label', label);
-		darkBtn.dataset.mode = storedPref;
+	function effective(mode){
+		return mode === 'system' ? (media.matches ? 'dark' : 'light') : mode;
 	}
-	if (darkBtn) {
-		darkBtn.addEventListener('click', () => {
-			const current = localStorage.getItem('theme') || 'system';
-			const next = cycleMode(current);
-			localStorage.setItem('theme', next);
-			applyTheme(next);
-			updateIconAndLabel();
-		});
-		updateIconAndLabel();
+	function apply(mode){
+		document.body.classList.toggle('dark', effective(mode) === 'dark');
+		document.documentElement.dataset.theme = mode;
 	}
+	function cycle(mode){
+		if (mode === 'dark') return 'light';
+		if (mode === 'light') return 'system';
+		return 'dark';
+	}
+	const btn = document.querySelector('.dark-toggle');
+	function updateUI(){
+		if(!btn) return;
+		const pref = readPref();
+		const dark = document.body.classList.contains('dark');
+		btn.textContent = dark ? '☀️' : '🌙';
+		let label = 'Tema: sistem (otomatik)';
+		if (pref === 'dark') label = 'Tema: koyu';
+		else if (pref === 'light') label = 'Tema: açık';
+		btn.setAttribute('aria-label', label);
+		btn.dataset.mode = pref;
+	}
+	// Init
+	apply(readPref());
+	updateUI();
+	media.addEventListener('change', () => { if (readPref()==='system'){ apply('system'); updateUI(); } });
+	btn && btn.addEventListener('click', () => {
+		const next = cycle(readPref());
+		localStorage.setItem('theme', next);
+		apply(next); updateUI();
+	});
 
-	// mobile nav toggle
+	// Mobile nav
 	const navBtn = document.querySelector('.nav-toggle');
 	const links = document.querySelector('.internal-links');
-	if (navBtn && links) {
-		navBtn.addEventListener('click', () => {
-			const expanded = navBtn.getAttribute('aria-expanded') === 'true';
-			navBtn.setAttribute('aria-expanded', String(!expanded));
-			links.classList.toggle('show');
-		});
-	}
-}
+	navBtn && links && navBtn.addEventListener('click', () => {
+		const expanded = navBtn.getAttribute('aria-expanded') === 'true';
+		navBtn.setAttribute('aria-expanded', String(!expanded));
+		links.classList.toggle('show');
+	});
+})();
 </script>
