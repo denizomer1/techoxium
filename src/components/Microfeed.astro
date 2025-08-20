@@ -1,0 +1,29 @@
+---
+// Server-side code block
+const FEED_URL = 'https://techoxium.denizomer10.workers.dev/json';
+let feed = null;
+try {
+  const res = await fetch(FEED_URL);
+  if (res.ok) {
+    feed = await res.json();
+  }
+} catch (e) {
+  feed = null;
+}
+---
+
+<section>
+  <h2>Microfeed Posts</h2>
+  {feed && feed.items && feed.items.length > 0 ? (
+    <ul>
+      {feed.items.map(item => (
+        <li>
+          <a href={item.url} target="_blank" rel="noopener noreferrer">{item.title}</a>
+          {item.summary && <p>{item.summary}</p>}
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <p>No posts found or failed to fetch feed.</p>
+  )}
+</section>
