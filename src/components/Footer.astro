@@ -1,5 +1,5 @@
 ---
-const today = new Date();
+const today = new globalThis.Date();
 import Social from './Social.astro';
 ---
 <footer>
@@ -32,23 +32,10 @@ import Social from './Social.astro';
 </style>
 
 <script>
-	if (typeof window !== 'undefined') {
-		window.addEventListener('DOMContentLoaded', () => {
-			document.documentElement.classList.add('site-loaded');
-			const staggerEls = Array.from(document.querySelectorAll('.stagger'));
-			staggerEls.forEach((el, i) => el.setAttribute('data-index', String(i)));
-
-			// keyboard activation for focusable cards (Enter/Space)
-			const cards = Array.from(document.querySelectorAll('.card[role="link"]'));
-			cards.forEach(card => {
-				card.addEventListener('keydown', (e) => {
-					if (e.key === 'Enter' || e.key === ' ') {
-						e.preventDefault();
-						const href = card.getAttribute('data-href');
-						if (href) window.location.href = href;
-					}
-				});
-			});
-		});
-	}
+// Minimal footer hook: add class once DOM is ready (no extra loops)
+if (typeof globalThis !== 'undefined' && globalThis.document) {
+	const d = globalThis.document;
+	(d.readyState === 'loading' ? d.addEventListener('DOMContentLoaded', ready) : ready());
+	function ready(){ d.documentElement.classList.add('site-loaded'); }
+}
 </script>

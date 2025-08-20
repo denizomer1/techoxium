@@ -30,197 +30,39 @@ const { pageUrl = '', pageId = '', enableCount = false } = Astro.props;
   </div>
 </section>
 <style>
-  /* Host-level styles to make comments dark-mode friendly */
-  .comments-block{
-    background: transparent;
-    color: inherit;
-    padding: 0.5rem 0;
-  }
+  .comments-block{background:transparent;color:inherit;padding:0.5rem 0}
   .comments-header-row{display:flex;align-items:center;gap:0.5rem}
-  .comments-theme-toggle{display:none}
   .comments-shell{margin-top:0.75rem}
-  .comments-skeleton .sk-row{background:linear-gradient(90deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.02) 50%, rgba(0,0,0,0.06) 100%);height:14px;border-radius:6px;margin:8px 0}
-
-  /* Dark theme overrides when host indicates dark mode */
-  .comments-block[data-theme="dark"]{ color: #e6eef8 }
-  .comments-block[data-theme="dark"] .comments-theme-toggle{ color: #f5f7fb }
-  .comments-block[data-theme="dark"] .comments-skeleton .sk-row{ background: linear-gradient(90deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 50%, rgba(255,255,255,0.06) 100%); }
-  .comments-block[data-theme="dark"] .comments-load-btn,
-  .comments-block[data-theme="dark"] .comments-reload-btn,
-  .comments-block[data-theme="dark"] .comments-expand-btn{
-    background: rgba(255,255,255,0.06); color: #fff; border: 1px solid rgba(255,255,255,0.06);
-  }
-  .comments-shell.compact{ max-height: 420px; overflow: auto; }
-  .comments-shell.expanded{ position:relative }
-    /* Removed experimental iframe inversion for stability */
+  .comments-skeleton .sk-row{background:linear-gradient(90deg,rgba(0,0,0,0.06) 0%,rgba(0,0,0,0.02) 50%,rgba(0,0,0,0.06) 100%);height:14px;border-radius:6px;margin:8px 0}
+  .comments-block[data-theme="dark"]{color:#e6eef8}
+  .comments-block[data-theme="dark"] .comments-skeleton .sk-row{background:linear-gradient(90deg,rgba(255,255,255,0.06) 0%,rgba(255,255,255,0.02) 50%,rgba(255,255,255,0.06) 100%)}
+  .comments-block[data-theme="dark"] .comments-load-btn,.comments-block[data-theme="dark"] .comments-reload-btn,.comments-block[data-theme="dark"] .comments-expand-btn{background:rgba(255,255,255,0.06);color:#fff;border:1px solid rgba(255,255,255,0.06)}
+  .comments-shell.compact{max-height:420px;overflow:auto}
+  .comments-shell.expanded{position:relative}
 </style>
 <script is:inline>
-  // Disqus configuration (set before script inject)
-  var disqus_config = function () {
-    try {
-      var loc = window.location;
-      this.page.url = loc.protocol + '//' + loc.host + loc.pathname; // canonical
-      this.page.identifier = loc.pathname.replace(/\/$/, '') || 'index';
-      this.page.title = document.title;
-      this.language = 'tr';
-      try {
-        // Prefer the global site theme (header stores it in localStorage 'theme' and body.dark)
-        var globalTheme = null;
-        try { globalTheme = localStorage.getItem('theme'); } catch(e) { globalTheme = null; }
-        if (!globalTheme) {
-          globalTheme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : (document.body && document.body.classList && document.body.classList.contains('dark') ? 'dark' : 'light');
-        }
-        this.page.theme = globalTheme;
-      } catch(e) {}
-      this.callbacks = this.callbacks || {};
-      this.callbacks.onNewComment = [function(comment){
-        try { console.debug('[Disqus] Yeni yorum', comment && comment.id); } catch(e){}
-      }];
-    } catch (e) { console.warn('[Disqus] config error', e); }
+  var disqus_config = function(){
+    try{
+      var loc=location;this.page.url=loc.origin+loc.pathname;this.page.identifier=loc.pathname.replace(/\/$/,'')||'index';this.page.title=document.title;this.language='tr';
+      var t='light';try{t=localStorage.getItem('theme')||(document.body.classList.contains('dark')?'dark':(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))}catch(_){ }
+      this.page.theme=t;
+    }catch(_){ }
   };
-
   (function(){
-    if (typeof window === 'undefined') return;
-  var stateEl = document.querySelector('.comments-block');
-    var loadBtn = document.getElementById('load-comments');
-    var reloadBtn = document.getElementById('reload-comments');
-    var skeleton = document.getElementById('comments-skeleton');
-    var altLink = document.getElementById('comments-alt-link');
-    var container = document.getElementById('disqus_thread');
-  var toggleBtn = document.getElementById('comments-toggle');
-  var shell = document.getElementById('comments-shell');
-    var loaded = false; var loading = false; var observerCreated = false;
-    // Sync comments theme from the global site theme (localStorage 'theme', body.dark, or prefers-color-scheme)
-    function syncCommentsTheme(){
-      var t = null;
-      try { t = localStorage.getItem('theme'); } catch(e) { t = null; }
-      if(!t){ t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : (document.body && document.body.classList && document.body.classList.contains('dark') ? 'dark' : 'light'); }
-      stateEl && stateEl.setAttribute('data-theme', t);
-    }
-    // initialize
-    try { syncCommentsTheme(); } catch(e) {}
-    // respond to global changes: storage (theme changed in another tab) and prefers-color-scheme changes
-    window.addEventListener && window.addEventListener('storage', function(e){ if(e.key === 'theme'){ syncCommentsTheme(); } });
-    if(window.matchMedia){ window.matchMedia('(prefers-color-scheme: dark)').addEventListener && window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(){ if(!localStorage.getItem('theme')) syncCommentsTheme(); }); }
-    // Collapse / expand logic
-    function applyCollapsed(coll){
-      if(!shell || !toggleBtn || !stateEl) return;
-      stateEl.setAttribute('data-collapsed', coll ? 'true' : 'false');
-      toggleBtn.setAttribute('aria-expanded', coll ? 'false' : 'true');
-      var labelEl = toggleBtn.querySelector('.toggle-label');
-      if(labelEl) labelEl.textContent = coll ? 'Göster' : 'Gizle';
-      if(coll){ shell.style.maxHeight = '0'; shell.style.overflow = 'hidden'; }
-      else { shell.style.maxHeight = ''; shell.style.overflow = ''; }
-    }
-    var storedCollapse = localStorage.getItem('commentsCollapsed') === '1';
-    applyCollapsed(storedCollapse);
-    toggleBtn && toggleBtn.addEventListener('click', function(){
-      var isColl = stateEl.getAttribute('data-collapsed') === 'true';
-      var next = !isColl; localStorage.setItem('commentsCollapsed', next ? '1' : '0');
-      applyCollapsed(next);
-      if(!loaded && !next) { inject(); }
-    });
-
-    function setState(s){ if(stateEl) stateEl.setAttribute('data-state', s); }
-    function showReload(){ if(reloadBtn){ reloadBtn.hidden = false; } if(loadBtn){ loadBtn.hidden = true; } if(skeleton){ skeleton.style.display='none'; } altLink && (altLink.hidden=false); setState('error'); }
-    function hideSkeleton(){ skeleton && (skeleton.style.display='none'); loadBtn && (loadBtn.hidden=true); }
-
-    function inject(){
-      if (loaded || loading) return; loading = true; setState('loading'); hideSkeleton();
-      if (window.DISQUS) { window.DISQUS.reset({ reload: true, config: disqus_config }); finalize(); return; }
-      var d=document,s=d.createElement('script');
-  // Append theme param for Disqus if possible (best-effort)
-  var themeParam = (stateEl && stateEl.getAttribute('data-theme')) === 'dark' ? '?theme=dark' : '';
-  s.src='https://tekhaza.disqus.com/embed.js' + themeParam;
-      s.async=true; s.setAttribute('data-timestamp', Date.now());
-      s.onload=function(){ finalize(); };
-      s.onerror=function(){ console.warn('[Disqus] yükleme hatası'); showReload(); };
-      (d.head||d.body).appendChild(s);
-      // Safety timeout
-      setTimeout(function(){ if(!loaded){ console.warn('[Disqus] timeout'); showReload(); } }, 12000);
-    }
-  function finalize(){
-    loaded = true; setState('ready');
-    if (window.innerWidth <= 430) {
-      var shellEl = document.querySelector('.comments-shell');
-      shellEl && shellEl.classList.add('compact');
-      // Clamp tall iframe height periodically while Disqus expands
-    // Add expand button for small devices
-    addExpandControl();
-      var attempts = 0; var clampTimer = setInterval(function(){
-        attempts++;
-        var ifr = document.querySelector('#disqus_thread iframe');
-        if (!ifr) return;
-        var maxH = Math.round(window.innerHeight * 0.7); // 70% viewport
-        if (ifr.offsetHeight > maxH) {
-          ifr.style.height = maxH + 'px';
-          ifr.style.maxHeight = maxH + 'px';
-        }
-        if (attempts > 14) clearInterval(clampTimer);
-      }, 500);
-    }
-  }
-
-    // Apply experimental dark filter to Disqus iframe when theme is dark
-  // Keep in sync on storage (theme) changes
-  window.addEventListener && window.addEventListener('storage', function(e){ if(e.key === 'theme'){ syncCommentsTheme(); } });
-
-    // IntersectionObserver for auto-load when scrolled near
-    function setupObserver(){
-      if (!('IntersectionObserver' in window) || observerCreated) return; observerCreated = true;
-      var io = new IntersectionObserver(function(entries){
-        entries.forEach(function(ent){ if(ent.isIntersecting){ inject(); io.disconnect(); } });
-      }, { rootMargin: '200px 0px' });
-      io.observe(container);
-    }
-
-    // Event bindings
-    loadBtn && loadBtn.addEventListener('click', inject);
-    reloadBtn && reloadBtn.addEventListener('click', function(){ loaded=false; loading=false; inject(); });
-
-  // Always use observer/manual load; no immediate auto-load on small screens to avoid large blank area
-  setupObserver();
-
-    function addExpandControl(){
-      if (document.getElementById('comments-expand-btn')) return;
-      var shellEl = document.getElementById('comments-shell');
-      if (!shellEl) return;
-      var btnWrap = document.createElement('div');
-      btnWrap.className = 'comments-expand-wrap';
-      var btn = document.createElement('button');
-      btn.type = 'button';
-      btn.id = 'comments-expand-btn';
-      btn.className = 'comments-expand-btn';
-      btn.setAttribute('aria-expanded','false');
-      btn.setAttribute('aria-controls','disqus_thread');
-      btn.textContent = 'Tam ekran';
-      btn.addEventListener('click', function(){
-        var ifr = document.querySelector('#disqus_thread iframe');
-        var expanded = btn.getAttribute('aria-expanded') === 'true';
-        if (!expanded) {
-          btn.setAttribute('aria-expanded','true');
-          btn.textContent = 'Daralt';
-          shellEl.classList.add('expanded');
-          if (ifr) { ifr.style.height=''; ifr.style.maxHeight=''; }
-          window.scrollTo({ top: shellEl.getBoundingClientRect().top + window.scrollY - 56, behavior: 'smooth' });
-        } else {
-          btn.setAttribute('aria-expanded','false');
-            btn.textContent = 'Tam ekran';
-            shellEl.classList.remove('expanded');
-            // Re-apply clamp
-            var ifr2 = document.querySelector('#disqus_thread iframe');
-            if (ifr2) {
-              var maxH = Math.round(window.innerHeight * 0.7);
-              ifr2.style.height = maxH + 'px';
-              ifr2.style.maxHeight = maxH + 'px';
-            }
-        }
-      });
-      btnWrap.appendChild(btn);
-      shellEl.appendChild(btnWrap);
-    }
-
-    // If user scrolls fast and misses intersection (rare), fallback to manual button remains.
+    if(typeof window==='undefined')return;
+    var q=function(s){return document.querySelector(s)};
+    var stateEl=q('.comments-block'),shell=q('#comments-shell'),container=q('#disqus_thread'),loadBtn=q('#load-comments'),reloadBtn=q('#reload-comments'),skeleton=q('#comments-skeleton'),altLink=q('#comments-alt-link'),toggleBtn=q('#comments-toggle');
+    var loaded=false,loading=false;
+    (function(){if(!stateEl)return;var t='light';try{t=localStorage.getItem('theme')||(document.body.classList.contains('dark')?'dark':(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))}catch(_){ }stateEl.setAttribute('data-theme',t)})();
+    var applyCollapsed=function(c){if(!shell||!toggleBtn||!stateEl)return;stateEl.setAttribute('data-collapsed',c?'true':'false');toggleBtn.setAttribute('aria-expanded',c?'false':'true');var l=toggleBtn.querySelector('.toggle-label');if(l)l.textContent=c?'Göster':'Gizle';shell.style.maxHeight=c?'0':'';shell.style.overflow=c?'hidden':'';};
+    applyCollapsed(localStorage.getItem('commentsCollapsed')==='1');
+    toggleBtn&&toggleBtn.addEventListener('click',function(){var coll=stateEl.getAttribute('data-collapsed')==='true';var next=!coll;localStorage.setItem('commentsCollapsed',next?'1':'0');applyCollapsed(next);if(!loaded&&!next)inject();});
+    var setState=function(s){stateEl&&stateEl.setAttribute('data-state',s);} , showReload=function(){reloadBtn&&(reloadBtn.hidden=false);loadBtn&&(loadBtn.hidden=true);skeleton&&(skeleton.style.display='none');altLink&&(altLink.hidden=false);setState('error');}, hideSkeleton=function(){skeleton&&(skeleton.style.display='none');loadBtn&&(loadBtn.hidden=true);};
+    var inject=function(){if(loaded||loading)return;loading=true;setState('loading');hideSkeleton();if(window.DISQUS){window.DISQUS.reset({reload:true,config:disqus_config});finalize();return;}var s=document.createElement('script');var themeParam=stateEl&&stateEl.getAttribute('data-theme')==='dark'?'?theme=dark':'';s.src='https://tekhaza.disqus.com/embed.js'+themeParam;s.async=true;s.setAttribute('data-timestamp',Date.now());s.onload=finalize;s.onerror=function(){showReload();};(document.head||document.body).appendChild(s);setTimeout(function(){if(!loaded){showReload();}},12000);};
+    var finalize=function(){loaded=true;setState('ready');if(innerWidth<=430){shell&&shell.classList.add('compact');addExpandControl();var attempts=0,tmr=setInterval(function(){attempts++;var ifr=q('#disqus_thread iframe');if(!ifr){if(attempts>14)clearInterval(tmr);return;}var maxH=Math.round(innerHeight*0.7);if(ifr.offsetHeight>maxH){ifr.style.height=maxH+'px';ifr.style.maxHeight=maxH+'px';}if(attempts>14)clearInterval(tmr);},500);}};
+    if('IntersectionObserver' in window && container){new IntersectionObserver(function(es,io){es.forEach(function(e){if(e.isIntersecting){inject();io.disconnect();}});},{rootMargin:'200px 0px'}).observe(container);} 
+    loadBtn&&loadBtn.addEventListener('click',inject);reloadBtn&&reloadBtn.addEventListener('click',function(){loaded=false;loading=false;inject();});
+    var addExpandControl=function(){if(document.getElementById('comments-expand-btn'))return;var btn=document.createElement('button');btn.type='button';btn.id='comments-expand-btn';btn.className='comments-expand-btn';btn.setAttribute('aria-expanded','false');btn.setAttribute('aria-controls','disqus_thread');btn.textContent='Tam ekran';btn.onclick=function(){var expanded=btn.getAttribute('aria-expanded')==='true';btn.setAttribute('aria-expanded',expanded?'false':'true');btn.textContent=expanded?'Tam ekran':'Daralt';shell.classList.toggle('expanded',!expanded);if(!expanded){var ifr=q('#disqus_thread iframe');if(ifr){ifr.style.height='';ifr.style.maxHeight='';}scrollTo({top:shell.getBoundingClientRect().top+scrollY-56,behavior:'smooth'});}else{var ifr2=q('#disqus_thread iframe');if(ifr2){var maxH=Math.round(innerHeight*0.7);ifr2.style.height=maxH+'px';ifr2.style.maxHeight=maxH+'px';}}};var wrap=document.createElement('div');wrap.className='comments-expand-wrap';wrap.appendChild(btn);shell.appendChild(wrap);};
   })();
 </script>
 { enableCount && <script id="dsq-count-scr" src="//tekhaza.disqus.com/count.js" async></script> }

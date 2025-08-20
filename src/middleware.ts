@@ -21,5 +21,18 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
   const response = await next();
   const csp = cspDirectives.join('; ');
   response.headers.set('Content-Security-Policy-Report-Only', csp);
+  // Basic caching strategy: short cache for HTML, long immutable for static assets
+  try {
+    const url = new URL(context.request.url);
+    const path = url.pathname;
+    const type = response.headers.get('Content-Type') || '';
+    if (type.includes('text/html')) {
+      response.headers.set('Cache-Control', 'public, max-age=300, must-revalidate');
+    } else if (/\.(css|js|mjs|woff2?|png|svg|jpg|jpeg|gif|webp)$/i.test(path)) {
+      if (!response.headers.has('Cache-Control')) {
+        response.headers.set('Cache-Control', 'public, max-age=31536000, immutable');
+      }
+    }
+  } catch {}
   return response;
 };

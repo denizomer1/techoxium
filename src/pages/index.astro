@@ -1,76 +1,57 @@
-
 ---
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import { getCollection } from 'astro:content';
-import FormattedDate from '../components/FormattedDate.astro';
+import PostCard from '../components/PostCard.astro';
 
 const posts = (await getCollection('blog'))
 	.map((p) => ({ ...p, data: { ...p.data, pubDate: new Date(p.data.pubDate) } }))
 	.sort((a, b) => Number(b.data.pubDate) - Number(a.data.pubDate))
 	.slice(0, 6);
+const [firstPost, ...restPosts] = posts;
 ---
 
 <html lang="en">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-			<style>
-				/* Simple card grid and entrance animation */
-				.grid {
-					display: grid;
-					grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-					gap: 1rem;
-					list-style: none;
-					padding: 0;
-					margin: 0;
-				}
-
-				.card {
-					background: var(--surface, #fff);
-					border-radius: 8px;
-					padding: 1rem;
-					box-shadow: 0 6px 18px rgba(2,6,23,0.06);
-					transform: translateY(8px) scale(0.995);
-					opacity: 0;
-					will-change: transform, opacity;
-				}
-
-				.grid.in-view .card {
-					animation: cardIn 420ms cubic-bezier(.2,.9,.2,1) forwards;
-					animation-delay: var(--d, 0ms);
-				}
-
-				@keyframes cardIn {
-					from { transform: translateY(12px) scale(.995); opacity: 0; }
-					to   { transform: translateY(0) scale(1); opacity: 1; }
-				}
-
-				/* Reduced motion preference */
-				@media (prefers-reduced-motion: reduce) {
-					.card, .grid.in-view .card { animation: none !important; transform: none !important; opacity: 1 !important; }
-				}
-			</style>
+					<style>
+						.featured-list { list-style:none; margin:0 0 1.75rem; padding:0; }
+						.featured-list .post-card { box-shadow:0 14px 46px -10px rgba(2,6,23,0.25), 0 8px 22px -8px rgba(2,6,23,0.12); padding:1.1rem 1.15rem 1.35rem; }
+						.featured-list .post-card__title { font-size:clamp(1.6rem,3vw,2.25rem); letter-spacing:.5px; }
+						.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1.15rem; list-style:none; margin:0; padding:0; }
+						@media (min-width:1400px){ .grid { grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); } }
+					</style>
 	</head>
 	<body>
 		<Header />
 		<main>
 			<h1>Son Yazılar</h1>
 			<section>
-					<ul class="grid">
-						{posts.map((post, i) => (
-							<li class="card" style={`--d:${i * 80}ms`}>
-								<a href={`/${post.slug ?? post.id}/`}>
-									{post.data.heroImage && (
-										<img src={post.data.heroImage} alt="" width="720" height="360" />
-									)}
-									<h3>{post.data.title}</h3>
-									<p>
-										<FormattedDate date={post.data.pubDate} />
-									</p>
-								</a>
-							</li>
+					{firstPost && (
+						<ul class="featured-list in-view">
+							<PostCard
+								index={0}
+								href={`/${firstPost.slug ?? firstPost.id}/`}
+								title={firstPost.data.title}
+								description={firstPost.data.description}
+								pubDate={firstPost.data.pubDate}
+								heroImage={firstPost.data.heroImage}
+								large={true}
+							/>
+						</ul>
+					)}
+					<ul class="grid in-view">
+						{restPosts.map((post, i) => (
+							<PostCard
+								index={i+1}
+								href={`/${post.slug ?? post.id}/`}
+								title={post.data.title}
+								description={post.data.description}
+								pubDate={post.data.pubDate}
+								heroImage={post.data.heroImage}
+							/>
 						))}
 					</ul>
 			</section>
