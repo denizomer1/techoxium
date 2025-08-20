@@ -1,12 +1,10 @@
 ---
-
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import { getCollection } from 'astro:content';
 import PostCard from '../components/PostCard.astro';
-import Microfeed from '../components/Microfeed.astro';
 
 const posts = (await getCollection('blog'))
 	.map((p) => ({ ...p, data: { ...p.data, pubDate: new Date(p.data.pubDate) } }))
@@ -59,11 +57,6 @@ const [firstPost, ...restPosts] = posts;
 			</section>
 		</main>
 		<Footer />
-
-		<!-- Microfeed integration -->
-		<section style="margin-top: 2rem;">
-			<Microfeed />
-		</section>
 			<script type="module">
 				// Staggered entrance for .grid cards using IntersectionObserver
 				if (typeof window !== 'undefined') {
