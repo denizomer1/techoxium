@@ -771,12 +771,25 @@ import { SITE_TITLE } from '../consts';
   // Modern Search Implementation
   class SearchManager {
     constructor() {
-      this.posts = [
-        { title: 'Test Search Post', slug: 'test-search' },
-        { title: 'JavaScript Modern Özellikler', slug: 'javascript-modern' },
-        { title: 'Rog Xbox Ally Geliyor', slug: 'rog-xbox' }
-      ];
-      this.initializeSearch();
+      this.posts = [];
+      this.loadPosts().then(() => {
+        this.initializeSearch();
+      });
+    }
+
+    async loadPosts() {
+      try {
+        const response = await fetch('/api/posts.json');
+        if (response.ok) {
+          this.posts = await response.json();
+        } else {
+          console.warn('Could not load posts, using fallback');
+          this.posts = [];
+        }
+      } catch (error) {
+        console.warn('Error loading posts:', error);
+        this.posts = [];
+      }
     }
 
     initializeSearch() {
