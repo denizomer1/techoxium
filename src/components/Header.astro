@@ -1,5 +1,6 @@
 ---
 import HeaderLink from './HeaderLink.astro';
+import Social from './Social.astro';
 import { SITE_TITLE } from '../consts';
 import Search from './Search.astro';
 ---
@@ -20,6 +21,11 @@ import Search from './Search.astro';
       </div>
       
       <div class="nav-actions">
+        <div class="nav-social">
+          <Social platform="yt" link="https://www.youtube.com/@TechOxium" size="sm" variant="minimal" />
+          <Social platform="nxt" link="https://sosyal.teknofest.app/@techoxium" size="sm" variant="minimal" />
+        </div>
+        
         <div class="nav-search">
           <Search />
         </div>
@@ -147,7 +153,13 @@ import Search from './Search.astro';
   .nav-actions {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 1.5rem;
+  }
+  
+  .nav-social {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
   
   .nav-search {
@@ -353,10 +365,22 @@ import Search from './Search.astro';
     .nav-actions {
       width: 100%;
       justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .nav-social {
+      order: 1;
+      gap: 0.75rem;
     }
     
     .nav-search {
       flex: 1;
+      order: 2;
+    }
+    
+    .theme-toggle {
+      order: 3;
     }
     
     .brand-text {
