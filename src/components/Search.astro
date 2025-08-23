@@ -13,8 +13,8 @@
 <style>
 .search-root { 
   position: relative; 
-  max-width: 320px; 
-  font-size: 14px; 
+  font-size: 14px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .search-bar { 
@@ -23,7 +23,7 @@
   gap: 0.75rem; 
   background: rgba(255,255,255,0.95); 
   border: 2px solid rgba(2,6,23,0.1); 
-  border-radius: 16px; 
+  border-radius: 50px; 
   padding: 0.65rem 1rem; 
   box-shadow: 
     0 2px 8px rgba(2,6,23,0.06),
@@ -32,6 +32,56 @@
   backdrop-filter: blur(10px);
   position: relative;
   overflow: hidden;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+/* Compact state - desktop only */
+@media (min-width: 769px) {
+  .search-bar {
+    justify-content: center;
+  }
+  
+  .search-input {
+    width: 0;
+    opacity: 0;
+    padding: 0;
+  }
+  
+  .clear-btn {
+    opacity: 0;
+    transform: scale(0);
+  }
+  
+  /* Expanded state on hover/focus */
+  .search-root:hover .search-bar,
+  .search-root:focus-within .search-bar {
+    width: 320px;
+    cursor: text;
+  }
+  
+  .search-root:hover .search-input,
+  .search-root:focus-within .search-input {
+    width: auto;
+    flex: 1;
+    opacity: 1;
+    padding: 0.3rem 0;
+  }
+  
+  .search-root:hover .clear-btn:not([hidden]),
+  .search-root:focus-within .clear-btn:not([hidden]) {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Mobile - always expanded */
+@media (max-width: 768px) {
+  .search-bar {
+    width: 100%;
+    min-width: 250px;
+  }
 }
 
 .search-bar::before {
@@ -48,6 +98,7 @@
     transparent
   );
   transition: left 0.6s ease;
+  pointer-events: none;
 }
 
 .search-root:focus-within .search-bar { 
@@ -63,15 +114,15 @@
 }
 
 .search-input { 
-  flex: 1; 
   font: inherit; 
   font-size: 15px;
   border: 0; 
   background: transparent; 
   outline: none; 
-  padding: 0.3rem 0; 
   color: inherit; 
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  flex: 1;
+  padding: 0.3rem 0;
 }
 
 .search-input::placeholder { 
@@ -87,8 +138,10 @@
   opacity: 0.6; 
   transition: all 0.3s ease;
   color: var(--text-color);
+  flex-shrink: 0;
 }
 
+.search-root:hover .loop,
 .search-root:focus-within .loop {
   opacity: 0.9;
   color: var(--accent);
@@ -102,8 +155,9 @@
   font-size: 1.25rem; 
   cursor: pointer; 
   padding: 0.2rem 0.3rem; 
-  border-radius: 8px; 
-  transition: all 0.2s ease;
+  border-radius: 50%; 
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
   opacity: 0;
   transform: scale(0.8);
 }
@@ -136,6 +190,7 @@
   opacity: 0;
   transform: translateY(-8px) scale(0.95);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 320px;
 }
 
 .results:not([hidden]) {
@@ -223,6 +278,22 @@
   font-size: 0.7rem;
 }
 
+/* Search icon pulse animation when compact */
+@media (min-width: 769px) {
+  .search-bar:not(:hover):not(:focus-within) .loop {
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 0.6;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+}
+
 /* Dark mode */
 html.dark .search-bar { 
   background: rgba(15,20,25,0.9); 
@@ -258,6 +329,7 @@ html.dark .loop {
   color: #94a3b8;
 }
 
+html.dark .search-root:hover .loop,
 html.dark .search-root:focus-within .loop {
   color: var(--accent);
 }
@@ -299,21 +371,7 @@ html.dark .result-item .date {
 html.dark .result-item img { 
   background: #1e293b; 
 }
-
-@media (max-width: 520px) { 
-  .search-root { 
-    max-width: 100%; 
-  }
-  
-  .search-bar {
-    padding: 0.5rem 0.8rem;
-  }
-  
-  .results {
-    left: -0.5rem;
-    right: -0.5rem;
-  }
-}
+</style>
 </style>
 
 <script type="module">

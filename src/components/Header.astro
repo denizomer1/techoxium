@@ -25,16 +25,14 @@ import Search from './Search.astro';
         </div>
         
         <button class="theme-toggle" id="theme-toggle" aria-label="Tema değiştir">
-          <div class="theme-toggle-track">
-            <div class="theme-toggle-thumb">
-              <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="5"/>
-                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-              </svg>
-              <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-              </svg>
-            </div>
+          <div class="theme-icon">
+            <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5"/>
+              <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+            </svg>
+            <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
           </div>
         </button>
       </div>
@@ -157,92 +155,102 @@ import Search from './Search.astro';
   /* Modern Theme Toggle */
   .theme-toggle {
     position: relative;
-    background: none;
-    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(var(--accent-rgb), 0.2);
     cursor: pointer;
-    padding: 0.25rem;
+    padding: 0.5rem;
     outline: none;
-    border-radius: var(--border-radius);
-    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    border-radius: 50%;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    box-shadow: 
+      0 2px 8px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
   
   .theme-toggle:hover {
     background: rgba(var(--accent-rgb), 0.1);
+    border-color: var(--accent);
     transform: scale(1.05);
+    box-shadow: 
+      0 4px 16px rgba(var(--accent-rgb), 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
   }
   
   .theme-toggle:active {
     transform: scale(0.95);
   }
   
-  .theme-toggle-track {
-    width: 3rem;
-    height: 1.5rem;
-    background: rgb(var(--gray-light));
-    border-radius: 0.75rem;
+  .theme-icon {
     position: relative;
-    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
-    border: 2px solid transparent;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .theme-toggle:hover .theme-toggle-track {
-    background: rgb(var(--gray));
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-  }
-  
-  .theme-toggle-thumb {
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 1.25rem;
-    height: 1.25rem;
-    background: white;
-    border-radius: 50%;
-    transition: var(--transition);
+    width: 24px;
+    height: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   }
   
-  .theme-toggle-thumb svg {
-    width: 0.75rem;
-    height: 0.75rem;
-    transition: var(--transition);
+  .theme-icon svg {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
   .sun-icon {
     color: #f59e0b;
     opacity: 1;
-    transform: rotate(0deg);
+    transform: rotate(0deg) scale(1);
   }
   
   .moon-icon {
     color: #6366f1;
     opacity: 0;
-    transform: rotate(180deg);
-    position: absolute;
+    transform: rotate(-90deg) scale(0.5);
   }
   
   /* Dark mode state */
-  .theme-toggle.dark .theme-toggle-track {
-    background: var(--accent);
+  .theme-toggle.dark {
+    background: rgba(15, 20, 25, 0.8);
+    border-color: rgba(99, 102, 241, 0.4);
   }
   
-  .theme-toggle.dark .theme-toggle-thumb {
-    transform: translateX(1.5rem);
-    background: #1f2937;
+  .theme-toggle.dark:hover {
+    background: rgba(99, 102, 241, 0.2);
+    border-color: #6366f1;
   }
   
   .theme-toggle.dark .sun-icon {
     opacity: 0;
-    transform: rotate(-180deg);
+    transform: rotate(90deg) scale(0.5);
   }
   
   .theme-toggle.dark .moon-icon {
     opacity: 1;
-    transform: rotate(0deg);
+    transform: rotate(0deg) scale(1);
+  }
+  
+  /* Pulse animation for theme toggle */
+  @keyframes theme-pulse {
+    0%, 100% {
+      box-shadow: 
+        0 2px 8px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    50% {
+      box-shadow: 
+        0 4px 16px rgba(var(--accent-rgb), 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+  }
+  
+  .theme-toggle:focus-visible {
+    animation: theme-pulse 1s infinite;
   }
   
   .nav-toggle {
@@ -389,12 +397,14 @@ import Search from './Search.astro';
     background: white;
   }
   
-  :global(html.dark) .theme-toggle-track {
-    background: #374151;
+  :global(html.dark) .theme-toggle {
+    background: rgba(15, 20, 25, 0.8);
+    border-color: rgba(99, 102, 241, 0.3);
   }
   
-  :global(html.dark) .theme-toggle-thumb {
-    background: #111827;
+  :global(html.dark) .theme-toggle:hover {
+    background: rgba(99, 102, 241, 0.2);
+    border-color: #6366f1;
   }
 </style>
 
