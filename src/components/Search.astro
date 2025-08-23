@@ -7,8 +7,9 @@
     <input class="search-input" type="search" placeholder="Arama yapın..." aria-label="Search posts" autocomplete="off" />
     <button class="clear-btn" type="button" aria-label="Clear search" hidden>&times;</button>
   </div>
-  <div class="results" role="listbox" aria-label="Search results" hidden></div>
 </div>
+
+<!-- Results container moved to end of body -->
 
 <style>
 .search-root { 
@@ -75,21 +76,7 @@
     opacity: 1;
     transform: scale(1);
   }
-  
-  /* Fix results positioning and visibility for desktop */
-  .search-root:hover .results:not([hidden]),
-  .search-root:focus-within .results:not([hidden]) {
-    width: 320px;
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    pointer-events: auto;
-  }
-  
-  /* Ensure results container stays visible when interacting */
-  .search-root:hover .results,
-  .search-root:focus-within .results {
-    display: block;
-  }
+}
 }
 
 /* Mobile - always expanded */
@@ -190,10 +177,10 @@
 }
 
 .results { 
-  position: absolute; 
-  left: 0; 
-  right: 0; 
-  top: calc(100% + 12px); 
+  position: fixed; 
+  left: auto;
+  right: auto;
+  top: auto;
   background: rgba(255,255,255,0.98); 
   border: 1px solid rgba(2,6,23,0.1); 
   border-radius: 16px; 
@@ -201,7 +188,7 @@
   box-shadow: 
     0 20px 40px rgba(2,6,23,0.15),
     0 8px 20px rgba(2,6,23,0.08);
-  z-index: 9999;
+  z-index: 99999;
   backdrop-filter: blur(20px);
   opacity: 0;
   transform: translateY(-8px) scale(0.95);
@@ -209,13 +196,15 @@
   min-width: 320px;
   max-height: 400px;
   overflow-y: auto;
+  pointer-events: none;
 }
 
 .results:not([hidden]) {
-  opacity: 1;
-  transform: translateY(0) scale(1);
+  opacity: 1 !important;
+  transform: translateY(0) scale(1) !important;
   pointer-events: auto;
-  display: block;
+  display: block !important;
+  visibility: visible !important;
 }
 
 .result-item { 
@@ -298,18 +287,8 @@
   font-size: 0.7rem;
 }
 
-/* Desktop - specific results behavior */
+/* Search icon pulse animation when compact */
 @media (min-width: 769px) {
-  .results {
-    pointer-events: none;
-  }
-  
-  .search-root:hover .results,
-  .search-root:focus-within .results {
-    pointer-events: auto;
-  }
-  
-  /* Search icon pulse animation when compact */
   .search-bar:not(:hover):not(:focus-within) .loop {
     animation: pulse 2s infinite;
   }
@@ -407,10 +386,20 @@ html.dark .result-item img {
 <script type="module">
 const root = document.querySelector('.search-root');
 const input = root?.querySelector('.search-input');
-const results = root?.querySelector('.results');
 const clearBtn = root?.querySelector('.clear-btn');
+let results;
 let posts = [];
 let timer = null;
+
+// Create results container and append to body
+if (root) {
+  results = document.createElement('div');
+  results.className = 'results';
+  results.setAttribute('role', 'listbox');
+  results.setAttribute('aria-label', 'Search results');
+  results.hidden = true;
+  document.body.appendChild(results);
+}
 
 const turkishMonths = {
   1: 'ocak', 2: 'şubat', 3: 'mart', 4: 'nisan', 
@@ -467,8 +456,18 @@ function render(list) {
     results.innerHTML = ''; 
     return; 
   } 
+  
+  // Position the results relative to the search bar
+  const searchRect = root.getBoundingClientRect();
+  results.style.top = `${searchRect.bottom + 12}px`;
+  results.style.left = `${searchRect.left}px`;
+  results.style.width = `${Math.max(320, searchRect.width)}px`;
+  
   results.hidden = false; 
   results.innerHTML = list.map(tpl).join(''); 
+  console.log('Search results rendered:', list.length, 'items');
+  console.log('Results element hidden:', results.hidden);
+  console.log('Results element style:', window.getComputedStyle(results).display);
 }
 
 function clear() { 
@@ -482,14 +481,22 @@ input?.addEventListener('input', () => {
   if (!input) return; 
   if (timer) clearTimeout(timer); 
   clearBtn && (clearBtn.hidden = input.value.length === 0); 
+  console.log('Search input value:', input.value);
   timer = window.setTimeout(() => { 
-    render(search(input.value)); 
+    const searchResults = search(input.value);
+    console.log('Input search results:', searchResults);
+    render(searchResults); 
   }, 200); 
 });
 
 input?.addEventListener('focus', () => { 
+  console.log('Search input focused');
   loadPosts(); 
-  if (input.value) render(search(input.value)); 
+  if (input.value) {
+    const searchResults = search(input.value);
+    console.log('Focus search results:', searchResults);
+    render(searchResults);
+  }
 });
 
 clearBtn?.addEventListener('click', () => { 
@@ -508,5 +515,15 @@ document.addEventListener('click', e => {
   if (!root?.contains(e.target)) { 
     render([]); 
   } 
+});
+
+// Update results position on window resize
+window.addEventListener('resize', () => {
+  if (!results.hidden && root && results) {
+    const searchRect = root.getBoundingClientRect();
+    results.style.top = `${searchRect.bottom + 12}px`;
+    results.style.left = `${searchRect.left}px`;
+    results.style.width = `${Math.max(320, searchRect.width)}px`;
+  }
 });
 </script>
