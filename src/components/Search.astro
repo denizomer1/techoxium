@@ -76,10 +76,19 @@
     transform: scale(1);
   }
   
-  /* Fix results positioning for desktop */
+  /* Fix results positioning and visibility for desktop */
+  .search-root:hover .results:not([hidden]),
+  .search-root:focus-within .results:not([hidden]) {
+    width: 320px;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+  
+  /* Ensure results container stays visible when interacting */
   .search-root:hover .results,
   .search-root:focus-within .results {
-    width: 320px;
+    display: block;
   }
 }
 
@@ -206,6 +215,7 @@
   opacity: 1;
   transform: translateY(0) scale(1);
   pointer-events: auto;
+  display: block;
 }
 
 .result-item { 
@@ -288,8 +298,18 @@
   font-size: 0.7rem;
 }
 
-/* Search icon pulse animation when compact */
+/* Desktop - specific results behavior */
 @media (min-width: 769px) {
+  .results {
+    pointer-events: none;
+  }
+  
+  .search-root:hover .results,
+  .search-root:focus-within .results {
+    pointer-events: auto;
+  }
+  
+  /* Search icon pulse animation when compact */
   .search-bar:not(:hover):not(:focus-within) .loop {
     animation: pulse 2s infinite;
   }
