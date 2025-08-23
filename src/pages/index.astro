@@ -6,80 +6,60 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import { getCollection } from 'astro:content';
 import PostCard from '../components/PostCard.astro';
 
-const posts = (await getCollection('blog'))
-	.map((p) => ({ ...p, data: { ...p.data, pubDate: new Date(p.data.pubDate) } }))
-	.sort((a, b) => Number(b.data.pubDate) - Number(a.data.pubDate))
-	.slice(0, 6);
+const rawPosts = await getCollection('blog');
+const posts = rawPosts
+	.map((p) => ({
+		...p,
+		data: { ...p.data, pubDate: p.data.pubDate instanceof Date ? p.data.pubDate : new Date(p.data.pubDate as any) },
+	}))
+	.sort((a, b) => Number(b.data.pubDate) - Number(a.data.pubDate));
 const [firstPost, ...restPosts] = posts;
 ---
 
-<html lang="en">
+<html lang="tr">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-					<style>
-						.featured-list { list-style:none; margin:0 0 1.75rem; padding:0; }
-						.featured-list .post-card { box-shadow:0 14px 46px -10px rgba(2,6,23,0.25), 0 8px 22px -8px rgba(2,6,23,0.12); padding:1.1rem 1.15rem 1.35rem; }
-						.featured-list .post-card__title { font-size:clamp(1.6rem,3vw,2.25rem); letter-spacing:.5px; }
-						.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1.15rem; list-style:none; margin:0; padding:0; }
-						@media (min-width:1400px){ .grid { grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); } }
-					</style>
 	</head>
 	<body>
 		<Header />
 		<main>
-			<h1>Son Yazılar</h1>
+			<h1>Blog Yazıları</h1>
 			<section>
-					{firstPost && (
-						<ul class="featured-list in-view">
-							<PostCard
-								index={0}
-								href={`/${firstPost.slug ?? firstPost.id}/`}
-								title={firstPost.data.title}
-								description={firstPost.data.description}
-								pubDate={firstPost.data.pubDate}
-								heroImage={firstPost.data.heroImage}
-								large={true}
-							/>
-						</ul>
-					)}
-					<ul class="grid in-view">
-						{restPosts.map((post, i) => (
-							<PostCard
-								index={i+1}
-								href={`/${post.slug ?? post.id}/`}
-								title={post.data.title}
-								description={post.data.description}
-								pubDate={post.data.pubDate}
-								heroImage={post.data.heroImage}
-							/>
-						))}
-					</ul>
+				{firstPost && (
+					<div class="featured-list">
+						<PostCard
+							href={`/${firstPost.id}/`}
+							title={firstPost.data.title}
+							description={firstPost.data.description}
+							pubDate={firstPost.data.pubDate}
+							heroImage={firstPost.data.heroImage}
+							large={true}
+						/>
+					</div>
+				)}
+				<div class="post-list grid grid-2">
+					{restPosts.map((post) => (
+						<PostCard
+							href={`/${post.id}/`}
+							title={post.data.title}
+							description={post.data.description}
+							pubDate={post.data.pubDate}
+							heroImage={post.data.heroImage}
+						/>
+					))}
+				</div>
 			</section>
 		</main>
 		<Footer />
-			<script type="module">
-				// Staggered entrance for .grid cards using IntersectionObserver
-				if (typeof window !== 'undefined') {
-					const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-					const grid = document.querySelector('.grid');
-					if (grid) {
-						if (prefersReduced) {
-							grid.classList.add('in-view');
-						} else if ('IntersectionObserver' in window) {
-							const io = new IntersectionObserver((entries, obs) => {
-								entries.forEach(e => {
-									if (e.isIntersecting) {
-										grid.classList.add('in-view');
-										obs.disconnect();
-									}
-								});
-							}, { threshold: 0.08, rootMargin: '0px 0px -8% 0px' });
-							io.observe(grid);
-						} else {
-							grid.classList.add('in-view');
-						}
-					}
-				}
-			</script>
 	</body>
 </html>
+
+<style>
+	.featured-list { 
+		margin: 0 0 2rem; 
+	}
+	
+	.featured-list .post-card { 
+		box-shadow: 0 14px 46px -10px rgba(var(--gray), 25%), 0 8px 22px -8px rgba(var(--gray), 12%); 
+	}
+</style>

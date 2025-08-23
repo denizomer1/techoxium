@@ -1,9 +1,4 @@
-/*
-  The CSS in this style tag is based off of Bear Blog's default CSS.
-  https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
-  License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
- */
-
+/* Modern CSS Reset and Variables */
 :root {
   --accent: #2337ff;
   --accent-dark: #000d8a;
@@ -12,22 +7,13 @@
   --gray-light: 229, 233, 240;
   --gray-dark: 34, 41, 57;
   --gray-gradient: rgba(var(--gray-light), 50%), #fff;
-  --box-shadow:
-    0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
+  --box-shadow: 0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
     0 16px 32px rgba(var(--gray), 33%);
+  --border-radius: 12px;
+  --transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+  --header-height: 4rem;
 }
 
-body.dark {
-  --accent: #7b9fff;
-  --accent-dark: #2337ff;
-  --black: 243, 243, 243;
-  --gray: 180, 190, 210;
-  --gray-light: 40, 44, 52;
-  --gray-dark: 220, 220, 220;
-  --gray-gradient: #23272f, #181a1b;
-  background: #181a1b !important;
-  color: #f3f3f3 !important;
-}
 @font-face {
   font-family: "Atkinson";
   src: url("/fonts/atkinson-regular.woff") format("woff");
@@ -35,6 +21,7 @@ body.dark {
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: "Atkinson";
   src: url("/fonts/atkinson-bold.woff") format("woff");
@@ -42,493 +29,403 @@ body.dark {
   font-style: normal;
   font-display: swap;
 }
-body {
-  font-family: "Atkinson", sans-serif;
+
+* {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  text-align: left;
-  background: linear-gradient(var(--gray-gradient)) no-repeat #ffffff;
+}
+
+html {
+  font-family: "Atkinson", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  scroll-behavior: smooth;
+}
+
+body {
+  color: rgb(var(--gray-dark));
+  background: linear-gradient(var(--gray-gradient)) no-repeat;
   background-size: 100% 600px;
   word-wrap: break-word;
   overflow-wrap: break-word;
-  color: rgb(var(--gray-dark));
-  font-size: clamp(18px, 0.95vw + 14px, 20px); /* fluid base size for phones -> desktops */
-  line-height: 1.7;
-  transition: background 0.3s, color 0.3s;
-  padding-left: env(safe-area-inset-left); /* iOS notch */
-  padding-right: env(safe-area-inset-right);
 }
-main {
-  max-width: 960px;
-  width: min(95%, 960px);
+
+/* Modern Container */
+.container {
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 2.5rem clamp(.85rem, 2.5vw, 1.25rem);
+  padding: 0 1rem;
 }
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+
+@media (min-width: 768px) {
+  .container {
+    padding: 0 2rem;
+  }
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
   margin: 0 0 0.5rem 0;
   color: rgb(var(--black));
   line-height: 1.2;
-}
-h1 {
-  font-size: clamp(1.8rem, 3.6vw, 3.2rem);
-}
-h2 {
-  font-size: clamp(1.4rem, 3.0vw, 2.1rem);
-}
-h3 {
-  font-size: clamp(1.15rem, 2.2vw, 1.6rem);
-}
-h4 {
-  font-size: 1.563em;
-}
-h5 {
-  font-size: 1.25em;
-}
-strong,
-b {
   font-weight: 700;
 }
-a {
-  color: var(--accent);
-}
-a:hover {
-  color: var(--accent);
-}
+
+h1 { font-size: clamp(2rem, 4vw, 3rem); }
+h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); }
+h3 { font-size: clamp(1.25rem, 2.5vw, 1.875rem); }
+h4 { font-size: clamp(1.125rem, 2vw, 1.5rem); }
+
 p {
-  margin-bottom: 1em;
+  margin-bottom: 1rem;
+  font-size: clamp(1rem, 1.5vw, 1.125rem);
+  line-height: 1.7;
 }
-.prose p {
-  margin-bottom: 2em;
-}
-textarea {
+
+/* Modern Responsive Video Container */
+.video-wrap {
+  position: relative;
   width: 100%;
-  font-size: 16px;
+  height: 0;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  margin: 2rem 0;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--box-shadow);
+  background: #000;
+  transition: var(--transition);
 }
-input {
-  font-size: 16px;
+
+.video-wrap:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(var(--gray), 35%);
 }
-table {
+
+.video-wrap iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: var(--border-radius);
 }
+
+/* Responsive breakpoints */
+@media (max-width: 768px) {
+  .video-wrap {
+    margin: 1.5rem 0;
+    border-radius: 8px;
+  }
+}
+
+/* Modern Button Styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--accent-dark);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: rgb(var(--gray-light));
+  color: rgb(var(--gray-dark));
+  border: 1px solid rgb(var(--gray-light));
+}
+
+.btn-secondary:hover {
+  background: rgb(var(--black));
+  color: white;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: rgb(var(--gray-dark));
+  border: 1px solid rgb(var(--gray-light));
+}
+
+.btn-ghost:hover {
+  background: rgb(var(--gray-light));
+}
+
+/* Comment Toggle Button */
+.comment-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  margin: 2rem 0 1rem;
+  padding: 1rem;
+  background: rgb(var(--gray-light));
+  border: 1px solid rgb(var(--gray-light));
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  font-weight: 500;
+  color: rgb(var(--gray-dark));
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.comment-toggle:hover {
+  background: rgb(var(--black));
+  color: white;
+  transform: translateY(-1px);
+}
+
+.comment-toggle.active {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+.comment-toggle svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  transition: var(--transition);
+}
+
+.comment-toggle.active svg {
+  transform: rotate(180deg);
+}
+
+/* Comments Section */
+.comments-section {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgb(var(--gray-light));
+  transition: var(--transition);
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.comments-section.show {
+  max-height: none;
+  opacity: 1;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    max-height: 0;
+    opacity: 0;
+  }
+  to {
+    max-height: 500px;
+    opacity: 1;
+  }
+}
+
+/* Grid Layouts */
+.grid {
+  display: grid;
+  gap: 2rem;
+}
+
+.grid-2 {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.grid-3 {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+@media (max-width: 768px) {
+  .grid {
+    gap: 1rem;
+  }
+  
+  .grid-2,
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Modern Card Design */
+.card {
+  background: white;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--box-shadow);
+  transition: var(--transition);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(var(--gray), 40%);
+}
+
+/* Main content area */
+main {
+  max-width: 1200px;
+  width: min(95%, 1200px);
+  margin: 0 auto;
+  padding: 2.5rem clamp(0.85rem, 2.5vw, 1.25rem);
+}
+
+/* Images */
 img {
   max-width: 100%;
   height: auto;
   border-radius: 8px;
 }
+
+/* Code blocks */
 code {
   padding: 2px 5px;
   background-color: rgb(var(--gray-light));
   border-radius: 2px;
+  font-size: 0.9em;
+  color: var(--accent-dark);
 }
+
 pre {
   padding: 1.5em;
   border-radius: 8px;
+  background: rgb(var(--black));
+  color: white;
+  border: 1px solid rgba(2,6,23,0.04);
+  overflow-x: auto;
+  margin: 1.5rem 0;
 }
-pre > code {
-  all: unset;
+
+pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
 }
+
+/* Blockquotes */
 blockquote {
   border-left: 4px solid var(--accent);
-  padding: 0 0 0 20px;
-  margin: 0px;
-  font-size: 1.333em;
-}
-hr {
-  border: none;
-  border-top: 1px solid rgb(var(--gray-light));
-}
-@media (max-width: 720px) {
-  body {
-    font-size: 18px;
-  }
-  main {
-    padding: 1.25rem 0.75rem;
-  }
+  padding: 1rem 2rem;
+  margin: 2rem 0;
+  background: rgb(var(--gray-light));
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  font-style: italic;
 }
 
-/* utility spacing */
-.container {
-  width: min(95%, 1100px);
-  margin: 0 auto;
+/* Links */
+a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: var(--transition);
 }
 
-.sr-only {
-  border: 0;
-  padding: 0;
-  margin: 0;
-  position: absolute !important;
-  height: 1px;
-  width: 1px;
-  overflow: hidden;
-  /* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
-  clip: rect(1px 1px 1px 1px);
-  /* maybe deprecated but we need to support legacy browsers */
-  clip: rect(1px, 1px, 1px, 1px);
-  /* modern browsers, clip-path works inwards from each corner */
-  clip-path: inset(50%);
-  /* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
-  white-space: nowrap;
+a:hover {
+  color: var(--accent-dark);
+  border-bottom-color: var(--accent);
 }
 
-/* Animation utilities */
-.animate {
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 420ms cubic-bezier(.2,.9,.2,1), transform 420ms cubic-bezier(.2,.9,.2,1);
-}
-.site-loaded .animate {
-  opacity: 1;
-  transform: translateY(0);
-}
-.stagger {
-  transition-delay: calc(var(--index, 0) * 80ms);
+/* Lists */
+ul, ol {
+  margin: 1.5rem 0;
+  padding-left: 2rem;
 }
 
-/* Accessible focus styles */
-:focus {
-  outline: none;
-}
-
-/* Show clear outline for keyboard users */
-*:focus-visible {
-  outline: 3px solid var(--accent);
-  outline-offset: 3px;
-  border-radius: 6px;
-}
-
-/* Card focus specifics */
-.card:focus-within {
-  box-shadow: 0 10px 30px rgba(2,6,23,0.12);
-  transform: translateY(-2px);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .animate { transition: none !important; transform: none !important; opacity: 1 !important; }
-}
-
-/* Dark-mode content tweaks: increase contrast and darken surfaces for blog content */
-body.dark main,
-body.dark .prose {
-  background: transparent;
-  color: #e6eef8; /* lighter text for reading */
-}
-
-/* Make code blocks and pre tags darker and higher contrast */
-body.dark pre {
-  background: #0b0d0f; /* very dark surface */
-  color: #e6eef8;
-  border: 1px solid rgba(255,255,255,0.04);
-}
-body.dark code {
-  background-color: rgba(255,255,255,0.03);
-  color: #f3f6fb;
-}
-
-/* Blockquotes and horizontal rules: subtle, darker surfaces */
-body.dark blockquote {
-  background: rgba(255,255,255,0.02);
-  border-left-color: rgba(123,159,255,0.9);
-  color: #e6eef8;
-}
-body.dark hr {
-  border-top-color: rgba(255,255,255,0.06);
-}
-
-/* Links in dark mode: slightly brighter accent */
-body.dark a { color: #9bb6ff; }
-body.dark a:hover { color: #cfe0ff; }
-
-/* Explicit light mode class to lock design if browser attempts auto-darkening */
-body.light { background: #ffffff; color: rgb(var(--gray-dark)); }
-/* body.dark .grid -- no wrapper styles required */
-
-body.dark .grid .card {
-  background: #0b0f12; /* dark card background */
-  color: #e6eef8;
-  box-shadow: 0 10px 30px rgba(2,6,23,0.6);
-  border: 1px solid rgba(255,255,255,0.03);
-}
-
-body.dark .grid .card a { color: inherit; text-decoration: none; }
-body.dark .grid .card img {
-  width: 100%;
-  height: auto;
-  border-radius: 6px;
-  display: block;
-  object-fit: cover;
-  filter: brightness(0.92) saturate(0.9);
+li {
   margin-bottom: 0.5rem;
-}
-body.dark .grid .card h3 { color: #ffffff; margin: 0.25rem 0 0.4rem; }
-body.dark .grid .card p { color: #aebdd8; margin: 0; }
-
-/* Light-mode: adopt denser card/content visuals similar to dark mode */
-body:not(.dark) main,
-body:not(.dark) .prose {
   color: rgb(var(--gray-dark));
 }
 
-/* Cards used across the site (home/blog lists) */
-.card {
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 1rem;
-  box-shadow: 0 10px 30px rgba(2,6,23,0.06);
-  border: 1px solid rgba(2,6,23,0.04);
+/* Horizontal rule */
+hr {
+  border: none;
+  border-top: 1px solid rgb(var(--gray-light));
+  margin: 2rem 0;
 }
 
-/* Make images and headings pop on light mode like dark mode */
-body:not(.dark) .card img {
-  border-radius: 8px;
-  display: block;
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  margin-bottom: 0.5rem;
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
-/* Light-mode code / pre styling to look like inverted dark blocks */
-pre {
-  background: #f6f8fb;
-  color: #0b0f12;
-  border: 1px solid rgba(2,6,23,0.04);
-}
-code {
-  background-color: rgba(var(--gray-light), 1);
-  color: #0b0f12;
+/* Dark mode support */
+html.dark {
+  --black: 255, 255, 255;
+  --gray-dark: 255, 255, 255;
+  --gray-light: 42, 42, 56;
+  --gray-gradient: rgba(42, 42, 56, 50%), #1a1a1a;
 }
 
-/* Blockquotes and horizontal rules in light mode: subtle surface */
-blockquote {
-  background: rgba(34,41,57,0.03);
+html.dark body {
+  background-color: #1a1a1a;
+  color: white;
+}
+
+html.dark .card {
+  background: #2a2a38;
+}
+
+html.dark blockquote {
+  background: #1f1f2e;
   border-left-color: var(--accent);
-  color: rgb(var(--black));
-}
-hr { border-top-color: rgba(2,6,23,0.06); }
-
-/* Slightly stronger link accent in light mode */
-a { color: var(--accent); }
-a:hover { color: var(--accent-dark); }
-
-/* Responsive embeds (YouTube, Vimeo, Instagram, tweets, etc.)
-   - Make embeds fill the article width and maintain aspect ratio
-   - Use .embed-wrapper to force different aspect ratios (data-aspect)
-   - Also target embeds inside `.prose` so raw iframes are handled automatically
-*/
-.embed-wrapper {
-  width: 100%;
-  max-width: 100%;
-  margin: 1rem 0;
-  display: block;
-  position: relative;
 }
 
-/* Default aspect (16:9). Use data-aspect="1/1" or "4/3" to override. */
-.embed-wrapper,
-.prose iframe,
-.prose video,
-.prose .instagram-media,
-.prose blockquote.instagram-media {
-  aspect-ratio: 16/9;
-  height: auto;
+html.dark code {
+  background: #1f1f2e;
+  color: var(--accent);
 }
 
-.embed-wrapper[data-aspect="1/1"],
-.prose [data-aspect="1/1"] {
-  aspect-ratio: 1/1;
-}
-.embed-wrapper[data-aspect="4/3"],
-.prose [data-aspect="4/3"] {
-  aspect-ratio: 4/3;
+html.dark #disqus_thread {
+  background: #2a2a38;
 }
 
-.embed-wrapper iframe,
-.embed-wrapper video,
-.prose iframe,
-.prose video,
-.prose .instagram-media,
-.prose blockquote.instagram-media {
-  width: 100%;
-  height: 100%;
-  border: 0;
-  display: block;
-  max-height: clamp(220px, 50vh, 800px); /* prevents huge embeds on very large screens */
-  object-fit: cover;
+/* Focus states for accessibility */
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
-/* small screens: keep a comfortable height */
-@media (max-width: 420px) {
-  .embed-wrapper, .prose iframe, .prose video { aspect-ratio: 16/9; max-height: 260px; }
+/* Modern scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
 }
 
-/* make images inside embeds scale nicely */
-.embed-wrapper img, .prose iframe img { width: 100%; height: auto; object-fit: cover; }
-
-@media (max-width: 380px) {
-  /* tighter min-height for very small devices (e.g., iPhone SE / older phones) */
-  .embed-wrapper#disqus-embed { min-height: 240px; }
+::-webkit-scrollbar-track {
+  background: rgb(var(--gray-light));
 }
 
-/* ---------------- Disqus Responsive Layout ---------------- */
-.comments-block { 
-  margin-top: 3rem; 
-  width: 100%;
-  max-width: 100%;
-  position: relative;
-  --comments-border: rgba(2,6,23,0.12);
-  --comments-btn-bg: #ffffff;
-  --comments-btn-border: rgba(2,6,23,0.2);
-  --comments-btn-hover: rgba(2,6,23,0.05);
-}
-.comments-header-row { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:0.75rem; }
-.comments-toggle-btn { font: inherit; cursor: pointer; border:1px solid var(--comments-btn-border); background: var(--comments-btn-bg); padding:0.45rem 0.85rem; border-radius:8px; }
-.comments-toggle-btn:hover { background: var(--comments-btn-hover); }
-body.dark .comments-toggle-btn { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.18); color:#f3f3f3; }
-body.dark .comments-toggle-btn:hover { background: rgba(255,255,255,0.16); }
-.comments-toggle-btn .chevron { display:inline-block; transition: transform 260ms cubic-bezier(.4,.2,.2,1); margin-right:4px; }
-.comments-block[data-collapsed="true"] .comments-toggle-btn .chevron { transform: rotate(-90deg); }
-
-/* Collapse animation */
-.comments-block #comments-shell { transition: max-height 320ms cubic-bezier(.4,.2,.2,1), opacity 220ms ease; will-change: max-height; }
-.comments-block[data-collapsed="true"] #comments-shell { opacity:0; }
-.comments-block .comments-title { 
-  margin: 0 0 1rem 0; 
-  font-size: clamp(1.2rem, 2.2vw, 1.6rem); 
-  line-height: 1.2;
-  text-align: left;
-}
-#disqus_thread { 
-  width: 100%;
-  max-width: 100%;
-  /* Allow internal sizing & touch events; previously overflow hidden could interfere on some mobile browsers */
-  overflow: visible; 
-  position: relative;
-  -webkit-tap-highlight-color: transparent;
-  -webkit-overflow-scrolling: touch;
-  touch-action: auto;
-}
-/* Undo generic iframe constraints inside the prose for Disqus so it can size naturally */
-#disqus_thread iframe { 
-  height: auto !important; 
-  max-height: none !important; 
-  object-fit: contain !important; 
-  width: 100% !important;
-  background: transparent !important;
-  pointer-events: auto !important; /* ensure taps propagate */
-  touch-action: manipulation;
-  transition: height 160ms ease;
-}
-/* Prevent any nested element from causing horizontal scroll */
-#disqus_thread, #disqus_thread * { box-sizing: border-box; }
-
-/* Custom comments shell additions */
-.comments-shell { border: 1px solid var(--comments-border); border-radius: 12px; padding: 0.75rem 0.75rem 0.25rem; background: rgba(255,255,255,0.85); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
-body.dark .comments-shell { background: rgba(30,30,34,0.6); border-color: rgba(255,255,255,0.1); }
-.comments-shell.compact { padding: 0.5rem 0.5rem 0.15rem; border-radius: 10px; }
-.comments-shell.compact #disqus_thread iframe { font-size: 0.9rem; }
-.comments-shell.expanded { max-height: none !important; }
-.comments-expand-wrap { display:flex; justify-content:center; margin-top:0.5rem; }
-.comments-expand-btn { font:inherit; cursor:pointer; border:1px solid var(--comments-btn-border); background:var(--comments-btn-bg); padding:0.45rem 0.85rem; border-radius:8px; }
-.comments-expand-btn:hover { background: var(--comments-btn-hover); }
-body.dark .comments-expand-btn { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.18); color:#f3f3f3; }
-body.dark .comments-expand-btn:hover { background: rgba(255,255,255,0.16); }
-.comments-block[data-state="loading"] .comments-shell { opacity: 0.85; }
-.comments-block[data-state="ready"] .comments-actions { display: none; }
-
-/* Skeleton */
-.comments-skeleton { display: grid; gap: 8px; margin-bottom: 0.75rem; }
-.sk-row { height: 14px; background: linear-gradient(90deg, rgba(2,6,23,0.08), rgba(2,6,23,0.15), rgba(2,6,23,0.08)); background-size: 300% 100%; border-radius: 6px; animation: skPulse 1.4s ease-in-out infinite; }
-.sk-row.sk-title { height: 18px; width: 55%; }
-.sk-row.sk-short { width: 35%; }
-body.dark .sk-row { background: linear-gradient(90deg, rgba(255,255,255,0.07), rgba(255,255,255,0.15), rgba(255,255,255,0.07)); }
-@keyframes skPulse { 0%{background-position:0 0;} 50%{background-position:100% 0;} 100%{background-position:0 0;} }
-
-/* Action buttons */
-.comments-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
-.comments-actions button { font: inherit; cursor: pointer; border-radius: 8px; padding: 0.55rem 0.85rem; border: 1px solid var(--comments-btn-border); background: var(--comments-btn-bg); display: inline-flex; align-items: center; gap: 0.4rem; }
-.comments-actions button:hover { background: var(--comments-btn-hover); }
-body.dark .comments-actions button { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.18); color: #f3f3f3; }
-body.dark .comments-actions button:hover { background: rgba(255,255,255,0.16); }
-.comments-load-btn::before { content: '💬'; }
-.comments-reload-btn::before { content: '↻'; }
-
-/* Alt link (external open) */
-.comments-alt-link { margin-top: 0.75rem; font-size: 0.85rem; }
-.comments-alt-link a { color: var(--accent); }
-body.dark .comments-alt-link a { color: #9bb6ff; }
-
-/* Focus management */
-.disqus-thread:focus { outline: 3px solid var(--accent); outline-offset: 4px; border-radius: 6px; }
-
-/* Mobile refinements */
-@media (max-width: 480px) {
-  .comments-shell { padding: 0.6rem 0.55rem 0.3rem; border-radius: 10px; }
-  .comments-actions button { flex: 1 1 auto; justify-content: center; font-size: 0.9rem; }
-  .comments-skeleton { gap:6px; }
-  .sk-row { height: 12px; }
-  .sk-row.sk-title { height: 16px; }
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--gray));
+  border-radius: 4px;
 }
 
-@media (max-width: 640px) {
-  .comments-block { margin-top: 2.25rem; }
-  .comments-block .comments-title { font-size: 1.25rem; }
-}
-@media (min-width: 1280px) {
-  .comments-block { margin-top: 3.5rem; }
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
 }
 
-/* Dark mode readability adjustments for potential Disqus injected backgrounds */
-body.dark #disqus_thread { color-scheme: dark; }
-
-/* Small device touch adjustments (e.g., iPhone 7 width ~375px) */
-@media (max-width: 430px) {
-  .comments-block { padding-left: 0; padding-right: 0; }
-  #disqus_thread { -webkit-overflow-scrolling: touch; }
+/* Responsive */
+@media (max-width: 720px) {
+  body { font-size: 18px; }
+  main { padding: 1.25rem 0.75rem; }
 }
-
-/* Extra narrow (old iPhones <=360 logical width) */
-@media (max-width: 360px) {
-}
-
-/* ---------------- Additional Responsive Enhancements ---------------- */
-/* Utility wrapper for wider pages */
-.wrap { width:100%; margin-inline:auto; max-width:82rem; padding-inline:1.1rem; }
-@media (min-width:1600px){ .wrap { max-width:90rem; } }
-@media (max-width:520px){ .wrap { padding-inline:.85rem; } }
-
-/* Prose width scales down for smaller devices to maintain readable measure */
-.prose { max-width:72ch; }
-@media (max-width:900px){ .prose { max-width:68ch; } }
-@media (max-width:700px){ .prose { max-width:62ch; } }
-@media (max-width:560px){ .prose { font-size:0.96rem; } }
-@media (max-width:420px){ .prose { font-size:0.92rem; } }
-
-/* Responsive media elements */
-picture, video { display:block; max-width:100%; height:auto; }
-iframe { max-width:100%; }
-
-/* Prevent layout shift on very narrow devices by slightly tightening headings */
-@media (max-width:460px){
-  h1 { letter-spacing:-0.5px; }
-  h2 { letter-spacing:-0.25px; }
-}
-
-/* Touch device hover adjustments */
-@media (hover:none){
-  .card:hover, .card:focus-within { transform:none; }
-  .card:active { transform: scale(.985); }
-}
-
-/* Improve code scroll on mobile */
-pre { -webkit-overflow-scrolling: touch; }
-
-/* Dark mode subtle improvement for long paragraphs */
-body.dark .prose p { color: #dbe4ef; }
 
 
 

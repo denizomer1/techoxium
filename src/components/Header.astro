@@ -1,133 +1,477 @@
 ---
+import HeaderLink from './HeaderLink.astro';
+import { SITE_TITLE } from '../consts';
 import Search from './Search.astro';
 ---
 
-<header>
-	<nav>
-		<h2 class="site-brand">
-			<a href="/" class="logo-link" aria-label="Techoxium home">
-				<img src="/logo.png" alt="Techoxium" class="site-logo" loading="lazy" decoding="async" onerror="this.style.display='none'; const t=this.nextElementSibling; if(t) t.style.display='inline-block';" />
-				<span class="logo-text" style="display:none; font-weight:700;">Techoxium</span>
-			</a>
-		</h2>
-		<button class="nav-toggle" aria-expanded="false" aria-controls="mobile-drawer" aria-label="Menüyü aç/kapat">☰</button>
-		<div class="internal-links" id="mobile-drawer" data-drawer>
-			<div class="drawer-header">
-				<span class="drawer-title">Menü</span>
-				<button class="drawer-close" type="button" aria-label="Kapat" data-close>×</button>
-			</div>
-			<div class="drawer-content">
-				<Search />
-				<ul class="nav-list" role="list">
-					<li><a href="/about/" class="nav-link">Hakkımızda</a></li>
-				</ul>
-			</div>
-		</div>
-		<div class="nav-overlay" data-overlay hidden></div>
-		<button class="dark-toggle" aria-label="Koyu modu aç/kapat">🌙</button>
-	</nav>
+<header class="main-header">
+  <nav class="nav-container">
+    <div class="nav-brand">
+      <a href="/" class="brand-link">
+        <img src="/logo.png" alt={SITE_TITLE} width="32" height="32" />
+        <span class="brand-text">{SITE_TITLE}</span>
+      </a>
+    </div>
+    
+    <div class="nav-menu" id="nav-menu">
+      <div class="nav-links">
+        <HeaderLink href="/">Ana Sayfa</HeaderLink>
+        <HeaderLink href="/about/">Hakkımızda</HeaderLink>
+      </div>
+      
+      <div class="nav-actions">
+        <div class="nav-search">
+          <Search />
+        </div>
+        
+        <button class="theme-toggle" id="theme-toggle" aria-label="Tema değiştir">
+          <div class="theme-toggle-track">
+            <div class="theme-toggle-thumb">
+              <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="5"/>
+                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+              </svg>
+              <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+              </svg>
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+    
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menüyü aç/kapat">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
 </header>
+
 <style>
-header {
-	margin: 0;
-	padding: 0 1em;
-	background: var(--header-bg, rgba(255,255,255,0.85));
-	backdrop-filter: blur(6px);
-	-webkit-backdrop-filter: blur(6px);
-	box-shadow: 0 6px 24px rgba(2,6,23,0.08);
-	transition: background 240ms ease, color 240ms ease;
-	position: sticky;
-	top: 0;
-	z-index: 80;
-}
-
-h2 { margin: 0; }
-
-.logo-link { display: inline-flex; align-items: center; gap: 0.5rem; }
-
-nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-
-.internal-links { display: flex; gap: 0.5rem; align-items: center; }
-/* Base (desktop) nav list + links */
-.drawer-header { display:none; }
-.drawer-content { display:flex; gap:1rem; align-items:center; }
-.nav-list { list-style:none; margin:0; padding:0; display:flex; gap:0.65rem; align-items:center; }
-.nav-link { display:inline-block; padding:.45rem .65rem; border-radius:8px; font-weight:600; text-decoration:none; color:inherit; letter-spacing:.3px; line-height:1.1; transition: background .3s, color .3s; }
-.nav-link:hover, .nav-link:focus-visible { background:rgba(2,6,23,0.06); }
-body.dark .nav-link:hover, body.dark .nav-link:focus-visible { background:rgba(255,255,255,0.08); }
-/* Link hover styles removed (no static header links currently) */
-
-.nav-toggle { display: none; }
-
-.dark-toggle { background: none; border: none; font-size: 1.1rem; cursor: pointer; padding: 0.4rem; border-radius: 8px; }
-.dark-toggle:hover { background: rgba(0,0,0,0.04); }
-
-.site-logo { height: 2.25rem; max-height: 48px; width: auto; display: block; vertical-align: middle; object-fit: contain; }
-.logo-text { display: none; color: var(--nav-link, var(--black)); font-size: 1rem; line-height: 1; }
-
-@media (max-width: 720px) {
-	.nav-toggle { display: inline-flex; align-items:center; justify-content:center; padding:0.55rem 0.85rem; font-size:1.25rem; border-radius:10px; background:rgba(255,255,255,0.4); border:1px solid rgba(2,6,23,0.1); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); }
-	body.dark .nav-toggle { background:rgba(20,20,24,0.5); border-color:rgba(255,255,255,0.12); }
-	.internal-links { 
-		position: fixed; inset:0 auto 0 0; width:min(82vw,320px); max-width:360px; height:100dvh; display:flex; flex-direction:column; gap:.75rem; padding:1rem 1rem 2rem; box-sizing:border-box; background:linear-gradient(180deg,rgba(255,255,255,0.92),rgba(255,255,255,0.88)); backdrop-filter:blur(14px) saturate(1.2); -webkit-backdrop-filter:blur(14px) saturate(1.2); border-right:1px solid rgba(2,6,23,0.08); transform:translateX(-102%); opacity:0; pointer-events:none; transition: transform .55s cubic-bezier(.22,.9,.25,1), opacity .4s ease; overflow-y:auto; z-index:120; border-radius:0 18px 18px 0; box-shadow:0 10px 34px -6px rgba(2,6,23,0.2),0 26px 64px -14px rgba(2,6,23,0.15);
-	}
-	body.dark .internal-links { background:linear-gradient(180deg,rgba(18,22,28,0.9),rgba(15,19,25,0.88)); border-right-color:rgba(255,255,255,0.08); box-shadow:0 10px 38px -8px rgba(0,0,0,0.7),0 26px 68px -18px rgba(0,0,0,0.65); }
-	.internal-links.show { transform:translateX(0); opacity:1; pointer-events:auto; }
-	.nav-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.4); backdrop-filter:blur(2px); -webkit-backdrop-filter:blur(2px); z-index:110; opacity:0; pointer-events:none; transition:opacity .4s ease; }
-	.nav-overlay.show { opacity:1; pointer-events:auto; }
-	.drawer-header { display:flex; align-items:center; justify-content:space-between; gap:.5rem; padding:0.25rem 0 .75rem; }
-	.drawer-title { font-size:0.95rem; font-weight:600; letter-spacing:.5px; text-transform:uppercase; opacity:.7; }
-	.drawer-close { background:transparent; border:0; font-size:1.35rem; line-height:1; cursor:pointer; padding:.25rem .45rem; border-radius:8px; color:inherit; }
-	.drawer-close:hover { background:rgba(2,6,23,0.06); }
-	body.dark .drawer-close:hover { background:rgba(255,255,255,0.08); }
-	.drawer-content { display:flex; flex-direction:column; gap:1.25rem; animation:drawerContentIn .65s cubic-bezier(.22,.9,.25,1); }
-	@keyframes drawerContentIn { 0%{opacity:0; transform:translateY(6px);} 100%{opacity:1; transform:translateY(0);} }
-	.nav-list { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.35rem; }
-	.nav-link { display:block; padding:.55rem .75rem; border-radius:10px; font-weight:600; text-decoration:none; color:inherit; letter-spacing:.3px; background:linear-gradient(90deg,rgba(0,0,0,0),rgba(0,0,0,0)); transition: background .35s, color .35s; }
-	.nav-link:hover, .nav-link:focus-visible { background:linear-gradient(90deg,rgba(2,6,23,0.06),rgba(2,6,23,0.02)); }
-	body.dark .nav-link:hover, body.dark .nav-link:focus-visible { background:linear-gradient(90deg,rgba(255,255,255,0.1),rgba(255,255,255,0.04)); }
-}
-
-@media (prefers-reduced-motion: reduce){
-	.internal-links { transition:none !important; }
-	.nav-overlay { transition:none !important; }
-}
-
-:root, body { --header-bg: rgba(255,255,255,0.85); --nav-link: var(--black); }
-body.dark { --header-bg: rgba(20,20,22,0.6); --nav-link: #f3f3f3; }
+  .main-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgb(var(--gray-light));
+    height: var(--header-height);
+  }
+  
+  .nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+  
+  .nav-brand {
+    flex-shrink: 0;
+  }
+  
+  .brand-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: rgb(var(--black));
+    font-weight: 700;
+    font-size: 1.25rem;
+    transition: var(--transition);
+  }
+  
+  .brand-link:hover {
+    color: var(--accent);
+  }
+  
+  .brand-text {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+  }
+  
+  .nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex: 1;
+    justify-content: space-between;
+  }
+  
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  
+  /* Modern click effects for nav items */
+  :global(.nav-links a) {
+    position: relative;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    overflow: hidden;
+  }
+  
+  :global(.nav-links a::before) {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(var(--accent-rgb), 0.1);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.3s ease;
+    z-index: -1;
+  }
+  
+  :global(.nav-links a:hover::before) {
+    width: 200px;
+    height: 200px;
+  }
+  
+  :global(.nav-links a:active) {
+    transform: scale(0.95);
+  }
+  
+  :global(.nav-links a:hover) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.15);
+  }
+  
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .nav-search {
+    flex-shrink: 0;
+  }
+  
+  /* Modern Theme Toggle */
+  .theme-toggle {
+    position: relative;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    outline: none;
+    border-radius: var(--border-radius);
+    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+  
+  .theme-toggle:hover {
+    background: rgba(var(--accent-rgb), 0.1);
+    transform: scale(1.05);
+  }
+  
+  .theme-toggle:active {
+    transform: scale(0.95);
+  }
+  
+  .theme-toggle-track {
+    width: 3rem;
+    height: 1.5rem;
+    background: rgb(var(--gray-light));
+    border-radius: 0.75rem;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    border: 2px solid transparent;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .theme-toggle:hover .theme-toggle-track {
+    background: rgb(var(--gray));
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  }
+  
+  .theme-toggle-thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 1.25rem;
+    height: 1.25rem;
+    background: white;
+    border-radius: 50%;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  .theme-toggle-thumb svg {
+    width: 0.75rem;
+    height: 0.75rem;
+    transition: var(--transition);
+  }
+  
+  .sun-icon {
+    color: #f59e0b;
+    opacity: 1;
+    transform: rotate(0deg);
+  }
+  
+  .moon-icon {
+    color: #6366f1;
+    opacity: 0;
+    transform: rotate(180deg);
+    position: absolute;
+  }
+  
+  /* Dark mode state */
+  .theme-toggle.dark .theme-toggle-track {
+    background: var(--accent);
+  }
+  
+  .theme-toggle.dark .theme-toggle-thumb {
+    transform: translateX(1.5rem);
+    background: #1f2937;
+  }
+  
+  .theme-toggle.dark .sun-icon {
+    opacity: 0;
+    transform: rotate(-180deg);
+  }
+  
+  .theme-toggle.dark .moon-icon {
+    opacity: 1;
+    transform: rotate(0deg);
+  }
+  
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 2rem;
+    height: 2rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    z-index: 10;
+    border-radius: var(--border-radius);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .nav-toggle::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(var(--accent-rgb), 0.1);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.3s ease;
+    z-index: -1;
+  }
+  
+  .nav-toggle:hover::before {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .nav-toggle:hover {
+    transform: scale(1.1);
+  }
+  
+  .nav-toggle:active {
+    transform: scale(0.95);
+  }
+  
+  .nav-toggle span {
+    width: 1.5rem;
+    height: 0.2rem;
+    background: rgb(var(--black));
+    border-radius: 2px;
+    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    transform-origin: center;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  .nav-toggle.active span:first-child {
+    transform: rotate(45deg) translate(0.3rem, 0.3rem);
+  }
+  
+  .nav-toggle.active span:nth-child(2) {
+    opacity: 0;
+    transform: scale(0);
+  }
+  
+  .nav-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(0.3rem, -0.3rem);
+  }
+  
+  /* Mobile styles */
+  @media (max-width: 768px) {
+    .nav-container {
+      padding: 0 1rem;
+    }
+    
+    .nav-toggle {
+      display: flex;
+    }
+    
+    .nav-menu {
+      position: fixed;
+      top: var(--header-height);
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(20px);
+      flex-direction: column;
+      padding: 2rem 1rem;
+      gap: 2rem;
+      transform: translateX(100%);
+      transition: var(--transition);
+      border-top: 1px solid rgb(var(--gray-light));
+      box-shadow: 0 10px 40px rgba(var(--gray), 20%);
+      height: calc(100vh - var(--header-height));
+      overflow-y: auto;
+    }
+    
+    .nav-menu.active {
+      transform: translateX(0);
+    }
+    
+    .nav-links {
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+    }
+    
+    .nav-actions {
+      width: 100%;
+      justify-content: space-between;
+    }
+    
+    .nav-search {
+      flex: 1;
+    }
+    
+    .brand-text {
+      display: none;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .nav-container {
+      padding: 0 0.75rem;
+    }
+  }
+  
+  /* Dark mode styles */
+  :global(html.dark) .main-header {
+    background: rgba(15, 15, 23, 0.95);
+    border-bottom-color: #404040;
+  }
+  
+  :global(html.dark) .nav-menu {
+    background: rgba(15, 15, 23, 0.98);
+    border-top-color: #404040;
+  }
+  
+  :global(html.dark) .brand-link {
+    color: white;
+  }
+  
+  :global(html.dark) .nav-toggle span {
+    background: white;
+  }
+  
+  :global(html.dark) .theme-toggle-track {
+    background: #374151;
+  }
+  
+  :global(html.dark) .theme-toggle-thumb {
+    background: #111827;
+  }
 </style>
 
 <script>
-// Theme + mobile nav (small self-executing module)
-(() => {
-	if (!globalThis.document) return;
-	const d = globalThis.document;
-	const btn = d.querySelector('.dark-toggle');
-	const media = globalThis.matchMedia && globalThis.matchMedia('(prefers-color-scheme: dark)');
-	const pref = () => { const v = globalThis.localStorage?.getItem('theme'); return v === 'dark' || v === 'light' ? v : null; };
-	const effective = () => pref() || (media && media.matches ? 'dark' : 'light');
-	const apply = (m) => d.body.classList.toggle('dark', m === 'dark');
-	const update = () => { if(!btn) return; const dark = d.body.classList.contains('dark'); btn.textContent = dark ? '☀️' : '🌙'; btn.setAttribute('aria-label', dark ? 'Açık moda geç' : 'Koyu moda geç'); };
-	apply(effective()); update();
-	media && media.addEventListener('change', () => { if (!pref()) { apply(effective()); update(); } });
-	btn && btn.addEventListener('click', () => { const next = effective() === 'dark' ? 'light' : 'dark'; globalThis.localStorage?.setItem('theme', next); apply(next); update(); });
-	const navBtn = d.querySelector('.nav-toggle');
-	const drawer = d.querySelector('.internal-links');
-	const overlay = d.querySelector('.nav-overlay');
-	const closeBtn = d.querySelector('.drawer-close');
-	function toggleDrawer(close){
-		if(!navBtn || !drawer || !overlay) return;
-		const expanded = navBtn.getAttribute('aria-expanded') === 'true';
-		const next = close ? false : !expanded;
-		navBtn.setAttribute('aria-expanded', next ? 'true':'false');
-		drawer.classList.toggle('show', next);
-		overlay.classList.toggle('show', next);
-		overlay.hidden = !next;
-		if(next){ drawer.querySelector('a, input, button')?.focus(); } else { navBtn.focus(); }
-	}
-	navBtn && navBtn.addEventListener('click', () => toggleDrawer(false));
-	closeBtn && closeBtn.addEventListener('click', () => toggleDrawer(true));
-	overlay && overlay.addEventListener('click', () => toggleDrawer(true));
-	d.addEventListener('keydown', e=>{ if(e.key==='Escape'){ if(navBtn?.getAttribute('aria-expanded')==='true') toggleDrawer(true); } });
-})();
+  const navToggle = document.getElementById('nav-toggle') as HTMLButtonElement;
+  const navMenu = document.getElementById('nav-menu') as HTMLDivElement;
+  const themeToggle = document.getElementById('theme-toggle') as HTMLButtonElement;
+  
+  // Navigation functionality
+  function toggleNav() {
+    navToggle.classList.toggle('active');
+    navMenu.classList.toggle('active');
+    document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : '';
+  }
+  
+  navToggle.addEventListener('click', toggleNav);
+  
+  // Close nav when clicking on links (mobile)
+  navMenu.addEventListener('click', (e) => {
+    if (e.target instanceof HTMLAnchorElement && window.innerWidth <= 768) {
+      navToggle.classList.remove('active');
+      navMenu.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
+  
+  // Close nav when clicking outside (mobile)
+  document.addEventListener('click', (e) => {
+    if (!navToggle.contains(e.target as Node) && !navMenu.contains(e.target as Node)) {
+      navToggle.classList.remove('active');
+      navMenu.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
+  
+  // Handle window resize
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+      navToggle.classList.remove('active');
+      navMenu.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
+  
+  // Theme toggle functionality
+  function initTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const isDark = savedTheme === 'dark' || (!savedTheme && systemDark);
+    
+    document.documentElement.classList.toggle('dark', isDark);
+    themeToggle.classList.toggle('dark', isDark);
+    themeToggle.setAttribute('aria-label', isDark ? 'Açık moda geç' : 'Koyu moda geç');
+  }
+  
+  function toggleTheme() {
+    const isDark = document.documentElement.classList.contains('dark');
+    const newTheme = isDark ? 'light' : 'dark';
+    
+    document.documentElement.classList.toggle('dark', newTheme === 'dark');
+    themeToggle.classList.toggle('dark', newTheme === 'dark');
+    localStorage.setItem('theme', newTheme);
+    themeToggle.setAttribute('aria-label', newTheme === 'dark' ? 'Açık moda geç' : 'Koyu moda geç');
+  }
+  
+  // Initialize theme on page load
+  initTheme();
+  
+  // Theme toggle event listener
+  themeToggle.addEventListener('click', toggleTheme);
+  
+  // Listen for system theme changes
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (!localStorage.getItem('theme')) {
+      document.documentElement.classList.toggle('dark', e.matches);
+      themeToggle.classList.toggle('dark', e.matches);
+      themeToggle.setAttribute('aria-label', e.matches ? 'Açık moda geç' : 'Koyu moda geç');
+    }
+  });
 </script>

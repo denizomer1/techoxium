@@ -1,69 +1,208 @@
 ---
-/** Disqus universal embed component */
-interface Props { pageUrl?: string; pageId?: string; enableCount?: boolean }
-const { pageUrl = '', pageId = '', enableCount = false } = Astro.props;
+export interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
 ---
-<section class="comments-block" aria-labelledby="comments-title" data-state="idle" data-collapsed="false">
-  <div class="comments-header-row">
-    <h2 id="comments-title" class="comments-title">Yorumlar</h2>
-    <button type="button" id="comments-toggle" class="comments-toggle-btn" aria-expanded="true" aria-controls="comments-shell">
-      <span class="chevron" aria-hidden="true">▾</span>
-      <span class="toggle-label">Gizle</span>
-    </button>
+
+<div class="comments-container">
+  <button class="comment-toggle" id="comment-toggle" type="button" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </svg>
+    <span id="toggle-text">Yorumları Göster</span>
+    <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M6 9l6 6 6-6"/>
+    </svg>
+  </button>
+  
+  <div class="comments-section" id="comments-section">
+    <div id="disqus_thread"></div>
   </div>
-  <div class="comments-shell" id="comments-shell">
-    <div class="comments-skeleton" id="comments-skeleton" aria-hidden="true">
-      <div class="sk-row sk-title"></div>
-      <div class="sk-row"></div>
-      <div class="sk-row"></div>
-      <div class="sk-row sk-short"></div>
-    </div>
-    <div class="comments-actions" id="comments-actions">
-      <button type="button" id="load-comments" class="comments-load-btn">Yorumları Yükle</button>
-      <button type="button" id="reload-comments" class="comments-reload-btn" hidden>Tekrar Dene</button>
-    </div>
-    <div id="disqus_thread" class="disqus-thread" role="region" aria-label="Disqus yorumları" tabindex="-1"></div>
-  </div>
-  <noscript>Lütfen JavaScript'i etkinleştirin: <a href="https://disqus.com/?ref_noscript">yorumları görmek için</a>.</noscript>
-  <div class="comments-alt-link" id="comments-alt-link" hidden>
-    <a href="https://tekhaza.disqus.com" target="_blank" rel="noopener">Disqus'ta aç</a>
-  </div>
-</section>
+</div>
+
 <style>
-  .comments-block{background:transparent;color:inherit;padding:0.5rem 0}
-  .comments-header-row{display:flex;align-items:center;gap:0.5rem}
-  .comments-shell{margin-top:0.75rem}
-  .comments-skeleton .sk-row{background:linear-gradient(90deg,rgba(0,0,0,0.06) 0%,rgba(0,0,0,0.02) 50%,rgba(0,0,0,0.06) 100%);height:14px;border-radius:6px;margin:8px 0}
-  .comments-block[data-theme="dark"]{color:#e6eef8}
-  .comments-block[data-theme="dark"] .comments-skeleton .sk-row{background:linear-gradient(90deg,rgba(255,255,255,0.06) 0%,rgba(255,255,255,0.02) 50%,rgba(255,255,255,0.06) 100%)}
-  .comments-block[data-theme="dark"] .comments-load-btn,.comments-block[data-theme="dark"] .comments-reload-btn,.comments-block[data-theme="dark"] .comments-expand-btn{background:rgba(255,255,255,0.06);color:#fff;border:1px solid rgba(255,255,255,0.06)}
-  .comments-shell.compact{max-height:420px;overflow:auto}
-  .comments-shell.expanded{position:relative}
+  .comments-container {
+    margin-top: 3rem;
+  }
+  
+  .comment-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    box-shadow: 0 4px 14px rgba(var(--accent-rgb), 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .comment-toggle::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.4s ease;
+  }
+  
+  .comment-toggle:hover::before {
+    width: 300px;
+    height: 300px;
+  }
+  
+  .comment-toggle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(var(--accent-rgb), 0.4);
+  }
+  
+  .comment-toggle:active {
+    transform: translateY(0);
+  }
+  
+  .comment-toggle svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+  }
+  
+  .chevron {
+    transition: transform 0.3s ease;
+  }
+  
+  .comment-toggle.active .chevron {
+    transform: rotate(180deg);
+  }
+  
+  .comments-section {
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+    opacity: 0;
+    margin-top: 0;
+  }
+  
+  .comments-section.show {
+    max-height: 1000px;
+    opacity: 1;
+    margin-top: 1.5rem;
+  }
+  
+  #disqus_thread {
+    padding: 1.5rem;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 20px rgba(var(--gray-rgb), 0.1);
+    border: 1px solid rgb(var(--gray-light));
+  }
+  
+  :global(html.dark) #disqus_thread {
+    background: #1f1f2e;
+    border-color: #404040;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
 </style>
-<script is:inline>
-  var disqus_config = function(){
-    try{
-      var loc=location;this.page.url=loc.origin+loc.pathname;this.page.identifier=loc.pathname.replace(/\/$/,'')||'index';this.page.title=document.title;this.language='tr';
-      var t='light';try{t=localStorage.getItem('theme')||(document.body.classList.contains('dark')?'dark':(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))}catch(_){ }
-      this.page.theme=t;
-    }catch(_){ }
-  };
-  (function(){
-    if(typeof window==='undefined')return;
-    var q=function(s){return document.querySelector(s)};
-    var stateEl=q('.comments-block'),shell=q('#comments-shell'),container=q('#disqus_thread'),loadBtn=q('#load-comments'),reloadBtn=q('#reload-comments'),skeleton=q('#comments-skeleton'),altLink=q('#comments-alt-link'),toggleBtn=q('#comments-toggle');
-    var loaded=false,loading=false;
-    (function(){if(!stateEl)return;var t='light';try{t=localStorage.getItem('theme')||(document.body.classList.contains('dark')?'dark':(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))}catch(_){ }stateEl.setAttribute('data-theme',t)})();
-    var applyCollapsed=function(c){if(!shell||!toggleBtn||!stateEl)return;stateEl.setAttribute('data-collapsed',c?'true':'false');toggleBtn.setAttribute('aria-expanded',c?'false':'true');var l=toggleBtn.querySelector('.toggle-label');if(l)l.textContent=c?'Göster':'Gizle';shell.style.maxHeight=c?'0':'';shell.style.overflow=c?'hidden':'';};
-    applyCollapsed(localStorage.getItem('commentsCollapsed')==='1');
-    toggleBtn&&toggleBtn.addEventListener('click',function(){var coll=stateEl.getAttribute('data-collapsed')==='true';var next=!coll;localStorage.setItem('commentsCollapsed',next?'1':'0');applyCollapsed(next);if(!loaded&&!next)inject();});
-    var setState=function(s){stateEl&&stateEl.setAttribute('data-state',s);} , showReload=function(){reloadBtn&&(reloadBtn.hidden=false);loadBtn&&(loadBtn.hidden=true);skeleton&&(skeleton.style.display='none');altLink&&(altLink.hidden=false);setState('error');}, hideSkeleton=function(){skeleton&&(skeleton.style.display='none');loadBtn&&(loadBtn.hidden=true);};
-    var inject=function(){if(loaded||loading)return;loading=true;setState('loading');hideSkeleton();if(window.DISQUS){window.DISQUS.reset({reload:true,config:disqus_config});finalize();return;}var s=document.createElement('script');var themeParam=stateEl&&stateEl.getAttribute('data-theme')==='dark'?'?theme=dark':'';s.src='https://tekhaza.disqus.com/embed.js'+themeParam;s.async=true;s.setAttribute('data-timestamp',Date.now());s.onload=finalize;s.onerror=function(){showReload();};(document.head||document.body).appendChild(s);setTimeout(function(){if(!loaded){showReload();}},12000);};
-    var finalize=function(){loaded=true;setState('ready');if(innerWidth<=430){shell&&shell.classList.add('compact');addExpandControl();var attempts=0,tmr=setInterval(function(){attempts++;var ifr=q('#disqus_thread iframe');if(!ifr){if(attempts>14)clearInterval(tmr);return;}var maxH=Math.round(innerHeight*0.7);if(ifr.offsetHeight>maxH){ifr.style.height=maxH+'px';ifr.style.maxHeight=maxH+'px';}if(attempts>14)clearInterval(tmr);},500);}};
-    if('IntersectionObserver' in window && container){new IntersectionObserver(function(es,io){es.forEach(function(e){if(e.isIntersecting){inject();io.disconnect();}});},{rootMargin:'200px 0px'}).observe(container);} 
-    loadBtn&&loadBtn.addEventListener('click',inject);reloadBtn&&reloadBtn.addEventListener('click',function(){loaded=false;loading=false;inject();});
-    var addExpandControl=function(){if(document.getElementById('comments-expand-btn'))return;var btn=document.createElement('button');btn.type='button';btn.id='comments-expand-btn';btn.className='comments-expand-btn';btn.setAttribute('aria-expanded','false');btn.setAttribute('aria-controls','disqus_thread');btn.textContent='Tam ekran';btn.onclick=function(){var expanded=btn.getAttribute('aria-expanded')==='true';btn.setAttribute('aria-expanded',expanded?'false':'true');btn.textContent=expanded?'Tam ekran':'Daralt';shell.classList.toggle('expanded',!expanded);if(!expanded){var ifr=q('#disqus_thread iframe');if(ifr){ifr.style.height='';ifr.style.maxHeight='';}scrollTo({top:shell.getBoundingClientRect().top+scrollY-56,behavior:'smooth'});}else{var ifr2=q('#disqus_thread iframe');if(ifr2){var maxH=Math.round(innerHeight*0.7);ifr2.style.height=maxH+'px';ifr2.style.maxHeight=maxH+'px';}}};var wrap=document.createElement('div');wrap.className='comments-expand-wrap';wrap.appendChild(btn);shell.appendChild(wrap);};
-  })();
+
+<script>
+  const toggle = document.getElementById('comment-toggle') as HTMLButtonElement;
+  const section = document.getElementById('comments-section') as HTMLDivElement;
+  const toggleText = document.getElementById('toggle-text') as HTMLSpanElement;
+  
+  let commentsLoaded = false;
+  let isVisible = false;
+  
+  function loadDisqus() {
+    if (commentsLoaded) return;
+    
+    // Clear any existing Disqus elements
+    const thread = document.getElementById('disqus_thread');
+    if (thread) {
+      thread.innerHTML = '';
+    }
+    
+    // Reset Disqus if it was loaded before
+    if ((window as any).DISQUS) {
+      (window as any).DISQUS.reset({
+        reload: true,
+        config: function () {
+          this.page.identifier = window.location.pathname;
+          this.page.url = window.location.href;
+          this.page.title = document.title;
+        }
+      });
+      commentsLoaded = true;
+      return;
+    }
+    
+    const disqusShortname = 'tekhaza';
+    
+    // Set global Disqus configuration
+    (window as any).disqus_config = function() {
+      this.page.url = window.location.href;
+      this.page.identifier = window.location.pathname;
+      this.page.title = document.title;
+    };
+    
+    // Create and load the Disqus script
+    const script = document.createElement('script');
+    script.src = `https://${disqusShortname}.disqus.com/embed.js`;
+    script.setAttribute('data-timestamp', String(Date.now()));
+    script.async = true;
+    
+    script.onload = () => {
+      console.log('Disqus loaded successfully');
+      commentsLoaded = true;
+    };
+    
+    script.onerror = () => {
+      console.error('Failed to load Disqus');
+      const thread = document.getElementById('disqus_thread');
+      if (thread) {
+        thread.innerHTML = '<p style="text-align: center; color: var(--gray);">Yorumlar yüklenemedi. Lütfen sayfayı yenileyin.</p>';
+      }
+    };
+    
+    (document.head || document.body).appendChild(script);
+  }
+  
+  function toggleComments() {
+    isVisible = !isVisible;
+    
+    toggle.classList.toggle('active', isVisible);
+    section.classList.toggle('show', isVisible);
+    toggle.setAttribute('aria-expanded', String(isVisible));
+    
+    toggleText.textContent = isVisible ? 'Yorumları Gizle' : 'Yorumları Göster';
+    
+    if (isVisible && !commentsLoaded) {
+      // Small delay to allow the animation to start
+      setTimeout(loadDisqus, 100);
+    }
+  }
+  
+  toggle.addEventListener('click', toggleComments);
+  
+  // Intersection Observer for performance
+  const observer = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting && !commentsLoaded && isVisible) {
+      loadDisqus();
+      observer.disconnect();
+    }
+  });
+  
+  observer.observe(section);
 </script>
-{ enableCount && <script id="dsq-count-scr" src="//tekhaza.disqus.com/count.js" async></script> }
-<noscript>Lütfen JavaScript'i etkinleştirin: <a href="https://disqus.com/?ref_noscript">yorumları görmek için</a>.</noscript>
