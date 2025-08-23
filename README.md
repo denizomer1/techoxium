@@ -1,26 +1,84 @@
-techoxium site
+# Techoxium
 
-Local development
+<div align="center">
+  <img src="public/logo.png" alt="Techoxium Logo" width="200" height="200">
+  
+  <p><strong>Modern Tech Blog Built with Astro 🚀</strong></p>
+  
+  ![Version](https://img.shields.io/badge/version-v1.0.0-blue?style=for-the-badge)
+  ![Status](https://img.shields.io/badge/status-stable-green?style=for-the-badge)
+  ![Astro](https://img.shields.io/badge/astro-v5.13.3-orange?style=for-the-badge)
+  ![Cloudflare](https://img.shields.io/badge/deployed%20on-cloudflare-yellow?style=for-the-badge)
 
-1. Install dependencies:
+</div>
 
-	npm install
+## ✨ Features
 
-2. Run dev server:
+- 🔍 **Modern Search** - Dynamic search functionality with smooth animations
+- 📱 **Responsive Design** - Works perfectly on desktop and mobile
+- 🌙 **Dark Mode** - Beautiful dark/light theme support
+- ⚡ **Fast Performance** - Built with Astro for lightning-fast loading
+- 🎨 **Modern UI** - Clean, compact design with backdrop blur effects
+- 🇹🇷 **Turkish Language** - Full Turkish language support
 
-	npm run dev
+## 🚀 v1.0.0 Stable Release
 
-Build for production (Cloudflare Workers)
+This is the first stable release featuring:
+- ✅ Complete modern search implementation
+- ✅ Responsive design for all devices  
+- ✅ Astro v5.13.3 framework
+- ✅ Production-ready architecture
+- ✅ Dynamic content loading
 
-1. Build:
+## 🛠️ Local Development
 
-	npm run build
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-2. Preview locally with wrangler:
+2. **Run development server:**
+   ```bash
+   npm run dev
+   ```
 
-	npm run preview
+3. **Open your browser:**
+   ```
+   http://localhost:4321
+   ```
 
-Notes
+## 🏗️ Build for Production (Cloudflare Workers)
 
-- This project uses the `@astrojs/cloudflare` adapter and `wrangler` for local preview and deploy.
-- Ensure you have `wrangler` installed globally or available in devDependencies; `npm run preview` runs `wrangler dev` after building.
+1. **Build the project:**
+   ```bash
+   npm run build
+   ```
+
+2. **Preview locally with Wrangler:**
+   ```bash
+   npm run preview
+   ```
+
+## 🌐 Deployment
+
+This project uses the `@astrojs/cloudflare` adapter and `wrangler` for deployment to Cloudflare Workers.
+
+## 📋 Technical Stack
+
+- **Framework:** Astro v5.13.3
+- **Styling:** Modern CSS with animations
+- **Deployment:** Cloudflare Workers
+- **Language:** TypeScript
+- **Content:** Markdown-based blog posts
+
+## 📝 Notes
+
+- Ensure you have `wrangler` installed globally or available in devDependencies
+- `npm run preview` runs `wrangler dev` after building
+- Search functionality loads content dynamically from the blog collection
+
+---
+
+<div align="center">
+  Made with ❤️ and ☕ | <strong>v1.0.0 Stable Release</strong>
+</div>
