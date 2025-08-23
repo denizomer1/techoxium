@@ -1,7 +1,6 @@
 ---
 import HeaderLink from './HeaderLink.astro';
 import { SITE_TITLE } from '../consts';
-import Search from './Search.astro';
 ---
 
 <header class="main-header">
@@ -35,14 +34,20 @@ import Search from './Search.astro';
     
     <div class="nav-menu" id="nav-menu">
       <div class="nav-search-mobile">
-        <Search />
+        <div class="inline-search">
+          <input type="text" placeholder="Arama yapın..." class="search-input" />
+          <div class="search-results"></div>
+        </div>
       </div>
       
       <div class="nav-links">
         <HeaderLink href="/about">Hakkımızda</HeaderLink>
       </div>      <div class="nav-actions-desktop">
         <div class="nav-search">
-          <Search />
+          <div class="inline-search">
+            <input type="text" placeholder="Arama yapın..." class="search-input" />
+            <div class="search-results"></div>
+          </div>
         </div>
         
         <button class="theme-toggle theme-toggle-desktop" id="theme-toggle-desktop" aria-label="Tema değiştir">
@@ -454,6 +459,79 @@ import Search from './Search.astro';
     background: rgba(99, 102, 241, 0.2);
     border-color: #6366f1;
   }
+
+  /* Inline Search Styles */
+  .inline-search {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .inline-search .search-input {
+    width: 100%;
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+
+  .inline-search .search-input:focus {
+    border-color: var(--accent);
+  }
+
+  .inline-search .search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    z-index: 1000;
+  }
+
+  .inline-search .search-result {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .inline-search .search-result:hover {
+    background: #f5f5f5;
+  }
+
+  .inline-search .search-result:last-child {
+    border-bottom: none;
+  }
+
+  :global(html.dark) .inline-search .search-input {
+    background: #1f2937;
+    border-color: #374151;
+    color: white;
+  }
+
+  :global(html.dark) .inline-search .search-results {
+    background: #1f2937;
+    border-color: #374151;
+  }
+
+  :global(html.dark) .inline-search .search-result {
+    color: white;
+    border-bottom-color: #374151;
+  }
+
+  :global(html.dark) .inline-search .search-result:hover {
+    background: #374151;
+  }
 </style>
 
 <script>
@@ -539,5 +617,47 @@ import Search from './Search.astro';
       themeToggle.setAttribute('aria-label', e.matches ? 'Açık moda geç' : 'Koyu moda geç');
       themeToggleDesktop?.setAttribute('aria-label', e.matches ? 'Açık moda geç' : 'Koyu moda geç');
     }
+  });
+
+  // Inline Search Functionality
+  const searchInputs = document.querySelectorAll('.inline-search .search-input');
+  const posts = [
+    { title: 'Test Search Post', slug: 'test-search' },
+    { title: 'JavaScript Modern Özellikler', slug: 'javascript-modern' },
+    { title: 'Rog Xbox Ally Geliyor', slug: 'rog-xbox' }
+  ];
+
+  searchInputs.forEach(input => {
+    const results = input.parentElement.querySelector('.search-results');
+    
+    input.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase();
+      
+      if (!query) {
+        results.style.display = 'none';
+        return;
+      }
+      
+      const filtered = posts.filter(post => 
+        post.title.toLowerCase().includes(query)
+      );
+      
+      if (filtered.length === 0) {
+        results.innerHTML = '<div class="search-result">Sonuç bulunamadı</div>';
+      } else {
+        results.innerHTML = filtered.map(post => 
+          `<a href="/${post.slug}/" class="search-result">${post.title}</a>`
+        ).join('');
+      }
+      
+      results.style.display = 'block';
+    });
+    
+    // Hide results on outside click
+    document.addEventListener('click', (e) => {
+      if (!input.parentElement.contains(e.target)) {
+        results.style.display = 'none';
+      }
+    });
   });
 </script>

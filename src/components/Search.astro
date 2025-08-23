@@ -1,529 +1,299 @@
-<div class="search-root">
-  <div class="search-bar">
-    <svg class="loop" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+<div class="search-wrapper">
+  <div class="search-container">
+    <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
       <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" fill="none"/>
       <line x1="16.65" y1="16.65" x2="22" y2="22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
     </svg>
     <input class="search-input" type="search" placeholder="Arama yapın..." aria-label="Search posts" autocomplete="off" />
-    <button class="clear-btn" type="button" aria-label="Clear search" hidden>&times;</button>
+    <button class="clear-btn" type="button" aria-label="Clear search">&times;</button>
   </div>
+  <div class="search-results"></div>
 </div>
 
-<!-- Results container moved to end of body -->
-
 <style>
-.search-root { 
-  position: relative; 
-  font-size: 14px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 100;
+.search-wrapper {
+  position: relative;
 }
 
-.search-bar { 
-  display: flex; 
-  align-items: center; 
-  gap: 0.75rem; 
-  background: rgba(255,255,255,0.95); 
-  border: 2px solid rgba(2,6,23,0.1); 
-  border-radius: 50px; 
-  padding: 0.65rem 1rem; 
-  box-shadow: 
-    0 2px 8px rgba(2,6,23,0.06),
-    0 1px 2px rgba(2,6,23,0.04);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(255,255,255,0.95);
+  border: 2px solid rgba(2,6,23,0.1);
+  border-radius: 50px;
+  padding: 0.65rem 1rem;
+  box-shadow: 0 2px 8px rgba(2,6,23,0.06);
+  transition: all 0.3s ease;
   backdrop-filter: blur(10px);
-  position: relative;
-  overflow: hidden;
-  width: 40px;
-  height: 40px;
   cursor: pointer;
 }
 
-/* Compact state - desktop only */
-@media (min-width: 769px) {
-  .search-bar {
-    justify-content: center;
-  }
-  
-  .search-input {
-    width: 0;
-    opacity: 0;
-    padding: 0;
-  }
-  
-  .clear-btn {
-    opacity: 0;
-    transform: scale(0);
-  }
-  
-  /* Expanded state on hover/focus */
-  .search-root:hover .search-bar,
-  .search-root:focus-within .search-bar {
-    width: 320px;
-    cursor: text;
-  }
-  
-  .search-root:hover .search-input,
-  .search-root:focus-within .search-input {
-    width: auto;
-    flex: 1;
-    opacity: 1;
-    padding: 0.3rem 0;
-  }
-  
-  .search-root:hover .clear-btn:not([hidden]),
-  .search-root:focus-within .clear-btn:not([hidden]) {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-}
-
-/* Mobile - always expanded */
-@media (max-width: 768px) {
-  .search-bar {
-    width: 100%;
-    min-width: 250px;
-  }
-}
-
-.search-bar::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg, 
-    transparent, 
-    rgba(var(--accent-rgb, 2, 6, 23), 0.1), 
-    transparent
-  );
-  transition: left 0.6s ease;
-  pointer-events: none;
-}
-
-.search-root:focus-within .search-bar { 
-  border-color: var(--accent); 
-  box-shadow: 
-    0 4px 20px rgba(2,6,23,0.12),
-    0 2px 8px rgba(var(--accent-rgb, 2, 6, 23), 0.15);
-  transform: translateY(-1px);
-}
-
-.search-root:focus-within .search-bar::before {
-  left: 100%;
-}
-
-.search-input { 
-  font: inherit; 
-  font-size: 15px;
-  border: 0; 
-  background: transparent; 
-  outline: none; 
-  color: inherit; 
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+.search-input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font: inherit;
   flex: 1;
   padding: 0.3rem 0;
 }
 
-.search-input::placeholder { 
-  color: rgba(2,6,23,0.5); 
-  transition: color 0.2s ease;
-}
-
-.search-input:focus::placeholder {
-  color: rgba(2,6,23,0.3);
-}
-
-.loop { 
-  opacity: 0.6; 
-  transition: all 0.3s ease;
-  color: var(--text-color);
+.search-icon {
+  opacity: 0.6;
+  color: var(--text-color, #333);
   flex-shrink: 0;
 }
 
-.search-root:hover .loop,
-.search-root:focus-within .loop {
-  opacity: 0.9;
-  color: var(--accent);
-  transform: scale(1.1);
-}
-
-.clear-btn { 
-  background: transparent; 
-  border: 0; 
-  color: rgba(2,6,23,0.5); 
-  font-size: 1.25rem; 
-  cursor: pointer; 
-  padding: 0.2rem 0.3rem; 
-  border-radius: 50%; 
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+.clear-btn {
+  background: transparent;
+  border: 0;
+  color: rgba(2,6,23,0.5);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.2rem;
+  border-radius: 50%;
   flex-shrink: 0;
-  opacity: 0;
-  transform: scale(0.8);
+  display: none;
 }
 
-.clear-btn:not([hidden]) {
-  opacity: 1;
-  transform: scale(1);
+.clear-btn:hover {
+  background: rgba(2,6,23,0.08);
 }
 
-.clear-btn:hover { 
-  background: rgba(2,6,23,0.08); 
-  color: rgba(2,6,23,0.8);
-  transform: scale(1.1);
-}
-
-.results { 
-  position: fixed; 
-  left: auto;
-  right: auto;
-  top: auto;
-  background: rgba(255,255,255,0.98); 
-  border: 1px solid rgba(2,6,23,0.1); 
-  border-radius: 16px; 
-  overflow: hidden; 
-  box-shadow: 
-    0 20px 40px rgba(2,6,23,0.15),
-    0 8px 20px rgba(2,6,23,0.08);
-  z-index: 99999;
-  backdrop-filter: blur(20px);
-  opacity: 0;
-  transform: translateY(-8px) scale(0.95);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  min-width: 320px;
+.search-results {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid rgba(2,6,23,0.1);
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(2,6,23,0.15);
+  z-index: 999999;
   max-height: 400px;
   overflow-y: auto;
-  pointer-events: none;
+  display: none;
 }
 
-.results:not([hidden]) {
-  opacity: 1 !important;
-  transform: translateY(0) scale(1) !important;
-  pointer-events: auto;
-  display: block !important;
-  visibility: visible !important;
+.search-result {
+  padding: 12px 16px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  border-bottom: 1px solid rgba(2,6,23,0.05);
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.2s ease;
 }
 
-.result-item { 
-  padding: 1rem; 
-  display: flex; 
-  gap: 1rem; 
-  align-items: center; 
-  border-bottom: 1px solid rgba(2,6,23,0.05); 
-  text-decoration: none; 
-  color: inherit; 
-  transition: all 0.2s ease;
-  position: relative;
+.search-result:hover {
+  background: rgba(2,6,23,0.03);
 }
 
-.result-item::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: var(--accent);
-  transform: scaleY(0);
-  transition: transform 0.2s ease;
+.search-result:last-child {
+  border-bottom: none;
 }
 
-.result-item:last-child { 
-  border-bottom: none; 
+.search-result img {
+  width: 60px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 8px;
+  background: #f8f9fa;
 }
 
-.result-item:hover { 
-  background: rgba(2,6,23,0.03); 
-  transform: translateX(4px);
-}
-
-.result-item:hover::before {
-  transform: scaleY(1);
-}
-
-.result-item img { 
-  width: 70px; 
-  height: 48px; 
-  object-fit: cover; 
-  border-radius: 12px; 
-  background: #f8fafc; 
-  transition: transform 0.2s ease;
-  box-shadow: 0 2px 8px rgba(2,6,23,0.08);
-}
-
-.result-item:hover img {
-  transform: scale(1.05);
-}
-
-.result-item .meta { 
-  display: flex; 
-  flex-direction: column; 
-  gap: 4px; 
+.search-result-content {
   flex: 1;
 }
 
-.result-item .title { 
-  font-weight: 600; 
-  margin: 0; 
-  font-size: 0.9rem; 
-  line-height: 1.3; 
-  color: var(--text-color);
+.search-result-title {
+  font-weight: 600;
+  margin: 0 0 4px;
+  font-size: 0.9rem;
+  line-height: 1.3;
 }
 
-.result-item .date { 
-  font-size: 0.75rem; 
-  font-weight: 500; 
-  color: rgba(2,6,23,0.6); 
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
+.search-result-date {
+  font-size: 0.75rem;
+  color: rgba(2,6,23,0.6);
 }
 
-.result-item .date::before {
-  content: '📅';
-  font-size: 0.7rem;
-}
-
-/* Search icon pulse animation when compact */
+/* Desktop - smaller search bar */
 @media (min-width: 769px) {
-  .search-bar:not(:hover):not(:focus-within) .loop {
-    animation: pulse 2s infinite;
+  .search-container {
+    width: 280px;
+    min-width: 280px;
   }
   
-  @keyframes pulse {
-    0%, 100% {
-      opacity: 0.6;
-    }
-    50% {
-      opacity: 1;
-    }
+  .search-input {
+    font-size: 0.9rem;
+  }
+  
+  .clear-btn.show {
+    display: block;
+  }
+  
+  .search-results {
+    width: 280px;
+  }
+}
+
+/* Mobile - always expanded */
+@media (max-width: 768px) {
+  .search-container {
+    width: 100%;
+    min-width: 250px;
+  }
+  
+  .clear-btn.show {
+    display: block;
   }
 }
 
 /* Dark mode */
-html.dark .search-bar { 
-  background: rgba(15,20,25,0.9); 
-  border-color: rgba(255,255,255,0.12); 
+html.dark .search-container {
+  background: rgba(15,20,25,0.9);
+  border-color: rgba(255,255,255,0.12);
+}
+
+html.dark .search-results {
+  background: rgba(15,20,25,0.95);
+  border-color: rgba(255,255,255,0.08);
+}
+
+html.dark .search-result {
+  border-bottom-color: rgba(255,255,255,0.05);
   color: #e2e8f0;
 }
 
-html.dark .search-bar::before {
-  background: linear-gradient(
-    90deg, 
-    transparent, 
-    rgba(255,255,255,0.08), 
-    transparent
-  );
-}
-
-html.dark .search-root:focus-within .search-bar { 
-  border-color: var(--accent); 
-  box-shadow: 
-    0 4px 20px rgba(0,0,0,0.3),
-    0 2px 8px rgba(var(--accent-rgb, 59, 130, 246), 0.2);
-}
-
-html.dark .search-input::placeholder { 
-  color: rgba(255,255,255,0.4); 
-}
-
-html.dark .search-input:focus::placeholder {
-  color: rgba(255,255,255,0.25);
-}
-
-html.dark .loop {
-  color: #94a3b8;
-}
-
-html.dark .search-root:hover .loop,
-html.dark .search-root:focus-within .loop {
-  color: var(--accent);
-}
-
-html.dark .clear-btn { 
-  color: rgba(255,255,255,0.5); 
-}
-
-html.dark .clear-btn:hover { 
-  background: rgba(255,255,255,0.08); 
-  color: rgba(255,255,255,0.8);
-}
-
-html.dark .results { 
-  background: rgba(15,20,25,0.95); 
-  border-color: rgba(255,255,255,0.08); 
-  box-shadow: 
-    0 20px 40px rgba(0,0,0,0.4),
-    0 8px 20px rgba(0,0,0,0.2);
-}
-
-html.dark .result-item { 
-  border-bottom-color: rgba(255,255,255,0.05); 
-  color: #e2e8f0;
-}
-
-html.dark .result-item:hover { 
-  background: rgba(255,255,255,0.05); 
-}
-
-html.dark .result-item .title {
-  color: #f1f5f9;
-}
-
-html.dark .result-item .date { 
-  color: rgba(255,255,255,0.5); 
-}
-
-html.dark .result-item img { 
-  background: #1e293b; 
+html.dark .search-result:hover {
+  background: rgba(255,255,255,0.05);
 }
 </style>
-</style>
 
-<script type="module">
-const root = document.querySelector('.search-root');
-const input = root?.querySelector('.search-input');
-const clearBtn = root?.querySelector('.clear-btn');
-let results;
-let posts = [];
-let timer = null;
-
-// Create results container and append to body
-if (root) {
-  results = document.createElement('div');
-  results.className = 'results';
-  results.setAttribute('role', 'listbox');
-  results.setAttribute('aria-label', 'Search results');
-  results.hidden = true;
-  document.body.appendChild(results);
-}
-
-const turkishMonths = {
-  1: 'ocak', 2: 'şubat', 3: 'mart', 4: 'nisan', 
-  5: 'mayıs', 6: 'haziran', 7: 'temmuz', 8: 'ağustos',
-  9: 'eylül', 10: 'ekim', 11: 'kasım', 12: 'aralık'
-};
-
-async function loadPosts() { 
-  if (posts.length) return; 
-  try { 
-    const res = await fetch('/api/posts.json'); 
-    posts = await res.json(); 
-  } catch (error) { 
-    console.error('Error loading posts:', error);
-    posts = []; 
-  } 
-}
-
-function dateFmt(d) { 
-  try { 
-    const date = new Date(d);
-    const day = date.getDate();
-    const month = turkishMonths[date.getMonth() + 1];
-    const year = date.getFullYear();
-    return `${day} ${month} ${year}`;
-  } catch { 
-    return d; 
-  } 
-}
-
-function tpl(p) { 
-  return `<a class="result-item" href="/${p.slug}/">
-    ${p.heroImage ? `<img src="${p.heroImage}" alt="" loading="lazy"/>` : ''}
-    <div class="meta">
-      <div class="title">${p.title}</div>
-      <div class="date">${dateFmt(p.pubDate)}</div>
-    </div>
-  </a>`; 
-}
-
-function search(q) { 
-  if (!q) return []; 
-  const qq = q.trim().toLowerCase(); 
-  return posts.filter(p => 
-    (p.title || '').toLowerCase().includes(qq) || 
-    (p.description || '').toLowerCase().includes(qq)
-  ).slice(0, 5); 
-}
-
-function render(list) { 
-  if (!results) return; 
-  if (!list.length) { 
-    results.hidden = true; 
-    results.innerHTML = ''; 
-    return; 
-  } 
+<script is:inline>
+window.addEventListener('load', () => {
+  const wrapper = document.querySelector('.search-wrapper');
+  const container = wrapper?.querySelector('.search-container');
+  const input = wrapper?.querySelector('.search-input');
+  const results = wrapper?.querySelector('.search-results');
+  const clearBtn = wrapper?.querySelector('.clear-btn');
   
-  // Position the results relative to the search bar
-  const searchRect = root.getBoundingClientRect();
-  results.style.top = `${searchRect.bottom + 12}px`;
-  results.style.left = `${searchRect.left}px`;
-  results.style.width = `${Math.max(320, searchRect.width)}px`;
+  if (!wrapper || !container || !input || !results || !clearBtn) return;
   
-  results.hidden = false; 
-  results.innerHTML = list.map(tpl).join(''); 
-  console.log('Search results rendered:', list.length, 'items');
-  console.log('Results element hidden:', results.hidden);
-  console.log('Results element style:', window.getComputedStyle(results).display);
-}
+  let posts = [
+    {
+      slug: 'test-search',
+      title: 'Test Search Post',
+      description: 'Bu bir test yazısı arama fonksiyonunu test etmek için',
+      pubDate: '2025-08-23',
+      heroImage: '/blog-placeholder-2.jpg'
+    },
+    {
+      slug: 'javascript-modern',
+      title: 'JavaScript Modern Özellikler',
+      description: 'Modern JavaScript ile web geliştirme teknikleri',
+      pubDate: '2025-08-21',
+      heroImage: '/blog-placeholder-3.jpg'
+    },
+    {
+      slug: 'rog-xbox',
+      title: 'Rog Xbox Ally Geliyor',
+      description: 'Xbox artık her yerde',
+      pubDate: '2025-08-22',
+      heroImage: '/blog-placeholder-4.png'
+    }
+  ];
 
-function clear() { 
-  if (!input || !clearBtn) return; 
-  input.value = ''; 
-  clearBtn.hidden = true; 
-  render([]); 
-}
+  const turkishMonths = {
+    1: 'ocak', 2: 'şubat', 3: 'mart', 4: 'nisan', 
+    5: 'mayıs', 6: 'haziran', 7: 'temmuz', 8: 'ağustos',
+    9: 'eylül', 10: 'ekim', 11: 'kasım', 12: 'aralık'
+  };
 
-input?.addEventListener('input', () => { 
-  if (!input) return; 
-  if (timer) clearTimeout(timer); 
-  clearBtn && (clearBtn.hidden = input.value.length === 0); 
-  console.log('Search input value:', input.value);
-  timer = window.setTimeout(() => { 
-    const searchResults = search(input.value);
-    console.log('Input search results:', searchResults);
-    render(searchResults); 
-  }, 200); 
-});
-
-input?.addEventListener('focus', () => { 
-  console.log('Search input focused');
-  loadPosts(); 
-  if (input.value) {
-    const searchResults = search(input.value);
-    console.log('Focus search results:', searchResults);
-    render(searchResults);
+  function formatDate(dateString) {
+    try {
+      const date = new Date(dateString);
+      const day = date.getDate();
+      const month = turkishMonths[date.getMonth() + 1];
+      const year = date.getFullYear();
+      return `${day} ${month} ${year}`;
+    } catch {
+      return dateString;
+    }
   }
-});
 
-clearBtn?.addEventListener('click', () => { 
-  clear(); 
-  input?.focus(); 
-});
-
-document.addEventListener('keydown', (e) => { 
-  if (e.key === '/' && document.activeElement !== input) { 
-    input?.focus(); 
-    e.preventDefault(); 
-  } 
-});
-
-document.addEventListener('click', e => { 
-  if (!root?.contains(e.target)) { 
-    render([]); 
-  } 
-});
-
-// Update results position on window resize
-window.addEventListener('resize', () => {
-  if (!results.hidden && root && results) {
-    const searchRect = root.getBoundingClientRect();
-    results.style.top = `${searchRect.bottom + 12}px`;
-    results.style.left = `${searchRect.left}px`;
-    results.style.width = `${Math.max(320, searchRect.width)}px`;
+  function searchPosts(query) {
+    if (!query.trim()) return [];
+    const q = query.toLowerCase().trim();
+    return posts.filter(post => 
+      post.title.toLowerCase().includes(q) ||
+      post.description.toLowerCase().includes(q)
+    ).slice(0, 5);
   }
+
+  function renderResults(resultList) {
+    if (!resultList.length) {
+      results.style.display = 'none';
+      return;
+    }
+
+    const html = resultList.map(post => `
+      <a href="/${post.slug}/" class="search-result">
+        ${post.heroImage ? `<img src="${post.heroImage}" alt="" loading="lazy"/>` : ''}
+        <div class="search-result-content">
+          <div class="search-result-title">${post.title}</div>
+          <div class="search-result-date">${formatDate(post.pubDate)}</div>
+        </div>
+      </a>
+    `).join('');
+
+    results.innerHTML = html;
+    results.style.display = 'block';
+  }
+
+  // Event handlers
+  input.addEventListener('input', (e) => {
+    const query = e.target.value;
+    
+    if (query) {
+      clearBtn.classList.add('show');
+      const searchResults = searchPosts(query);
+      renderResults(searchResults);
+    } else {
+      clearBtn.classList.remove('show');
+      renderResults([]);
+    }
+  });
+
+  input.addEventListener('blur', () => {
+    setTimeout(() => {
+      if (!wrapper.matches(':hover') && !input.value) {
+        results.style.display = 'none';
+      }
+    }, 200);
+  });
+
+  clearBtn.addEventListener('click', () => {
+    input.value = '';
+    clearBtn.classList.remove('show');
+    renderResults([]);
+    input.focus();
+  });
+
+  // Close on outside click
+  document.addEventListener('click', (e) => {
+    if (!wrapper.contains(e.target)) {
+      results.style.display = 'none';
+    }
+  });
+
+  // Keyboard shortcut to focus search
+  document.addEventListener('keydown', (e) => {
+    if (e.key === '/' && document.activeElement !== input) {
+      e.preventDefault();
+      input.focus();
+    }
+  });
 });
 </script>
