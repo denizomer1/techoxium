@@ -1,7 +1,21 @@
 ---
 interface Props { date?: Date | string }
+
+const turkishMonths: Record<number, string> = {
+  1: 'ocak', 2: 'şubat', 3: 'mart', 4: 'nisan', 
+  5: 'mayıs', 6: 'haziran', 7: 'temmuz', 8: 'ağustos',
+  9: 'eylül', 10: 'ekim', 11: 'kasım', 12: 'aralık'
+};
+
 const { date } = Astro.props as Props;
 const d = date ? (date instanceof Date ? date : new Date(date)) : undefined;
-const formatted = d ? new Intl.DateTimeFormat('en-US',{year:'numeric',month:'short',day:'numeric'}).format(d) : '';
+
+let formatted = '';
+if (d) {
+  const day = d.getDate();
+  const month = turkishMonths[d.getMonth() + 1];
+  const year = d.getFullYear();
+  formatted = `${day} ${month} ${year}`;
+}
 ---
 {d ? <time datetime={d.toISOString()}>{formatted}</time> : <span aria-hidden="true"></span>}
