@@ -1,0 +1,110 @@
+---
+import { t } from '../i18n/utils';
+
+interface Props {
+  locale?: string;
+}
+
+const { locale = 'tr' } = Astro.props;
+---
+
+<div class="font-size-controls">
+  <button id="decrease-font" aria-label={t(locale, 'accessibility.decreaseFontSize')} title={t(locale, 'accessibility.decreaseFontSize')}>
+    <span class="font-icon small">A</span>
+  </button>
+  <button id="increase-font" aria-label={t(locale, 'accessibility.increaseFontSize')} title={t(locale, 'accessibility.increaseFontSize')}>
+    <span class="font-icon large">A</span>
+  </button>
+</div>
+
+<style>
+  .font-size-controls {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  
+  .font-size-controls button {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--gray-light);
+    border-radius: var(--border-radius);
+    background: var(--gray-gradient);
+    color: var(--gray-dark);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .font-size-controls button:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.3);
+  }
+  
+  .font-size-controls button:active {
+    transform: translateY(0);
+  }
+  
+  .font-icon {
+    font-weight: bold;
+    font-family: serif;
+    transition: all 0.2s ease;
+  }
+  
+  .font-icon.small {
+    font-size: 14px;
+  }
+  
+  .font-icon.large {
+    font-size: 20px;
+  }
+  
+  .font-size-controls button:hover .font-icon {
+    transform: scale(1.1);
+  }
+</style>
+
+<script define:vars={{ locale }}>
+  const decreaseBtn = document.getElementById('decrease-font');
+  const increaseBtn = document.getElementById('increase-font');
+  
+  // Font size levels
+  const fontSizes = ['small', 'medium', 'large'];
+  let currentSize = localStorage.getItem('fontSize') || 'medium';
+  
+  // Apply saved font size on load
+  document.documentElement.setAttribute('data-font-size', currentSize);
+  
+  function updateFontSize(size) {
+    currentSize = size;
+    document.documentElement.setAttribute('data-font-size', size);
+    localStorage.setItem('fontSize', size);
+    
+    // Update button states
+    decreaseBtn.disabled = size === 'small';
+    increaseBtn.disabled = size === 'large';
+  }
+  
+  decreaseBtn.addEventListener('click', () => {
+    const currentIndex = fontSizes.indexOf(currentSize);
+    if (currentIndex > 0) {
+      updateFontSize(fontSizes[currentIndex - 1]);
+    }
+  });
+  
+  increaseBtn.addEventListener('click', () => {
+    const currentIndex = fontSizes.indexOf(currentSize);
+    if (currentIndex < fontSizes.length - 1) {
+      updateFontSize(fontSizes[currentIndex + 1]);
+    }
+  });
+  
+  // Initialize button states
+  updateFontSize(currentSize);
+</script>

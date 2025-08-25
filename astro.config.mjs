@@ -6,8 +6,15 @@ import cloudflare from "@astrojs/cloudflare";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://techoxium.denizomer10.workers.dev",
+  site: "https://techoxium.com",
   integrations: [mdx(), sitemap()],
+  i18n: {
+    defaultLocale: "tr",
+    locales: ["tr", "en"],
+    routing: {
+      prefixDefaultLocale: false
+    }
+  },
   output: "server",
   adapter: cloudflare({
     platformProxy: {

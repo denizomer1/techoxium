@@ -1,9 +1,11 @@
 ---
+import { t } from '../i18n/utils';
+
 export interface Props {
-  title: string;
+  locale?: string;
 }
 
-const { title } = Astro.props;
+const { locale = 'tr' } = Astro.props;
 ---
 
 <div class="comments-container">
@@ -11,7 +13,7 @@ const { title } = Astro.props;
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
     </svg>
-    <span id="toggle-text">Yorumları Göster</span>
+    <span id="toggle-text">{t(locale, 'blog.showComments')}</span>
     <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M6 9l6 6 6-6"/>
     </svg>
@@ -117,10 +119,10 @@ const { title } = Astro.props;
   }
 </style>
 
-<script>
-  const toggle = document.getElementById('comment-toggle') as HTMLButtonElement;
-  const section = document.getElementById('comments-section') as HTMLDivElement;
-  const toggleText = document.getElementById('toggle-text') as HTMLSpanElement;
+<script define:vars={{ locale, showCommentsText: t(locale, 'blog.showComments'), hideCommentsText: t(locale, 'blog.hideComments'), loadFailedText: locale === 'en' ? 'Comments failed to load. Please refresh the page.' : 'Yorumlar yüklenemedi. Lütfen sayfayı yenileyin.' }}>
+  const toggle = document.getElementById('comment-toggle');
+  const section = document.getElementById('comments-section');
+  const toggleText = document.getElementById('toggle-text');
   
   let commentsLoaded = false;
   let isVisible = false;
@@ -135,8 +137,8 @@ const { title } = Astro.props;
     }
     
     // Reset Disqus if it was loaded before
-    if ((window as any).DISQUS) {
-      (window as any).DISQUS.reset({
+    if (window.DISQUS) {
+      window.DISQUS.reset({
         reload: true,
         config: function () {
           this.page.identifier = window.location.pathname;
@@ -151,7 +153,7 @@ const { title } = Astro.props;
     const disqusShortname = 'tekhaza';
     
     // Set global Disqus configuration
-    (window as any).disqus_config = function() {
+    window.disqus_config = function() {
       this.page.url = window.location.href;
       this.page.identifier = window.location.pathname;
       this.page.title = document.title;
@@ -172,7 +174,7 @@ const { title } = Astro.props;
       console.error('Failed to load Disqus');
       const thread = document.getElementById('disqus_thread');
       if (thread) {
-        thread.innerHTML = '<p style="text-align: center; color: var(--gray);">Yorumlar yüklenemedi. Lütfen sayfayı yenileyin.</p>';
+        thread.innerHTML = `<p style="text-align: center; color: var(--gray);">${loadFailedText}</p>`;
       }
     };
     
@@ -186,7 +188,7 @@ const { title } = Astro.props;
     section.classList.toggle('show', isVisible);
     toggle.setAttribute('aria-expanded', String(isVisible));
     
-    toggleText.textContent = isVisible ? 'Yorumları Gizle' : 'Yorumları Göster';
+    toggleText.textContent = isVisible ? hideCommentsText : showCommentsText;
     
     if (isVisible && !commentsLoaded) {
       // Small delay to allow the animation to start

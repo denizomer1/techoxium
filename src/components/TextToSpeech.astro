@@ -1,0 +1,258 @@
+---
+import { t } from '../i18n/utils';
+
+interface Props {
+  locale?: string;
+}
+
+const { locale = 'tr' } = Astro.props;
+---
+
+<div class="text-to-speech-controls">
+  <button id="tts-toggle" aria-label={t(locale, 'accessibility.playAudio')} title={t(locale, 'accessibility.playAudio')}>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" id="play-icon">
+      <path d="M8 5v14l11-7z"/>
+    </svg>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" id="stop-icon" style="display: none;">
+      <path d="M6 6h12v12H6z"/>
+    </svg>
+    <span id="tts-text">{t(locale, 'accessibility.playAudio')}</span>
+  </button>
+  <div class="tts-progress">
+    <div class="tts-progress-bar" id="tts-progress-bar"></div>
+  </div>
+</div>
+
+<style>
+  .text-to-speech-controls {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    padding: 0.5rem;
+    background: var(--gray-gradient);
+    border-radius: var(--border-radius);
+    border: 2px solid var(--gray-light);
+  }
+  
+  .text-to-speech-controls button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--border-radius);
+    background: var(--accent);
+    color: white;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(var(--accent-rgb), 0.3);
+    white-space: nowrap;
+  }
+  
+  .text-to-speech-controls button:hover {
+    background: var(--accent-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.4);
+  }
+  
+  .text-to-speech-controls button:active {
+    transform: translateY(0);
+  }
+  
+  .text-to-speech-controls button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+  
+  .tts-progress {
+    flex: 1;
+    height: 4px;
+    background: var(--gray-light);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-left: 0.5rem;
+  }
+  
+  .tts-progress-bar {
+    height: 100%;
+    background: var(--accent);
+    width: 0%;
+    transition: width 0.1s linear;
+    border-radius: 2px;
+  }
+  
+  .tts-current-text {
+    background: rgba(var(--accent-rgb), 0.2);
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+  }
+</style>
+
+<script define:vars={{ locale }}>
+  class TextToSpeech {
+    constructor() {
+      this.synth = window.speechSynthesis;
+      this.utterance = null;
+      this.isPlaying = false;
+      this.currentIndex = 0;
+      this.textElements = [];
+      
+      this.toggleBtn = document.getElementById('tts-toggle');
+      this.playIcon = document.getElementById('play-icon');
+      this.stopIcon = document.getElementById('stop-icon');
+      this.ttsText = document.getElementById('tts-text');
+      this.progressBar = document.getElementById('tts-progress-bar');
+      
+      this.init();
+    }
+    
+    init() {
+      // Get all text content from the blog post
+      this.collectTextElements();
+      
+      // Event listeners
+      this.toggleBtn?.addEventListener('click', () => this.toggle());
+      
+      // Check if speech synthesis is supported
+      if (!this.synth) {
+        console.warn('Speech synthesis not supported');
+        this.toggleBtn.disabled = true;
+      }
+    }
+    
+    collectTextElements() {
+      const article = document.querySelector('article, .prose, .blog-content');
+      if (!article) return;
+      
+      // Get all text nodes (p, h1, h2, h3, li, etc.)
+      const selectors = 'h1, h2, h3, h4, h5, h6, p, li';
+      this.textElements = Array.from(article.querySelectorAll(selectors))
+        .filter(el => el.textContent.trim().length > 0);
+    }
+    
+    createUtterance(text) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      
+      // Set language based on locale
+      utterance.lang = locale === 'en' ? 'en-US' : 'tr-TR';
+      utterance.rate = 0.9;
+      utterance.pitch = 1;
+      utterance.volume = 1;
+      
+      // Find appropriate voice
+      const voices = this.synth.getVoices();
+      const preferredVoice = voices.find(voice => 
+        voice.lang.startsWith(locale === 'en' ? 'en' : 'tr')
+      );
+      
+      if (preferredVoice) {
+        utterance.voice = preferredVoice;
+      }
+      
+      return utterance;
+    }
+    
+    toggle() {
+      if (this.isPlaying) {
+        this.stop();
+      } else {
+        this.play();
+      }
+    }
+    
+    play() {
+      if (this.isPlaying) return;
+      
+      // Get all text content
+      const allText = this.textElements
+        .map(el => el.textContent.trim())
+        .join('. ');
+      
+      if (!allText) return;
+      
+      this.utterance = this.createUtterance(allText);
+      
+      // Event handlers
+      this.utterance.onstart = () => {
+        this.isPlaying = true;
+        this.updateUI('playing');
+        this.highlightCurrentText();
+      };
+      
+      this.utterance.onend = () => {
+        this.isPlaying = false;
+        this.currentIndex = 0;
+        this.updateUI('stopped');
+        this.clearHighlights();
+        this.updateProgress(0);
+      };
+      
+      this.utterance.onboundary = (event) => {
+        if (event.name === 'word') {
+          this.updateProgress(event.charIndex / allText.length * 100);
+        }
+      };
+      
+      this.synth.speak(this.utterance);
+    }
+    
+    stop() {
+      this.synth.cancel();
+      this.isPlaying = false;
+      this.currentIndex = 0;
+      this.updateUI('stopped');
+      this.clearHighlights();
+      this.updateProgress(0);
+    }
+    
+    updateUI(state) {
+      const playText = locale === 'en' ? 'Play Audio' : 'Sesli Oku';
+      const stopText = locale === 'en' ? 'Stop Audio' : 'Durdur';
+      
+      if (state === 'playing') {
+        this.playIcon.style.display = 'none';
+        this.stopIcon.style.display = 'block';
+        this.ttsText.textContent = stopText;
+        this.toggleBtn.setAttribute('aria-label', stopText);
+        this.toggleBtn.setAttribute('title', stopText);
+      } else {
+        this.playIcon.style.display = 'block';
+        this.stopIcon.style.display = 'none';
+        this.ttsText.textContent = playText;
+        this.toggleBtn.setAttribute('aria-label', playText);
+        this.toggleBtn.setAttribute('title', playText);
+      }
+    }
+    
+    updateProgress(percentage) {
+      if (this.progressBar) {
+        this.progressBar.style.width = `${percentage}%`;
+      }
+    }
+    
+    highlightCurrentText() {
+      // Simple highlighting - could be enhanced
+      this.textElements.forEach((el, index) => {
+        if (index === this.currentIndex) {
+          el.classList.add('tts-current-text');
+        }
+      });
+    }
+    
+    clearHighlights() {
+      this.textElements.forEach(el => {
+        el.classList.remove('tts-current-text');
+      });
+    }
+  }
+  
+  // Initialize when DOM is loaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => new TextToSpeech());
+  } else {
+    new TextToSpeech();
+  }
+</script>

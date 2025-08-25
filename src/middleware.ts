@@ -2,16 +2,87 @@ import type { MiddlewareHandler } from 'astro';
 
 const cspDirectives = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' https://*.disqus.com https://*.disquscdn.com",
-  "connect-src 'self' https://*.disqus.com https://*.disquscdn.com",
-  "img-src 'self' data: https://*.disqus.com https://*.disquscdn.com https://i.ytimg.com",
+  "script-src 'self' 'unsafe-inline' https://*.disqus.com https://*.disquscdn.com https://www.googletagmanager.com https://www.google-analytics.com https://pagead2.googlesyndication.com",
+  "connect-src 'self' https://*.disqus.com https://*.disquscdn.com https://www.google-analytics.com https://analytics.google.com",
+  "img-src 'self' data: https://*.disqus.com https://*.disquscdn.com https://i.ytimg.com https://www.google-analytics.com",
   "style-src 'self' 'unsafe-inline' https://*.disquscdn.com",
   "font-src 'self' data:",
-  "frame-src https://*.disqus.com https://disqus.com",
+  "frame-src https://*.disqus.com https://disqus.com https://pagead2.googlesyndication.com",
   "object-src 'none'"
 ];
 
+// Language detection function
+function detectPreferredLanguage(request: Request): string {
+  // Get the current URL
+  const url = new URL(request.url);
+  
+  // Skip language detection for API routes and assets
+  if (url.pathname.startsWith('/api/') || 
+      url.pathname.startsWith('/_') || 
+      url.pathname.includes('.')) {
+    return 'skip';
+  }
+
+  // Check if user has a preferred language cookie
+  const cookies = request.headers.get('cookie');
+  const langCookie = cookies?.match(/language=([^;]+)/)?.[1];
+  
+  // Get Accept-Language header for browser preference
+  const acceptLanguage = request.headers.get('accept-language') || '';
+  
+  // Try to get country from Cloudflare headers (when deployed)
+  const country = request.headers.get('cf-ipcountry');
+  
+  // Determine preferred language
+  let preferredLanguage = 'tr'; // Default to Turkish
+  
+  if (langCookie) {
+    // Use cookie preference first
+    preferredLanguage = langCookie === 'en' ? 'en' : 'tr';
+  } else if (country) {
+    // Use country-based detection
+    const englishCountries = ['US', 'GB', 'AU', 'CA', 'IE', 'NZ', 'ZA', 'IN'];
+    preferredLanguage = englishCountries.includes(country) ? 'en' : 'tr';
+  } else {
+    // Fall back to browser language
+    const browserLang = acceptLanguage.toLowerCase();
+    if (browserLang.includes('en') && !browserLang.includes('tr')) {
+      preferredLanguage = 'en';
+    }
+  }
+  
+  return preferredLanguage;
+}
+
 export const onRequest: MiddlewareHandler = async (context, next) => {
+  const url = new URL(context.request.url);
+  
+  // Language detection and redirection
+  const preferredLanguage = detectPreferredLanguage(context.request);
+  
+  if (preferredLanguage !== 'skip') {
+    // Check current path locale
+    const isEnglishPath = url.pathname.startsWith('/en');
+    const isTurkishPath = !isEnglishPath;
+    
+    // Get language cookie to see if user has made explicit choice
+    const cookies = context.request.headers.get('cookie');
+    const langCookie = cookies?.match(/language=([^;]+)/)?.[1];
+    
+    // Only redirect if there's a language mismatch and no explicit language cookie
+    if (!langCookie) {
+      if (preferredLanguage === 'en' && isTurkishPath && url.pathname !== '/') {
+        // Redirect Turkish path to English
+        const newPath = `/en${url.pathname}`;
+        return Response.redirect(new URL(newPath + url.search, url), 302);
+      } else if (preferredLanguage === 'tr' && isEnglishPath) {
+        // Redirect English path to Turkish  
+        const newPath = url.pathname.replace(/^\/en/, '') || '/';
+        return Response.redirect(new URL(newPath + url.search, url), 302);
+      }
+    }
+  }
+  
   const response = await next();
   
   // Set CSP header
@@ -19,7 +90,6 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
   response.headers.set('Content-Security-Policy-Report-Only', csp);
   
   // Basic caching strategy
-  const url = new URL(context.request.url);
   const path = url.pathname;
   const contentType = response.headers.get('Content-Type') || '';
   

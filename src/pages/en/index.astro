@@ -1,13 +1,13 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
 import { getCollection } from 'astro:content';
-import PostCard from '../components/PostCard.astro';
-import { t } from '../i18n/utils';
+import PostCard from '../../components/PostCard.astro';
+import { t } from '../../i18n/utils';
 
-const locale = 'tr';
-const rawPosts = await getCollection('blog');
+const locale = 'en';
+const rawPosts = await getCollection('blogEn');
 const posts = rawPosts
 	.map((p) => ({
 		...p,
@@ -29,7 +29,7 @@ const [firstPost, ...restPosts] = posts;
 				{firstPost && (
 					<div class="featured-list">
 						<PostCard
-							href={`/${firstPost.id}/`}
+							href={`/en/${firstPost.id}/`}
 							title={firstPost.data.title}
 							description={firstPost.data.description}
 							pubDate={firstPost.data.pubDate}
@@ -41,7 +41,7 @@ const [firstPost, ...restPosts] = posts;
 				<div class="post-list grid grid-2">
 					{restPosts.map((post) => (
 						<PostCard
-							href={`/${post.id}/`}
+							href={`/en/${post.id}/`}
 							title={post.data.title}
 							description={post.data.description}
 							pubDate={post.data.pubDate}

@@ -1,0 +1,30 @@
+---
+import { getCollection, render } from 'astro:content';
+import BlogPost from '../../layouts/BlogPost.astro';
+
+const { slug } = Astro.params;
+
+if (!slug) {
+  return Astro.redirect('/en/404');
+}
+
+const posts = await getCollection('blogEn');
+const post = posts.find((p) => p.id === slug);
+
+if (!post) {
+  return Astro.redirect('/en/404');
+}
+
+const { Content } = await render(post);
+---
+
+<BlogPost
+    title={post.data.title}
+    description={post.data.description}
+    pubDate={post.data.pubDate}
+    updatedDate={post.data.updatedDate}
+    heroImage={post.data.heroImage}
+    locale="en"
+>
+    <Content />
+</BlogPost>

@@ -1,19 +1,30 @@
 ---
 import HeaderLink from './HeaderLink.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
 import { SITE_TITLE } from '../consts';
+import { t } from '../i18n/utils';
+
+interface Props {
+  locale?: string;
+}
+
+const { locale = 'tr' } = Astro.props;
+const homeUrl = locale === 'en' ? '/en' : '/';
+const aboutUrl = locale === 'en' ? '/en/about' : '/about';
 ---
 
 <header class="main-header">
   <nav class="nav-container">
     <div class="nav-brand">
-      <a href="/" class="brand-link">
+      <a href={homeUrl} class="brand-link">
         <img src="/logo.png" alt={SITE_TITLE} width="32" height="32" />
         <span class="brand-text">{SITE_TITLE}</span>
       </a>
     </div>
     
     <div class="nav-header-actions">
-      <button class="theme-toggle" id="theme-toggle" aria-label="Tema değiştir">
+      <LanguageSwitcher locale={locale} currentPath={Astro.url.pathname} />
+      <button class="theme-toggle" id="theme-toggle" aria-label={t(locale, 'nav.themeToggle') || 'Tema değiştir'}>
         <div class="theme-icon">
           <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="5"/>
@@ -25,7 +36,7 @@ import { SITE_TITLE } from '../consts';
         </div>
       </button>
       
-      <button class="nav-toggle" id="nav-toggle" aria-label="Menüyü aç/kapat">
+      <button class="nav-toggle" id="nav-toggle" aria-label={t(locale, 'nav.toggleMenu') || 'Menüyü aç/kapat'}>
         <span></span>
         <span></span>
         <span></span>
@@ -40,7 +51,7 @@ import { SITE_TITLE } from '../consts';
               <circle cx="11" cy="11" r="7"/>
               <line x1="16.65" y1="16.65" x2="22" y2="22"/>
             </svg>
-            <input type="text" placeholder="Ara..." class="search-input" autocomplete="off" />
+            <input type="text" placeholder={t(locale, 'nav.search')} class="search-input" autocomplete="off" />
             <button class="search-clear" style="display: none;">&times;</button>
           </div>
           <div class="search-results"></div>
@@ -48,8 +59,12 @@ import { SITE_TITLE } from '../consts';
       </div>
       
       <div class="nav-links">
-        <HeaderLink href="/about">Hakkımızda</HeaderLink>
-      </div>      <div class="nav-actions-desktop">
+        <HeaderLink href={aboutUrl}>{t(locale, 'nav.about')}</HeaderLink>
+      </div>
+      
+      <div class="nav-actions-desktop">
+        <LanguageSwitcher locale={locale} currentPath={Astro.url.pathname} />
+        
         <div class="nav-search">
           <div class="modern-search">
             <div class="search-container">
@@ -57,14 +72,14 @@ import { SITE_TITLE } from '../consts';
                 <circle cx="11" cy="11" r="7"/>
                 <line x1="16.65" y1="16.65" x2="22" y2="22"/>
               </svg>
-              <input type="text" placeholder="Ara..." class="search-input" autocomplete="off" />
+              <input type="text" placeholder={t(locale, 'nav.search')} class="search-input" autocomplete="off" />
               <button class="search-clear" style="display: none;">&times;</button>
             </div>
             <div class="search-results"></div>
           </div>
         </div>
         
-        <button class="theme-toggle theme-toggle-desktop" id="theme-toggle-desktop" aria-label="Tema değiştir">
+        <button class="theme-toggle theme-toggle-desktop" id="theme-toggle-desktop" aria-label={t(locale, 'nav.themeToggle') || 'Tema değiştir'}>
           <div class="theme-icon">
             <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="12" cy="12" r="5"/>
@@ -770,8 +785,12 @@ import { SITE_TITLE } from '../consts';
 
   // Modern Search Implementation
   class SearchManager {
+    posts: any[];
+    locale: string;
+    
     constructor() {
       this.posts = [];
+      this.locale = document.documentElement.lang || 'tr';
       this.loadPosts().then(() => {
         this.initializeSearch();
       });
@@ -779,7 +798,7 @@ import { SITE_TITLE } from '../consts';
 
     async loadPosts() {
       try {
-        const response = await fetch('/api/posts.json');
+        const response = await fetch(`/api/posts.json?locale=${this.locale}`);
         if (response.ok) {
           this.posts = await response.json();
         } else {
@@ -804,9 +823,9 @@ import { SITE_TITLE } from '../consts';
       });
     }
 
-    setupEventListeners(input, results, clearBtn, wrapper) {
+    setupEventListeners(input: any, results: any, clearBtn: any, wrapper: any) {
       // Search input event
-      input.addEventListener('input', (e) => {
+      input.addEventListener('input', (e: any) => {
         const query = e.target.value.trim();
         
         if (query) {
@@ -841,7 +860,7 @@ import { SITE_TITLE } from '../consts';
       });
 
       // Keyboard shortcuts
-      input.addEventListener('keydown', (e) => {
+      input.addEventListener('keydown', (e: any) => {
         if (e.key === 'Escape') {
           this.hideResults(results);
           input.blur();
@@ -849,27 +868,29 @@ import { SITE_TITLE } from '../consts';
       });
     }
 
-    performSearch(query, resultsElement) {
-      const filtered = this.posts.filter(post => 
+    performSearch(query: any, resultsElement: any) {
+      const filtered = this.posts.filter((post: any) => 
         post.title.toLowerCase().includes(query.toLowerCase())
       );
 
       if (filtered.length === 0) {
-        resultsElement.innerHTML = '<div class="search-result">Sonuç bulunamadı</div>';
+        const noResultsText = this.locale === 'en' ? 'No results found' : 'Sonuç bulunamadı';
+        resultsElement.innerHTML = `<div class="search-result">${noResultsText}</div>`;
       } else {
-        resultsElement.innerHTML = filtered.map(post => 
-          `<a href="/${post.slug}/" class="search-result">${post.title}</a>`
+        const urlPrefix = this.locale === 'en' ? '/en/' : '/';
+        resultsElement.innerHTML = filtered.map((post: any) => 
+          `<a href="${urlPrefix}${post.slug}/" class="search-result">${post.title}</a>`
         ).join('');
       }
 
       this.showResults(resultsElement);
     }
 
-    showResults(element) {
+    showResults(element: any) {
       element.style.display = 'block';
     }
 
-    hideResults(element) {
+    hideResults(element: any) {
       element.style.display = 'none';
     }
   }

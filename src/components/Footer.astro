@@ -1,9 +1,16 @@
 ---
-const today = new globalThis.Date();
 import Social from './Social.astro';
+import { t } from '../i18n/utils';
+
+interface Props {
+  locale?: string;
+}
+
+const { locale = 'tr' } = Astro.props;
+const today = new globalThis.Date();
 ---
 <footer>
-	&copy; {today.getFullYear()} Techoxium. Tüm Hakları Saklıdır.
+	&copy; {today.getFullYear()} Techoxium. {t(locale, 'footer.allRightsReserved')}
 	<div class="social-links">
 		<Social platform="yt" link="https://www.youtube.com/@TechOxium" size="lg" variant="filled" />
 		<Social platform="nxt" link="https://sosyal.teknofest.app/@techoxium" size="lg" variant="filled" />

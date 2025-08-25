@@ -1,0 +1,134 @@
+---
+interface Props {
+  locale: string;
+  currentPath?: string;
+}
+
+const { locale = 'tr', currentPath = '/' } = Astro.props;
+
+// Generate alternate URLs
+const getAlternateUrl = (targetLocale: string) => {
+  if (targetLocale === 'tr') {
+    // Remove /en prefix for Turkish
+    return currentPath.replace(/^\/en/, '') || '/';
+  } else {
+    // Add /en prefix for English
+    const path = currentPath === '/' ? '' : currentPath;
+    return `/en${path}`;
+  }
+};
+---
+
+<div class="language-switcher">
+  <div class="language-options">
+    <a 
+      href={getAlternateUrl('tr')} 
+      class={`language-option ${locale === 'tr' ? 'active' : ''}`}
+      title="Türkçe"
+    >
+      🇹🇷 TR
+    </a>
+    <a 
+      href={getAlternateUrl('en')} 
+      class={`language-option ${locale === 'en' ? 'active' : ''}`}
+      title="English"
+    >
+      🇺🇸 EN
+    </a>
+  </div>
+</div>
+
+<style>
+  .language-switcher {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+  }
+  
+  .language-options {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .language-option {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  
+  .language-option:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .language-option.active {
+    background: var(--accent);
+    color: white;
+    font-weight: 600;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.3);
+  }
+  
+  .language-option.active:hover {
+    background: var(--accent-dark);
+    border-color: var(--accent-dark);
+  }
+  
+  /* Light mode support */
+  @media (prefers-color-scheme: light) {
+    .language-option {
+      color: rgb(var(--black));
+      background: rgba(0, 0, 0, 0.05);
+      border-color: rgba(0, 0, 0, 0.1);
+    }
+    
+    .language-option:hover {
+      background: rgba(0, 0, 0, 0.08);
+      border-color: rgba(0, 0, 0, 0.15);
+    }
+    
+    .language-option.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .language-switcher {
+      font-size: 0.8rem;
+    }
+    
+    .language-option {
+      padding: 0.3rem 0.6rem;
+      font-size: 0.8rem;
+    }
+  }
+</style>
+
+<script is:inline>
+  // Set language preference cookie when clicking language options
+  document.addEventListener('DOMContentLoaded', function() {
+    const languageOptions = document.querySelectorAll('.language-option');
+    languageOptions.forEach(option => {
+      option.addEventListener('click', function() {
+        const lang = this.textContent.includes('TR') ? 'tr' : 'en';
+        document.cookie = 'language=' + lang + '; path=/; max-age=31536000; SameSite=Lax';
+      });
+    });
+  });
+</script>

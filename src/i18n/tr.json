@@ -1,0 +1,44 @@
+{
+  "site": {
+    "title": "Techoxium",
+    "description": "En son teknoloji haberlerini buradan takip edebilirsiniz"
+  },
+  "nav": {
+    "home": "Ana Sayfa",
+    "about": "Hakkımızda",
+    "blog": "Blog",
+    "search": "Ara...",
+    "themeToggle": "Tema değiştir",
+    "toggleMenu": "Menüyü aç/kapat"
+  },
+  "buttons": {
+    "readMore": "Devamını Oku",
+    "backToHome": "Ana Sayfaya Dön"
+  },
+  "about": {
+    "title": "Hakkımızda",
+    "description": "Techoxium'a Hoşgeldiniz! En son teknoloji haberlerini buradan takip edebilirsiniz 😊\n\nSitemiz beta sürecindedir ve hatalar ile karşılaşabilirsiniz. Bir hata farkederseniz bize aşağıdaki yorum satırından bildirmekten çekinmeyin 😉"
+  },
+  "footer": {
+    "description": "En son teknoloji haberleri ve incelemeler",
+    "allRightsReserved": "Tüm hakları saklıdır"
+  },
+  "language": {
+    "turkish": "Türkçe",
+    "english": "English",
+    "switchTo": "Dile geç:"
+  },
+  "accessibility": {
+    "decreaseFontSize": "Yazı boyutunu küçült",
+    "increaseFontSize": "Yazı boyutunu büyüt",
+    "playAudio": "Yazıyı sesli oku",
+    "pauseAudio": "Sesli okumayı duraklat",
+    "stopAudio": "Sesli okumayı durdur"
+  },
+  "blog": {
+    "title": "Blog Yazıları",
+    "noResults": "Sonuç bulunamadı",
+    "showComments": "Yorumları Göster",
+    "hideComments": "Yorumları Gizle"
+  }
+}

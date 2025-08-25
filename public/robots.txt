@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Allow all crawlers to access all content
+# This is optimal for a blog/content website
+
+# Sitemap location
+Sitemap: https://techoxium.com/sitemap.xml
+
+# Optional: Crawl delay (uncomment if needed)
+# Crawl-delay: 1
