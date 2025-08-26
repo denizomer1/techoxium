@@ -5,17 +5,7 @@ pubDate: "2025-08-23"
 heroImage: "/gamescom-2025-hero.svg"
 ---
 
-<div class="video-wrap">
-	<iframe 
-		src="https://www.youtube.com/embed/MrFGLQD209Y" 
-		title="Gamescom 2025 Resmi Özet Videosu" 
-		loading="lazy"
-		frameborder="0" 
-		allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-		referrerpolicy="strict-origin-when-cross-origin" 
-		allowfullscreen
-	></iframe>
-</div>
+
 
 ## Gamescom 2025: Oyun Endüstrisinin Kalbi Köln'de Attı
 
@@ -41,3 +31,15 @@ Capcom'un gizemli projesi **Pragmata**, uzay temasıyla büyüledi. Bilim kurgu 
 Gamescom 2025, oyun endüstrisinin geleceğine dair heyecan verici ipuçları sundu. Hem nostaljik serilerin devamı hem de yenilikçi projelerle dolu bu fuar, oyunseverlere unutulmaz anlar yaşattı.
 
 Sizce hangi oyun en çok dikkatinizi çekti? Yorumlarınızı bekliyoruz!
+
+<div class="video-wrap">
+	<iframe 
+ 		src="https://www.youtube.com/embed/MrFGLQD209Y" 
+ 		title="Gamescom 2025 Resmi Özet Videosu" 
+ 		loading="lazy"
+ 		frameborder="0" 
+ 		allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+ 		referrerpolicy="strict-origin-when-cross-origin" 
+ 		allowfullscreen
+ 	></iframe>
+</div>
