@@ -1,0 +1,82 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Gamescom 2025 Hero Görseli</title>
+  <desc id="desc">Daireler, piksel motifleri ve stilize oyun kolu bulunan mor-mavi degrade arka plan.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#311B92"/>
+      <stop offset="50%" stop-color="#512DA8"/>
+      <stop offset="100%" stop-color="#0D47A1"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(900 120) rotate(45) scale(500 400)">
+      <stop stop-color="#7C4DFF" stop-opacity="0.9" />
+      <stop offset="1" stop-color="#7C4DFF" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="textGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#B3E5FC"/>
+    </linearGradient>
+    <filter id="noise" x="0" y="0" width="100%" height="100%" filterUnits="objectBoundingBox">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch" result="n" />
+      <feColorMatrix type="saturate" values="0" />
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.08" />
+      </feComponentTransfer>
+    </filter>
+    <mask id="fade">
+      <rect width="1200" height="630" fill="url(#bg)" />
+      <rect width="1200" height="630" fill="url(#glow)" />
+    </mask>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <rect width="1200" height="630" fill="url(#glow)" opacity="0.6" />
+  <g filter="url(#noise)" opacity="0.35">
+    <rect width="1200" height="630" fill="#FFFFFF" />
+  </g>
+
+  <!-- Stilize oyun kolu -->
+  <g transform="translate(860 350) scale(1.1)">
+    <path d="M-140 -40 Q-150 -110 -90 -130 L-40 -145 Q0 -155 40 -145 L90 -130 Q150 -110 140 -40 L120 60 Q110 110 60 120 L0 130 L-60 120 Q-110 110 -120 60 Z" fill="#1E1B3A" stroke="#7C4DFF" stroke-width="4" />
+    <circle cx="-50" cy="-10" r="26" fill="#311B92" stroke="#B388FF" stroke-width="3" />
+    <circle cx="50" cy="-10" r="26" fill="#311B92" stroke="#B388FF" stroke-width="3" />
+    <g fill="#FFF">
+      <rect x="-56" y="-14" width="12" height="8" rx="2" />
+      <rect x="44" y="-14" width="12" height="8" rx="2" />
+    </g>
+    <!-- D-pad -->
+    <g fill="#FFF" opacity="0.9" transform="translate(-10 40)">
+      <rect x="-8" y="-22" width="16" height="44" rx="3" />
+      <rect x="-22" y="-8" width="44" height="16" rx="3" />
+    </g>
+    <!-- Buttons -->
+    <g transform="translate(70 40)" fill="#FFAB40">
+      <circle cx="0" cy="0" r="10" />
+      <circle cx="28" cy="0" r="10" />
+      <circle cx="14" cy="-18" r="10" />
+      <circle cx="14" cy="18" r="10" />
+    </g>
+  </g>
+
+  <!-- Piksel motifleri -->
+  <g fill="#B388FF" opacity="0.5">
+    <rect x="80" y="80" width="10" height="10"/>
+    <rect x="100" y="80" width="10" height="10"/>
+    <rect x="80" y="100" width="10" height="10"/>
+    <rect x="100" y="100" width="10" height="10"/>
+    <rect x="190" y="150" width="12" height="12"/>
+    <rect x="210" y="150" width="12" height="12"/>
+  </g>
+
+  <!-- Dairesel vurgu -->
+  <circle cx="300" cy="420" r="180" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="50" />
+  <circle cx="300" cy="420" r="130" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="26" />
+
+  <!-- Metin -->
+  <g font-family="'Inter', 'Atkinson Hyperlegible', system-ui, sans-serif" font-weight="700" text-anchor="start">
+    <text x="120" y="230" font-size="82" fill="url(#textGrad)">GAMESCOM</text>
+    <text x="120" y="320" font-size="120" fill="url(#textGrad)">2025</text>
+    <text x="124" y="372" font-size="30" fill="#E0F7FA" font-weight="500">YENİ NESİL OYUN DENEYİMİ</text>
+  </g>
+
+  <!-- Footer etiketi -->
+  <text x="120" y="590" font-size="20" fill="rgba(255,255,255,0.6)" font-family="'Inter', system-ui">techoxium • gamescom özel</text>
+</svg>

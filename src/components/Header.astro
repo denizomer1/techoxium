@@ -139,7 +139,7 @@ const aboutUrl = locale === 'en' ? '/en/about' : '/about';
   }
   
   .brand-link:hover {
-    color: var(--accent);
+    color: var(--accent-light);
   }
   
   .brand-text {
@@ -186,6 +186,7 @@ const aboutUrl = locale === 'en' ? '/en/about' : '/about';
   :global(.nav-links a:hover::before) {
     width: 200px;
     height: 200px;
+    background: rgba(var(--accent-rgb), 0.12);
   }
   
   :global(.nav-links a:active) {
@@ -194,7 +195,7 @@ const aboutUrl = locale === 'en' ? '/en/about' : '/about';
   
   :global(.nav-links a:hover) {
     transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.15);
+    box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.12);
   }
   
   .nav-actions {
@@ -487,6 +488,11 @@ const aboutUrl = locale === 'en' ? '/en/about' : '/about';
   :global(html.dark) .theme-toggle:hover {
     background: rgba(99, 102, 241, 0.2);
     border-color: #6366f1;
+  }
+
+  /* Make logo visually white in dark mode. If you prefer a dedicated white PNG/SVG, replace `/logo.png` with the white asset and remove the filter. */
+  :global(html.dark) .brand-link img {
+    filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
   }
 
   /* Modern Compact Search */
