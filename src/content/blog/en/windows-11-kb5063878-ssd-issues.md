@@ -1,8 +1,8 @@
 ---
-title: "KB5063878 (24H2) Update: Short Notice on SSD Issues"
-description: "Short English notice about reported SSD problems after Windows 11 24H2 KB5063878 update."
+title: "KB5063878 (24H2) Update: SSD Issues"
+description: "SSD problems after Windows 11 24H2 KB5063878 update."
 pubDate: "2025-08-26"
-heroImage: "/windows-errror.png"
+heroImage: "/windows-error.png"
 ---
 
 Microsoft began rolling out KB5063878 for Windows 11 24H2 last Tuesday to fix sign-in delays on new devices. Since the update some users report major errors with SSD storage drives, including performance drops and freezes.
