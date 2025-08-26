@@ -9,7 +9,7 @@ export const SOCIAL_LINKS = {
   // Main social platforms
   youtube: 'https://www.youtube.com/@TechOxium',
   nxt: 'https://sosyal.teknofest.app/@techoxium',
-  x: 'https://x.com/Techoxium',
+  // x: 'https://x.com/Techoxium', // removed per request
   
   // Add more platforms (uncomment to use):
   // instagram: 'https://instagram.com/techoxium',
@@ -31,14 +31,14 @@ export const SOCIAL_CONFIG = {
   header: {
     size: 'sm' as const,
     variant: 'minimal' as const,
-    platforms: ['youtube', 'nxt', 'x'] as const,
+    platforms: ['youtube', 'nxt'] as const,
   },
   
   // Footer social links (larger, filled)
   footer: {
     size: 'lg' as const,
     variant: 'filled' as const,
-    platforms: ['youtube', 'nxt', 'x'] as const,
+    platforms: ['youtube', 'nxt'] as const,
   },
 } as const;
 
