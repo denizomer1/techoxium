@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "include": [
+    "/*"
+  ],
+  "exclude": [
+    "/_astro/*",
+    "/.assetsignore",
+    "/ads.txt",
+    "/blog-placeholder-2.jpg",
+    "/blog-placeholder-3.jpg",
+    "/blog-placeholder-4.png",
+    "/blog-placeholder-5.jpg",
+    "/favicon-alt.svg",
+    "/gamescom-2025-hero.svg",
+    "/logo.png",
+    "/robots.txt",
+    "/site.webmanifest",
+    "/social_media.png",
+    "/windows-error.png",
+    "/fonts/atkinson-bold.woff",
+    "/fonts/atkinson-regular.woff",
+    "/js/language-switcher.js"
+  ]
+}

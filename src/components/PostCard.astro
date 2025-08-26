@@ -152,7 +152,7 @@ const date = pubDate ? (pubDate instanceof Date ? pubDate : new Date(pubDate)) :
   }
   
   .post-card:hover .post-title {
-    color: var(--accent);
+    color: var(--accent-light);
   }
   
   .post-description {
@@ -217,7 +217,8 @@ const date = pubDate ? (pubDate instanceof Date ? pubDate : new Date(pubDate)) :
   }
   
   :global(html.dark) .post-title {
-    color: white;
+    /* Use a lighter blue in dark mode for better contrast and brand feel */
+    color: #7fb3ff;
   }
   
   :global(html.dark) .post-description {

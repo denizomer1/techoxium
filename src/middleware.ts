@@ -72,13 +72,17 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
     // Only redirect if there's a language mismatch and no explicit language cookie
     if (!langCookie) {
       if (preferredLanguage === 'en' && isTurkishPath && url.pathname !== '/') {
-        // Redirect Turkish path to English
+        // Redirect Turkish path to English and set a language cookie to avoid loops
         const newPath = `/en${url.pathname}`;
-        return Response.redirect(new URL(newPath + url.search, url), 302);
+        const redirectRes = Response.redirect(new URL(newPath + url.search, url), 302);
+        redirectRes.headers.set('Set-Cookie', 'language=en; Path=/; Max-Age=31536000; SameSite=Lax');
+        return redirectRes;
       } else if (preferredLanguage === 'tr' && isEnglishPath) {
-        // Redirect English path to Turkish  
+        // Redirect English path to Turkish and set a language cookie
         const newPath = url.pathname.replace(/^\/en/, '') || '/';
-        return Response.redirect(new URL(newPath + url.search, url), 302);
+        const redirectRes = Response.redirect(new URL(newPath + url.search, url), 302);
+        redirectRes.headers.set('Set-Cookie', 'language=tr; Path=/; Max-Age=31536000; SameSite=Lax');
+        return redirectRes;
       }
     }
   }
