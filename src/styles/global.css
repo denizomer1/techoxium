@@ -437,6 +437,118 @@ html.dark #disqus_thread {
   background: #2a2a38;
 }
 
+/* Improve Disqus visibility in dark mode: force readable text, links, and controls. */
+html.dark #disqus_thread,
+html.dark #disqus_thread * {
+  color: #e6eefb !important; /* light text for readability */
+}
+
+/* Links, buttons and metadata inside Disqus should use the site's accent for contrast */
+html.dark #disqus_thread a,
+html.dark #disqus_thread a * {
+  color: var(--accent-light) !important;
+}
+
+/* Make Disqus embedded avatars and images stand out on dark backgrounds */
+html.dark #disqus_thread img {
+  filter: brightness(1.05) contrast(1.05) !important;
+}
+
+/* Disqus uses some inline backgrounds for UI elements; neutralize very dark regions that hide text */
+html.dark #disqus_thread [style*="background"] {
+  background-color: transparent !important;
+}
+
+/* Some Disqus widgets are inside iframes; ensure the host container provides adequate contrast and padding */
+html.dark .comments-section #disqus_thread {
+  background: #242432 !important;
+  border-color: #3a3a46 !important;
+}
+
+/* On very small screens ensure text isn't clipped */
+html.dark #disqus_thread {
+  word-break: break-word;
+}
+
+/* Broader coverage for Disqus-specific classes */
+html.dark #disqus_thread .post-message,
+html.dark #disqus_thread .dsq-post-message,
+html.dark #disqus_thread .dsq-post-body,
+html.dark #disqus_thread .dsq-post-content,
+html.dark #disqus_thread .dsq-comment,
+html.dark #disqus_thread .dsq-comment-body,
+html.dark #disqus_thread .dsq-thread-body,
+html.dark #disqus_thread .dsq-widget,
+html.dark #disqus_thread .dsq-reply,
+html.dark #disqus_thread .dsq-replies,
+html.dark #disqus_thread .dsq-post-meta,
+html.dark #disqus_thread .dsq-post-footer {
+  color: #e6eefb !important;
+  background: transparent !important;
+}
+
+/* Buttons/controls inside Disqus */
+html.dark #disqus_thread button,
+html.dark #disqus_thread .button,
+html.dark #disqus_thread .reply-button,
+html.dark #disqus_thread .dsq-btn {
+  color: #e6eefb !important;
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid rgba(255,255,255,0.04) !important;
+}
+
+/* Avatars and badges */
+html.dark #disqus_thread .avatar,
+html.dark #disqus_thread .dsq-avatar {
+  filter: brightness(1.05) saturate(1.05) !important;
+}
+
+/* Ensure counts/labels are visible */
+html.dark #disqus_thread .count,
+html.dark #disqus_thread .dsq-count {
+  color: #bcd6ff !important;
+}
+
+/* Fallback: if Disqus injects inline styles, try to neutralize dark backgrounds */
+html.dark #disqus_thread [style*="background-color"],
+html.dark #disqus_thread [style*="background"] {
+  background: transparent !important;
+}
+
+/* Last resort: add a subtle outer glow to the container for separation */
+html.dark .comments-section #disqus_thread {
+  box-shadow: 0 8px 36px rgba(30,30,40,0.6) !important;
+}
+
+/* Improve contrast for cross-origin Disqus iframe content by applying a subtle filter
+   to the iframe and adding a non-interactive overlay to increase separation. This
+   cannot change colors inside the iframe, but it helps make text more visible. */
+html.dark .comments-section #disqus_thread {
+  position: relative; /* enable overlay */
+}
+
+html.dark .comments-section #disqus_thread iframe {
+  filter: brightness(1.08) contrast(1.12) saturate(1.05) !important;
+  -webkit-filter: brightness(1.08) contrast(1.12) saturate(1.05) !important;
+  border-radius: inherit;
+}
+
+html.dark .comments-section #disqus_thread::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none; /* allow clicks through to iframe */
+  border-radius: inherit;
+  background: linear-gradient(rgba(10,10,14,0.24), rgba(10,10,14,0.24)) !important;
+  mix-blend-mode: normal;
+}
+
+/* Optional stronger visual correction: uncomment to invert iframe colors when dark theme
+   (use carefully — this inverts everything inside the iframe). */
+html.dark .comments-section #disqus_thread iframe {
+  filter: invert(1) hue-rotate(180deg) brightness(1.02) contrast(1.05) !important;
+}
+
 /* Focus states for accessibility */
 button:focus-visible,
 a:focus-visible {
