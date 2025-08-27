@@ -2,7 +2,7 @@
 title: "Gears of War: Reloaded now available via PC Game Pass"
 description: "Gears of War: Reloaded is now live on PC Game Pass — summary, download notes, and what to expect."
 pubDate: 2025-08-26
-heroImage: "/images/Gearsofwar108"
+heroImage: "/Gearsofwar108"
 ---
 
 Microsoft announced today that Gears of War: Reloaded is available for PC Game Pass subscribers. The release bundles updated visuals, PC-specific settings, and easy access through Game Pass, aimed at both long-time fans and new players.
