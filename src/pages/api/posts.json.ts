@@ -13,6 +13,9 @@ export async function GET(context: { url: { searchParams: URLSearchParams } }) {
       description: p.data.description ?? '',
       pubDate: p.data.pubDate ? String(p.data.pubDate) : '',
       heroImage: p.data.heroImage ?? null,
+      tags: p.data.tags ?? [],
+      // generate a kebab-case slug for each tag for robust routing
+      tagSlugs: (p.data.tags || []).map((t: string) => String(t).toLowerCase().replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-')),
     }));
 
     return new Response(JSON.stringify(items), {

@@ -3,6 +3,7 @@ title: "Gamescom 2025: Gaming's Biggest Gathering"
 description: "Games showcased at Gamescom 2025 and more"
 pubDate: "2025-08-23"
 heroImage: "/gamescom-2025-hero.svg"
+tags: ["gamescom-2025", "major-titles-call-of-duty", "fair", "capcom"]
 ---
 
 <div class="video-wrap">

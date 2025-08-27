@@ -1,6 +1,7 @@
 ---
 import HeaderLink from './HeaderLink.astro';
 import LanguageSwitcher from './LanguageSwitcher.astro';
+import CategoryDropdown from './CategoryDropdown.astro';
 import { SITE_TITLE } from '../consts';
 import { t } from '../i18n/utils';
 
@@ -23,7 +24,8 @@ const aboutUrl = locale === 'en' ? '/en/about' : '/about';
     </div>
     
     <div class="nav-header-actions">
-      <LanguageSwitcher locale={locale} currentPath={Astro.url.pathname} />
+  <LanguageSwitcher locale={locale} currentPath={Astro.url.pathname} />
+  <CategoryDropdown locale={locale} tags={[]} />
       <button class="theme-toggle" id="theme-toggle" aria-label={t(locale, 'nav.themeToggle') || 'Tema değiştir'}>
         <div class="theme-icon">
           <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -63,9 +65,10 @@ const aboutUrl = locale === 'en' ? '/en/about' : '/about';
       </div>
       
       <div class="nav-actions-desktop">
-        <LanguageSwitcher locale={locale} currentPath={Astro.url.pathname} />
-        
-        <div class="nav-search">
+  <LanguageSwitcher locale={locale} currentPath={Astro.url.pathname} />
+  <CategoryDropdown locale={locale} />
+
+  <div class="nav-search">
           <div class="modern-search">
             <div class="search-container">
               <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -633,43 +636,42 @@ const aboutUrl = locale === 'en' ? '/en/about' : '/about';
     border-radius: 12px;
   }
 
-  /* Temporary overrides: force header search dropdown to be boxed and stacked
-     This increases specificity and uses !important so we can verify layout in the browser. */
+  /* Search dropdown: boxed stacked card items (no !important) */
   .modern-search .search-results.open {
-    display: block !important;
+    display: block;
   }
 
   .modern-search .search-results {
-    min-width: 260px !important;
-    max-width: 360px !important;
-    right: auto !important;
-    left: auto !important;
-    background: var(--card-bg, #ffffff) !important;
-    padding: 10px !important;
-    box-sizing: border-box !important;
+    min-width: 260px;
+    max-width: 360px;
+    right: auto;
+    left: auto;
+    background: var(--card-bg, #ffffff);
+    padding: 10px;
+    box-sizing: border-box;
   }
 
   .modern-search .search-results .search-result {
-    display: block !important;
-    background: var(--card-bg, #ffffff) !important;
-    border: 1px solid rgba(0,0,0,0.06) !important;
-    border-radius: 8px !important;
-    margin: 6px 0 !important;
-    padding: 10px 12px !important;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08) !important;
-    color: rgba(0,0,0,0.85) !important;
-    text-decoration: none !important;
+    display: block;
+    background: var(--card-bg, #ffffff);
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 8px;
+    margin: 6px 0;
+    padding: 10px 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    color: rgba(0,0,0,0.85);
+    text-decoration: none;
   }
 
   :global(html.dark) .modern-search .search-results {
-    background: rgba(15,20,25,0.95) !important;
-    border-color: rgba(255,255,255,0.08) !important;
+    background: rgba(15,20,25,0.95);
+    border-color: rgba(255,255,255,0.08);
   }
 
   :global(html.dark) .modern-search .search-results .search-result {
-    background: rgba(20,22,28,0.6) !important;
-    color: #e6eefb !important;
-    border-color: rgba(255,255,255,0.04) !important;
+    background: rgba(20,22,28,0.6);
+    color: #e6eefb;
+    border-color: rgba(255,255,255,0.04);
   }
 
   /* Desktop specific */
@@ -874,6 +876,9 @@ const aboutUrl = locale === 'en' ? '/en/about' : '/about';
 
         this.setupEventListeners(input, results, clearBtn, searchWrapper);
       });
+
+      // Previously listened for 'tag-selected' events to auto-run searches.
+      // That behavior was removed to keep tag navigation separate from search.
     }
 
     setupEventListeners(input, results, clearBtn, wrapper) {
@@ -924,11 +929,23 @@ const aboutUrl = locale === 'en' ? '/en/about' : '/about';
     }
 
     performSearch(query, resultsElement) {
-      const q = String(query).toLowerCase();
-      const filtered = this.posts.filter((post) => (
-        (post.title || '').toLowerCase().includes(q) ||
-        (post.description || '').toLowerCase().includes(q)
-      ));
+      const raw = String(query).toLowerCase();
+      // support queries like '#teknoloji' or plain 'teknoloji'
+      const q = raw.startsWith('#') ? raw.slice(1).trim() : raw.trim();
+      const qNormalized = q.replace(/\s+/g, ' ');
+      const qAsTag = qNormalized.replace(/\s+/g, '-');
+
+      const filtered = this.posts.filter((post) => {
+        const inTitle = (post.title || '').toLowerCase().includes(q);
+        const inDesc = (post.description || '').toLowerCase().includes(q);
+        const inTags = Array.isArray(post.tags) && post.tags.some(t => {
+          const tagRaw = String(t || '').toLowerCase();
+          const tagDisplay = tagRaw.replace(/-/g, ' ');
+          return tagRaw.includes(q) || tagDisplay.includes(q) || tagRaw.includes(qAsTag);
+        });
+
+        return inTitle || inDesc || inTags;
+      });
 
       // Clear existing
       resultsElement.innerHTML = '';

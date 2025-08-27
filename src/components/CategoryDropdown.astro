@@ -1,0 +1,174 @@
+---
+const { locale = 'tr' } = Astro.props;
+import { getCollection } from 'astro:content';
+import { tagToSlug } from '../lib/tag-utils.js';
+
+// Server-side: precompute tags for the provided locale so the dropdown shows
+// even when client JS fails or is blocked. This guarantees categories are
+// visible and links navigate correctly. Use the canonical tagToSlug helper so
+// slugs match the logic used on the tag listing page.
+const collection = locale === 'en' ? 'blogEn' : 'blog';
+const _posts = await getCollection(/** @type {any} */ (collection));
+const _tagSet = new Set();
+_posts.forEach(p => (p.data.tags || []).forEach(t => _tagSet.add(t)));
+const serverTags = Array.from(_tagSet).sort();
+
+// Build a small HTML string for server-side rendering to avoid template typing
+const serverListHtml = serverTags.length ? serverTags.map(rawTag => {
+  const tag = String(rawTag);
+  const slug = tagToSlug(tag);
+  const prefix = locale === 'en' ? '/en' : '';
+  return `<li class="cat-item"><a href="${prefix}/tag/${slug}/" class="cat-item-link"><span class="cat-pill">#${tag}</span><span style="flex:1;margin-left:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${tag.replace(/-/g,' ')}</span></a></li>`;
+}).join('') : `<li class="cat-item">${locale === 'en' ? 'No categories' : 'Kategori yok'}</li>`;
+---
+
+<div class="cat-dropdown" data-dropdown data-locale={locale}>
+  <button type="button" class="cat-toggle" aria-haspopup="listbox" aria-expanded="false">
+    <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14l4-4-4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span class="cat-label">{locale === 'en' ? 'Categories' : 'Kategoriler'}</span>
+  </button>
+
+  <div class="cat-panel" role="dialog" aria-hidden="true">
+    <div class="cat-search">
+      <input class="cat-input" type="search" placeholder={locale === 'en' ? 'Search categories...' : 'Kategori ara...'} aria-label={locale === 'en' ? 'Search categories' : 'Kategori ara'} />
+    </div>
+    <ul class="cat-list" role="listbox" tabindex="-1" set:html={serverListHtml}></ul>
+  </div>
+</div>
+
+<style>
+.cat-dropdown{ position:relative; display:inline-block; }
+.cat-toggle{ display:inline-flex; align-items:center; gap:8px; padding:.45rem .75rem; border-radius:12px; border:1px solid rgba(2,6,23,0.08); background:var(--card-bg,#fff); cursor:pointer }
+.cat-toggle svg{ transform:rotate(90deg); }
+.cat-label{ font-weight:600; font-size:0.9rem }
+.cat-panel{ position:absolute; right:0; top:calc(100% + .5rem); min-width:220px; max-width:360px; background:var(--panel-bg,#fff); border:1px solid rgba(2,6,23,0.08); border-radius:12px; box-shadow:0 12px 40px rgba(2,6,23,0.12); z-index:1200; display:none; }
+.cat-panel[aria-hidden="false"]{ display:block }
+.cat-search{ padding:.5rem; border-bottom:1px solid rgba(2,6,23,0.04) }
+.cat-input{ width:100%; padding:.5rem .6rem; border-radius:8px; border:1px solid rgba(2,6,23,0.06); outline:none }
+.cat-list{ list-style:none; margin:0; padding:.5rem; max-height:260px; overflow:auto; display:grid; gap:8px }
+.cat-item{ display:flex; align-items:center; gap:8px; padding:.45rem .6rem; border-radius:8px; cursor:pointer; text-decoration:none; color:inherit }
+.cat-item:hover, .cat-item[aria-selected="true"]{ background:rgba(2,6,23,0.04); transform:translateY(-1px) }
+.cat-pill{ background:rgba(2,6,23,0.06); padding:.2rem .5rem; border-radius:999px; font-weight:600; font-size:.85rem }
+@media (prefers-color-scheme: dark){
+  /* Prefer a darker surface for the toggle and a slightly lighter panel for readability */
+  .cat-toggle{ background: rgba(20,24,30,0.9); color: #e6eefb }
+  .cat-panel{ background: rgba(18,20,26,0.96); border-color: rgba(255,255,255,0.04); color: #e6eefb }
+  .cat-item{ color: #e6eefb }
+  .cat-item:hover, .cat-item[aria-selected="true"]{ background: rgba(255,255,255,0.03) }
+  .cat-pill{ background: rgba(255,255,255,0.04); color: #cfe0ff }
+}
+
+/* Also handle explicit html.dark class (site theme) */
+:global(html.dark) .cat-toggle { background: rgba(20,24,30,0.9); color: #e6eefb }
+:global(html.dark) .cat-panel { background: rgba(18,20,26,0.96); border-color: rgba(255,255,255,0.04); color: #e6eefb }
+:global(html.dark) .cat-item { color: #e6eefb }
+:global(html.dark) .cat-item:hover, :global(html.dark) .cat-item[aria-selected="true"] { background: rgba(255,255,255,0.03) }
+:global(html.dark) .cat-pill { background: rgba(255,255,255,0.04); color: #cfe0ff }
+</style>
+
+<script is:inline>
+  (function(){
+    function initAll(){
+      // Initialize all dropdown instances on the page
+      document.querySelectorAll('[data-dropdown]').forEach(async (root) => {
+        const toggle = root.querySelector('.cat-toggle');
+        const panel = root.querySelector('.cat-panel');
+        const input = root.querySelector('.cat-input');
+        const list = root.querySelector('.cat-list');
+        if(!toggle || !panel || !input || !list) return;
+
+        // Fetch tags for this instance's locale. We also keep the posts data so we
+        // can prefer API-provided tagSlugs when navigating (if present).
+        let tags = [];
+        let postsData = [];
+        try{
+          const pageLocale = root.dataset.locale || document.documentElement.lang || 'tr';
+          const resp = await fetch(`/api/posts.json?locale=${encodeURIComponent(pageLocale)}`);
+          if(resp.ok){
+              postsData = await resp.json();
+              const s = new Set();
+              postsData.forEach(p => (p.tags || []).forEach(t => s.add(t)));
+              tags = Array.from(s).sort();
+            }
+          console.debug('CategoryDropdown: fetched', pageLocale, 'tagsCount=', tags.length);
+        }catch(e){ tags = []; postsData = []; }
+
+        function render(listEl, items){
+          listEl.innerHTML = '';
+          if(!items.length){ const li = document.createElement('li'); li.className='cat-item'; li.textContent = (document.documentElement.lang==='en' ? 'No categories' : 'Kategori yok'); listEl.appendChild(li); return }
+          items.forEach(tag => {
+            const li = document.createElement('li');
+            li.className = 'cat-item';
+            li.setAttribute('role','option');
+            li.tabIndex = 0;
+            li.innerHTML = `<span class="cat-pill">#${tag}</span><span style="flex:1;margin-left:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${tag.replace(/-/g,' ')}</span>`;
+            li.addEventListener('click', ()=> selectTag(tag));
+            li.addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' ') { e.preventDefault(); selectTag(tag) } });
+            listEl.appendChild(li);
+          });
+        }
+
+        function open(){ panel.setAttribute('aria-hidden','false'); toggle.setAttribute('aria-expanded','true'); input.focus(); }
+        function close(){ panel.setAttribute('aria-hidden','true'); toggle.setAttribute('aria-expanded','false'); }
+
+        toggle.addEventListener('click', (e)=>{ e.stopPropagation(); const expanded = toggle.getAttribute('aria-expanded')==='true'; if(expanded) close(); else open(); });
+
+        // Close when clicking outside this instance
+        document.addEventListener('click', (e)=>{ if(!root.contains(e.target)) close(); });
+
+        input.addEventListener('input', ()=>{ const q = input.value.trim().toLowerCase(); render(list, tags.filter(t=>String(t).toLowerCase().includes(q))); });
+
+        function toSlug(t){
+          try{
+            return String(t)
+              .toLowerCase()
+              .normalize('NFKD')
+              .replace(/['"\u2018\u2019\u201d\u201c`]/g, '')
+              .replace(/[\u0300-\u036f]/g, '')
+              .replace(/[^a-z0-9\s-]/g, ' ')
+              .trim()
+              .replace(/\s+/g,'-')
+              .replace(/-+/g,'-');
+          }catch(e){
+            return String(t).toLowerCase().replace(/[^a-z0-9\\s-]/g,'').replace(/\\s+/g,'-');
+          }
+        }
+        function selectTag(tag){
+          if(!tag) return;
+          const pageLocale = root.dataset.locale || document.documentElement.lang || 'tr';
+          const langPrefix = pageLocale === 'en' ? '/en' : '';
+
+          // Prefer API-provided tag slug if available (find a post that contains the tag and has tagSlugs)
+          let slug = toSlug(tag);
+          if(postsData && postsData.length){
+            for(const p of postsData){
+              if(Array.isArray(p.tags) && p.tags.includes(tag) && Array.isArray(p.tagSlugs)){
+                // find matching index and use the same slug
+                const idx = p.tags.indexOf(tag);
+                if(p.tagSlugs[idx]){ slug = p.tagSlugs[idx]; break; }
+              }
+            }
+          }
+
+          window.location.href = `${langPrefix}/tag/${slug}/`;
+        }
+
+        // update toggle label and state to show if we have tags
+        try{
+          const label = toggle.querySelector('.cat-label');
+          const pageLocaleForLabel = root.dataset.locale || document.documentElement.lang || 'tr';
+          const baseText = pageLocaleForLabel === 'en' ? 'Categories' : 'Kategoriler';
+          if(label){
+            label.textContent = tags.length ? `${baseText} (${tags.length})` : baseText;
+          }
+          toggle.classList.toggle('has-tags', tags.length>0);
+          toggle.classList.toggle('no-tags', tags.length===0);
+        }catch(e){}
+
+        render(list, tags.length?tags: (Array.from(new Set((window.__INITIAL_TAGS||[])))) );
+      });
+    }
+
+    if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initAll); else initAll();
+  })();
+</script>

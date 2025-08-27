@@ -89,15 +89,17 @@
 
 /* Temporary: force layout if other global/header styles are overriding component styles */
 .site-search .search-results.open {
-  display: block !important;
+  /* Ensure component styles win over broader global selectors by using
+     a slightly more specific selector rather than !important */
+  display: block;
 }
 
 .site-search .search-result {
-  display: block !important;
-  width: 100% !important;
-  margin: 6px 0 !important;
-  padding: 10px 12px !important;
-  box-sizing: border-box !important;
+  display: block;
+  width: 100%;
+  margin: 6px 0;
+  padding: 10px 12px;
+  box-sizing: border-box;
 }
 .search-input {
   border: none;
