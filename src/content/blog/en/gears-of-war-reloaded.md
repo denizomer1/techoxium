@@ -16,3 +16,7 @@ Highlights:
 
 
 What do you think about this topic? We'd love to read your comments.
+
+### Video
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/OXR3osSIxTo" title="Gears of War Reloaded - Trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

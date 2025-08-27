@@ -14,3 +14,7 @@ Microsoft bugün Gears of War: Reloaded'ın PC Game Pass abonelerine sunulduğun
 - Xbox ekosistemine entegre çok oyunculu özellikleri.
 
 Siz bu konu hakkında neler düşünüyorsunuz Yorumlarınızı bekliyoruz 
+
+### Video
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/OXR3osSIxTo" title="Gears of War Reloaded - Trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
