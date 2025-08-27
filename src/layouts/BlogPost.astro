@@ -413,21 +413,22 @@ const { title = '', description = '', pubDate, updatedDate, heroImage, locale = 
 </style>
 
 <script>
-  // Share buttons behavior: X and Copy link
+  // @ts-nocheck
+  // Plain JS share buttons behavior (removed TypeScript annotations)
   (function () {
     if (typeof window === 'undefined') return;
 
-    function openPopup(url: string) {
+    function openPopup(url) {
       window.open(url, '_blank', 'toolbar=0,status=0,width=600,height=400');
     }
 
-  const btnX = document.getElementById('share-x') as HTMLButtonElement | null;
-  const btnCopy = document.getElementById('share-copy') as HTMLButtonElement | null;
+    const btnX = document.getElementById('share-x');
+    const btnCopy = document.getElementById('share-copy');
     const pageUrl = window.location.href;
     const titleEl = document.querySelector('.post-title');
     const title = (titleEl && titleEl.textContent) ? titleEl.textContent : document.title;
 
-    function pulse(btn: HTMLButtonElement | null) {
+    function pulse(btn) {
       if (!btn) return;
       btn.classList.add('active');
       setTimeout(() => btn.classList.remove('active'), 220);
@@ -441,8 +442,6 @@ const { title = '', description = '', pubDate, updatedDate, heroImage, locale = 
       });
     }
 
-    // Instagram removed: no handler
-
     if (btnCopy) {
       btnCopy.addEventListener('click', function () {
         pulse(btnCopy);
@@ -452,25 +451,23 @@ const { title = '', description = '', pubDate, updatedDate, heroImage, locale = 
               // preserve innerHTML (so we don't permanently remove the SVG)
               const prevInner = btnCopy.innerHTML;
               // clear existing timer if any
-              const existingTimer = (btnCopy as any).__copyTimer as number | undefined;
+              const existingTimer = (btnCopy).__copyTimer;
               if (existingTimer) clearTimeout(existingTimer);
               btnCopy.innerHTML = '<span class="copied-text">Copied!</span>';
               const t = window.setTimeout(() => {
                 if (btnCopy) btnCopy.innerHTML = prevInner;
-                (btnCopy as any).__copyTimer = undefined;
+                (btnCopy).__copyTimer = undefined;
               }, 1500);
-              (btnCopy as any).__copyTimer = t;
+              (btnCopy).__copyTimer = t;
             } catch (e) {
               // fallback
-              // @ts-ignore
               prompt('Copy this link', pageUrl);
             }
           }).catch(() => {
-            // @ts-ignore: fallback to prompt for older browsers
+            // fallback to prompt for older browsers
             prompt('Copy this link', pageUrl);
           });
         } else {
-          // @ts-ignore: fallback to prompt for older browsers
           prompt('Copy this link', pageUrl);
         }
       });
