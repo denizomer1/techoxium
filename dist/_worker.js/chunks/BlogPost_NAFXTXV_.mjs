@@ -1,8 +1,8 @@
 globalThis.process ??= {}; globalThis.process.env ??= {};
 import { b as createAstro, c as createComponent, d as addAttribute, r as renderComponent, e as renderHead, m as renderSlot, q as renderScript, a as renderTemplate } from './astro/server_Dwc-Xb_E.mjs';
-import { $ as $$BaseHead, a as $$Header, b as $$Footer } from './Footer_DqNLYxEy.mjs';
+import { $ as $$BaseHead, a as $$Header, b as $$Footer } from './Footer_CNUfXmKk.mjs';
 import { $ as $$FormattedDate } from './FormattedDate_BwUQSVsc.mjs';
-import { $ as $$FontSizeControl, a as $$TextToSpeech, b as $$BlogComment } from './TextToSpeech_Cmvco9nI.mjs';
+import { $ as $$FontSizeControl, a as $$TextToSpeech, b as $$BlogComment } from './TextToSpeech_CCfrgLy6.mjs';
 /* empty css                          */
 
 const $$Astro = createAstro("https://techoxium.com");

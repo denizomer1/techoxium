@@ -20,6 +20,25 @@ const [firstPost, ...restPosts] = posts;
 <html lang={locale}>
 	<head>
 		<BaseHead title={t(locale, 'site.title')} description={t(locale, 'site.description')} locale={locale} />
+		
+		<!-- Structured Data for Website -->
+		<script type="application/ld+json" set:html={
+			JSON.stringify({
+				"@context": "https://schema.org",
+				"@type": "WebSite",
+				"name": "Techoxium",
+				"description": t(locale, 'site.description'),
+				"url": "https://techoxium.com",
+				"publisher": {
+					"@type": "Organization",
+					"name": "Techoxium",
+					"logo": {
+						"@type": "ImageObject",
+						"url": "https://techoxium.com/logo.png"
+					}
+				}
+			})
+		} />
 	</head>
 	<body>
 		<Header locale={locale} />

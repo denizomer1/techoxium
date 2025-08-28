@@ -23,8 +23,8 @@
     "/windows-11-24h2.jpg",
     "/windows-error.png",
     "/wp-ai.jpg",
-    "/js/language-switcher.js",
     "/fonts/atkinson-bold.woff",
-    "/fonts/atkinson-regular.woff"
+    "/fonts/atkinson-regular.woff",
+    "/js/language-switcher.js"
   ]
 }

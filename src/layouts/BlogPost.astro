@@ -23,6 +23,66 @@ const { title = '', description = '', pubDate, updatedDate, heroImage, locale = 
 <html lang={locale}>
   <head>
     <BaseHead title={title} description={description} locale={locale} />
+    
+    <!-- Structured Data for Article -->
+    <script type="application/ld+json" set:html={
+      JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": title,
+        "description": description,
+        "image": heroImage ? new URL(heroImage, Astro.site).toString() : new URL('/logo.png', Astro.site).toString(),
+        "datePublished": pubDate ? new Date(pubDate).toISOString() : undefined,
+        "dateModified": updatedDate ? new Date(updatedDate).toISOString() : (pubDate ? new Date(pubDate).toISOString() : undefined),
+        "author": {
+          "@type": "Person",
+          "name": "Techoxium",
+          "url": "https://techoxium.com"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Techoxium",
+          "logo": {
+            "@type": "ImageObject",
+            "url": new URL('/logo.png', Astro.site).toString()
+          }
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": new URL(Astro.url.pathname, Astro.site).toString()
+        },
+        "url": new URL(Astro.url.pathname, Astro.site).toString(),
+        "isPartOf": {
+          "@type": "WebSite",
+          "name": "Techoxium",
+          "url": "https://techoxium.com"
+        },
+        "inLanguage": locale === 'en' ? 'en-US' : 'tr-TR',
+        "breadcrumb": {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": locale === 'en' ? 'Home' : 'Ana Sayfa',
+              "item": new URL(locale === 'en' ? '/en' : '/', Astro.site).toString()
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": locale === 'en' ? 'Blog' : 'Blog',
+              "item": new URL(locale === 'en' ? '/en/blog' : '/blog', Astro.site).toString()
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": title,
+              "item": new URL(Astro.url.pathname, Astro.site).toString()
+            }
+          ]
+        }
+      })
+    } />
   </head>
 
   <body>
