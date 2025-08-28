@@ -1,8 +1,8 @@
 globalThis.process ??= {}; globalThis.process.env ??= {};
 import { b as createAstro, c as createComponent, a as renderTemplate, d as addAttribute, v as maybeRenderHead, w as spreadAttributes, m as renderSlot, x as unescapeHTML, r as renderComponent, q as renderScript } from './astro/server_Dwc-Xb_E.mjs';
 /* empty css                         */
+import { g as getCollection } from './_astro_content_BYzDYrtE.mjs';
 import { a as SITE_TITLE } from './consts_pVytapcw.mjs';
-import { g as getCollection } from './_astro_content_D24jhqoj.mjs';
 
 var __freeze$2 = Object.freeze;
 var __defProp$2 = Object.defineProperty;
@@ -349,7 +349,7 @@ const $$Footer = createComponent(($$result, $$props, $$slots) => {
   const { locale = "tr" } = Astro2.props;
   const today = new globalThis.Date();
   return renderTemplate`${maybeRenderHead()}<footer data-astro-cid-sz7xmlte>
-&copy; ${today.getFullYear()} Techoxium. ${t(locale, "footer.allRightsReserved")} <div class="social-links" data-astro-cid-sz7xmlte> ${renderComponent($$result, "Social", $$Social, { "platform": "yt", "link": "https://www.youtube.com/@TechOxium", "size": "lg", "variant": "filled", "data-astro-cid-sz7xmlte": true })} ${renderComponent($$result, "Social", $$Social, { "platform": "nxt", "link": "https://sosyal.teknofest.app/@techoxium", "size": "lg", "variant": "filled", "data-astro-cid-sz7xmlte": true })} ${renderComponent($$result, "Social", $$Social, { "platform": "instagram", "link": "https://instagram.com/techoxium", "size": "lg", "variant": "filled", "data-astro-cid-sz7xmlte": true })} </div> <div style="margin-top:1rem;" data-astro-cid-sz7xmlte> <!-- Footer category dropdown (rendered normally) --> ${renderComponent($$result, "CategoryDropdown", $$CategoryDropdown, { "locale": locale, "data-astro-cid-sz7xmlte": true })} </div> </footer>  ${renderScript($$result, "/Users/mac/Desktop/techoxium/src/components/Footer.astro?astro&type=script&index=0&lang.ts")}`;
+&copy; ${today.getFullYear()} Techoxium. ${t(locale, "footer.allRightsReserved")} <div class="social-links" data-astro-cid-sz7xmlte> ${renderComponent($$result, "Social", $$Social, { "platform": "yt", "link": "https://www.youtube.com/@TechOxium", "size": "lg", "variant": "filled", "data-astro-cid-sz7xmlte": true })} ${renderComponent($$result, "Social", $$Social, { "platform": "nxt", "link": "https://sosyal.teknofest.app/@techoxium", "size": "lg", "variant": "filled", "data-astro-cid-sz7xmlte": true })} ${renderComponent($$result, "Social", $$Social, { "platform": "instagram", "link": "https://instagram.com/techoxium", "size": "lg", "variant": "filled", "data-astro-cid-sz7xmlte": true })} </div> </footer>  ${renderScript($$result, "/Users/mac/Desktop/techoxium/src/components/Footer.astro?astro&type=script&index=0&lang.ts")}`;
 }, "/Users/mac/Desktop/techoxium/src/components/Footer.astro", void 0);
 
 export { $$BaseHead as $, $$Header as a, $$Footer as b, postMatchesTag as p, t };

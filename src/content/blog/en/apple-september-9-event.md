@@ -25,16 +25,35 @@ Apple's new flagship models, the iPhone 17 series, are expected to be announced:
 - **iPhone 17 Pro**: Titanium design and new camera features in Pro models
 - **iPhone 17 Pro Max**: Top-tier model with premium features
 
-### Apple Watch Series 10
-New generation smartwatch:
-- Thinner design
-- Advanced health features
-- New watchOS updates
+### Apple Watch Series 10 & Series 2 Updates
+New generation smartwatches with significant updates:
+- **Apple Watch Series 10**: Thinner design, advanced health features, new watchOS updates
+- **Apple Watch Series 2**: Enhanced battery life, improved water resistance, updated sensors for better fitness tracking
 
 ### Other Expected Products
-- New AirPods models
-- Apple TV updates
-- Software updates (iOS 18.1, watchOS 11.1, etc.)
+- New AirPods models with improved audio quality
+- Apple TV updates with enhanced streaming capabilities
+- Software updates (iOS 26, watchOS 26, etc.)
+
+## Major AI Announcements
+
+Apple is expected to make significant announcements regarding artificial intelligence integration:
+
+### AI-Powered Features
+- **Enhanced Siri**: More natural conversations and contextual understanding
+- **Smart Automation**: AI-driven home automation and device integration
+- **Personalized Health Insights**: AI-powered health recommendations based on user data
+- **Advanced Photography**: AI-enhanced camera features with computational photography
+
+### AI Privacy & Security
+- **On-Device Processing**: All AI computations performed locally for privacy
+- **User Control**: Complete user control over AI data and personalization
+- **Transparent AI**: Clear explanations of how AI features work
+
+### AI Integration Across Ecosystem
+- **Cross-Device Continuity**: Seamless AI experiences across iPhone, iPad, Mac, and Apple Watch
+- **Third-Party Integration**: AI capabilities for third-party app developers
+- **Accessibility Improvements**: AI-powered accessibility features for users with disabilities
 
 ## Differences from Previous Years
 

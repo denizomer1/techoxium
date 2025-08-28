@@ -1,6 +1,5 @@
 ---
 import Social from './Social.astro';
-import CategoryDropdown from './CategoryDropdown.astro';
 import { t } from '../i18n/utils';
 
 interface Props {
@@ -16,10 +15,6 @@ const today = new globalThis.Date();
 		<Social platform="yt" link="https://www.youtube.com/@TechOxium" size="lg" variant="filled" />
 		<Social platform="nxt" link="https://sosyal.teknofest.app/@techoxium" size="lg" variant="filled" />
 		<Social platform="instagram" link="https://instagram.com/techoxium" size="lg" variant="filled" />
-	</div>
-	<div style="margin-top:1rem;">
-		<!-- Footer category dropdown (rendered normally) -->
-		<CategoryDropdown locale={locale} />
 	</div>
 </footer>
 <style>
