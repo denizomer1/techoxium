@@ -2,7 +2,7 @@
 title: "Windows 11 24H2 (KB5063878) Yeni Farklı Sorunlara Sebep Oluyor"
 description: "Windows 11 KB5063878 güncellemesinin SSD'lerde neden olduğu ciddi sorunlar ve çözüm önerileri"
 pubDate: "2025-08-28"
-heroImage: "/windows-error.png"
+heroImage: "/windows-11-24h2.jpg"
 tags: ["windows-11", "kb5063878", "ssd", "phison", "veri-kaybi", "sistem-hatasi"]
 ---
 
