@@ -1,7 +1,7 @@
 globalThis.process ??= {}; globalThis.process.env ??= {};
-import './chunks/astro-designed-error-pages_piXl4095.mjs';
-import './chunks/astro/server_DCU9xl9x.mjs';
-import { s as sequence } from './chunks/index_ChTDWzMe.mjs';
+import './chunks/astro-designed-error-pages_DlCV-GvE.mjs';
+import './chunks/astro/server_C-RMCnIV.mjs';
+import { s as sequence } from './chunks/index_CQ9HfdAN.mjs';
 
 const cspDirectives = [
   "default-src 'self'",
@@ -47,10 +47,14 @@ const onRequest$2 = async (context, next) => {
     if (!langCookie) {
       if (preferredLanguage === "en" && isTurkishPath && url.pathname !== "/") {
         const newPath = `/en${url.pathname}`;
-        return Response.redirect(new URL(newPath + url.search, url), 302);
+        const redirectRes = Response.redirect(new URL(newPath + url.search, url), 302);
+        redirectRes.headers.set("Set-Cookie", "language=en; Path=/; Max-Age=31536000; SameSite=Lax");
+        return redirectRes;
       } else if (preferredLanguage === "tr" && isEnglishPath) {
         const newPath = url.pathname.replace(/^\/en/, "") || "/";
-        return Response.redirect(new URL(newPath + url.search, url), 302);
+        const redirectRes = Response.redirect(new URL(newPath + url.search, url), 302);
+        redirectRes.headers.set("Set-Cookie", "language=tr; Path=/; Max-Age=31536000; SameSite=Lax");
+        return redirectRes;
       }
     }
   }

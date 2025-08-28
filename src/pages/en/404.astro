@@ -1,0 +1,199 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+const title = 'Page Not Found - Techoxium';
+const description = 'The page you are looking for could not be found. Please return to the homepage to explore other content.';
+---
+
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} locale="en" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "404 - Page Not Found",
+      "description": "The page you are looking for could not be found",
+      "url": "https://techoxium.com/en/404",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Techoxium",
+        "url": "https://techoxium.com"
+      }
+    }
+    </script>
+  </head>
+
+  <body>
+    <Header locale="en" />
+
+    <main class="error-page">
+      <div class="error-container">
+        <div class="error-content">
+          <h1 class="error-code">404</h1>
+          <h2 class="error-title">Page Not Found</h2>
+          <p class="error-description">
+            The page you are looking for doesn't exist or may have been moved.
+          </p>
+          <div class="error-actions">
+            <a href="/en" class="error-btn primary">Go to Homepage</a>
+            <a href="/en/blog" class="error-btn secondary">Visit Blog</a>
+          </div>
+        </div>
+        <div class="error-visual">
+          <svg width="200" height="200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="m15 9-6 6"></path>
+            <path d="m9 9 6 6"></path>
+          </svg>
+        </div>
+      </div>
+    </main>
+
+    <Footer />
+
+    <style>
+      .error-page {
+        min-height: calc(100vh - 200px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 1rem;
+      }
+
+      .error-container {
+        max-width: 800px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        align-items: center;
+        text-align: center;
+      }
+
+      .error-content {
+        grid-column: 1 / -1;
+      }
+
+      .error-code {
+        font-size: 8rem;
+        font-weight: 900;
+        color: var(--accent);
+        margin: 0;
+        line-height: 1;
+      }
+
+      .error-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: rgb(var(--black));
+        margin: 1rem 0;
+      }
+
+      .error-description {
+        font-size: 1.2rem;
+        color: rgb(var(--gray-dark));
+        margin-bottom: 2rem;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .error-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .error-btn {
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .error-btn.primary {
+        background: var(--accent);
+        color: white;
+      }
+
+      .error-btn.primary:hover {
+        background: var(--accent-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(var(--accent-rgb), 0.3);
+      }
+
+      .error-btn.secondary {
+        background: rgba(var(--gray), 0.1);
+        color: rgb(var(--black));
+        border: 1px solid rgba(var(--gray), 0.2);
+      }
+
+      .error-btn.secondary:hover {
+        background: rgba(var(--gray), 0.15);
+        transform: translateY(-2px);
+      }
+
+      .error-visual {
+        display: none;
+        opacity: 0.3;
+      }
+
+      .error-visual svg {
+        width: 100%;
+        height: auto;
+        max-width: 200px;
+      }
+
+      @media (min-width: 768px) {
+        .error-container {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .error-content {
+          grid-column: 1 / 2;
+          text-align: left;
+        }
+
+        .error-visual {
+          display: block;
+          grid-column: 2 / 3;
+        }
+
+        .error-code {
+          font-size: 6rem;
+        }
+
+        .error-title {
+          font-size: 2rem;
+        }
+      }
+
+      @media (prefers-color-scheme: dark) {
+        .error-title {
+          color: white;
+        }
+
+        .error-description {
+          color: rgb(200, 200, 200);
+        }
+
+        .error-btn.secondary {
+          background: rgba(255, 255, 255, 0.1);
+          color: white;
+          border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .error-btn.secondary:hover {
+          background: rgba(255, 255, 255, 0.15);
+        }
+      }
+    </style>
+  </body>
+</html>

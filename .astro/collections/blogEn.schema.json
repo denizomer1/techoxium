@@ -42,6 +42,12 @@
             }
           ]
         },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
         "heroImage": {
           "type": "string"
         },

@@ -3,6 +3,7 @@ title: "Gamescom 2025: Oyun Dünyasının En Büyük Buluşması"
 description: "Gamescom 2025'te tanıtılan oyunlar ve daha fazlası"
 pubDate: "2025-08-23"
 heroImage: "/gamescom-2025-hero.svg"
+tags: ["gamescom-2025", "büyük-yapımlar-call-of-duty", "fuarın-sürprizi", "capcom"]
 ---
 
 

@@ -1,6 +1,7 @@
 ---
 import HeaderLink from './HeaderLink.astro';
 import LanguageSwitcher from './LanguageSwitcher.astro';
+import CategoryDropdown from './CategoryDropdown.astro';
 import { SITE_TITLE } from '../consts';
 import { t } from '../i18n/utils';
 
@@ -23,7 +24,7 @@ const aboutUrl = locale === 'en' ? '/en/about' : '/about';
     </div>
     
     <div class="nav-header-actions">
-      <LanguageSwitcher locale={locale} currentPath={Astro.url.pathname} />
+  <LanguageSwitcher locale={locale} currentPath={Astro.url.pathname} />
       <button class="theme-toggle" id="theme-toggle" aria-label={t(locale, 'nav.themeToggle') || 'Tema değiştir'}>
         <div class="theme-icon">
           <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -63,9 +64,10 @@ const aboutUrl = locale === 'en' ? '/en/about' : '/about';
       </div>
       
       <div class="nav-actions-desktop">
-        <LanguageSwitcher locale={locale} currentPath={Astro.url.pathname} />
-        
-        <div class="nav-search">
+  <LanguageSwitcher locale={locale} currentPath={Astro.url.pathname} />
+  <CategoryDropdown locale={locale} />
+
+  <div class="nav-search">
           <div class="modern-search">
             <div class="search-container">
               <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -633,6 +635,44 @@ const aboutUrl = locale === 'en' ? '/en/about' : '/about';
     border-radius: 12px;
   }
 
+  /* Search dropdown: boxed stacked card items (no !important) */
+  .modern-search .search-results.open {
+    display: block;
+  }
+
+  .modern-search .search-results {
+    min-width: 260px;
+    max-width: 360px;
+    right: auto;
+    left: auto;
+    background: var(--card-bg, #ffffff);
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
+  .modern-search .search-results .search-result {
+    display: block;
+    background: var(--card-bg, #ffffff);
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 8px;
+    margin: 6px 0;
+    padding: 10px 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    color: rgba(0,0,0,0.85);
+    text-decoration: none;
+  }
+
+  :global(html.dark) .modern-search .search-results {
+    background: rgba(15,20,25,0.95);
+    border-color: rgba(255,255,255,0.08);
+  }
+
+  :global(html.dark) .modern-search .search-results .search-result {
+    background: rgba(20,22,28,0.6);
+    color: #e6eefb;
+    border-color: rgba(255,255,255,0.04);
+  }
+
   /* Desktop specific */
   @media (min-width: 769px) {
     .modern-search {
@@ -705,95 +745,103 @@ const aboutUrl = locale === 'en' ? '/en/about' : '/about';
 </style>
 
 <script>
-  const navToggle = document.getElementById('nav-toggle') as HTMLButtonElement;
-  const navMenu = document.getElementById('nav-menu') as HTMLDivElement;
-  const themeToggle = document.getElementById('theme-toggle') as HTMLButtonElement;
-  const themeToggleDesktop = document.getElementById('theme-toggle-desktop') as HTMLButtonElement;
-  
+  // @ts-nocheck
+  // Plain JS: guard DOM references (remove TypeScript annotations)
+  const navToggle = document.getElementById('nav-toggle');
+  const navMenu = document.getElementById('nav-menu');
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeToggleDesktop = document.getElementById('theme-toggle-desktop');
+
   // Navigation functionality
   function toggleNav() {
-    navToggle.classList.toggle('active');
-    navMenu.classList.toggle('active');
-    document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : '';
+    if (navToggle) navToggle.classList.toggle('active');
+    if (navMenu) navMenu.classList.toggle('active');
+    document.body.style.overflow = (navMenu && navMenu.classList.contains('active')) ? 'hidden' : '';
   }
-  
-  navToggle.addEventListener('click', toggleNav);
-  
+
+  if (navToggle) navToggle.addEventListener('click', toggleNav);
+
   // Close nav when clicking on links (mobile)
-  navMenu.addEventListener('click', (e) => {
-    if (e.target instanceof HTMLAnchorElement && window.innerWidth <= 768) {
-      navToggle.classList.remove('active');
-      navMenu.classList.remove('active');
-      document.body.style.overflow = '';
-    }
-  });
-  
+  if (navMenu) {
+    navMenu.addEventListener('click', (e) => {
+      const target = e.target;
+      if (target instanceof HTMLAnchorElement && window.innerWidth <= 768) {
+        if (navToggle) navToggle.classList.remove('active');
+        navMenu.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+  }
+
   // Close nav when clicking outside (mobile)
   document.addEventListener('click', (e) => {
-    if (!navToggle.contains(e.target as Node) && !navMenu.contains(e.target as Node) && !themeToggle.contains(e.target as Node)) {
-      navToggle.classList.remove('active');
-      navMenu.classList.remove('active');
-      document.body.style.overflow = '';
-    }
-  });
-  
-  // Handle window resize
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 768) {
-      navToggle.classList.remove('active');
-      navMenu.classList.remove('active');
-      document.body.style.overflow = '';
-    }
-  });
-  
-  // Theme toggle functionality
-  function initTheme() {
-    const savedTheme = localStorage.getItem('theme');
-    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const isDark = savedTheme === 'dark' || (!savedTheme && systemDark);
-    
-    document.documentElement.classList.toggle('dark', isDark);
-    themeToggle.classList.toggle('dark', isDark);
-    themeToggleDesktop?.classList.toggle('dark', isDark);
-    themeToggle.setAttribute('aria-label', isDark ? 'Açık moda geç' : 'Koyu moda geç');
-    themeToggleDesktop?.setAttribute('aria-label', isDark ? 'Açık moda geç' : 'Koyu moda geç');
-  }
-  
-  function toggleTheme() {
-    const isDark = document.documentElement.classList.contains('dark');
-    const newTheme = isDark ? 'light' : 'dark';
-    
-    document.documentElement.classList.toggle('dark', newTheme === 'dark');
-    themeToggle.classList.toggle('dark', newTheme === 'dark');
-    themeToggleDesktop?.classList.toggle('dark', newTheme === 'dark');
-    localStorage.setItem('theme', newTheme);
-    themeToggle.setAttribute('aria-label', newTheme === 'dark' ? 'Açık moda geç' : 'Koyu moda geç');
-    themeToggleDesktop?.setAttribute('aria-label', newTheme === 'dark' ? 'Açık moda geç' : 'Koyu moda geç');
-  }
-  
-  // Initialize theme on page load
-  initTheme();
-  
-  // Theme toggle event listeners
-  themeToggle.addEventListener('click', toggleTheme);
-  themeToggleDesktop?.addEventListener('click', toggleTheme);
-  
-  // Listen for system theme changes
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-    if (!localStorage.getItem('theme')) {
-      document.documentElement.classList.toggle('dark', e.matches);
-      themeToggle.classList.toggle('dark', e.matches);
-      themeToggleDesktop?.classList.toggle('dark', e.matches);
-      themeToggle.setAttribute('aria-label', e.matches ? 'Açık moda geç' : 'Koyu moda geç');
-      themeToggleDesktop?.setAttribute('aria-label', e.matches ? 'Açık moda geç' : 'Koyu moda geç');
+    const target = e.target;
+    if (!(target instanceof Node)) return;
+    if (navToggle && navMenu && themeToggle) {
+      if (!navToggle.contains(target) && !navMenu.contains(target) && !themeToggle.contains(target)) {
+        navToggle.classList.remove('active');
+        navMenu.classList.remove('active');
+        document.body.style.overflow = '';
+      }
     }
   });
 
-  // Modern Search Implementation
+  // Handle window resize
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+      if (navToggle) navToggle.classList.remove('active');
+      if (navMenu) navMenu.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
+
+  // Theme toggle functionality
+  function initTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    const systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const isDark = savedTheme === 'dark' || (!savedTheme && systemDark);
+
+    document.documentElement.classList.toggle('dark', isDark);
+    if (themeToggle) themeToggle.classList.toggle('dark', isDark);
+    if (themeToggleDesktop) themeToggleDesktop.classList.toggle('dark', isDark);
+    if (themeToggle) themeToggle.setAttribute('aria-label', isDark ? 'Açık moda geç' : 'Koyu moda geç');
+    if (themeToggleDesktop) themeToggleDesktop.setAttribute('aria-label', isDark ? 'Açık moda geç' : 'Koyu moda geç');
+  }
+
+  function toggleTheme() {
+    const isDark = document.documentElement.classList.contains('dark');
+    const newTheme = isDark ? 'light' : 'dark';
+
+    document.documentElement.classList.toggle('dark', newTheme === 'dark');
+    if (themeToggle) themeToggle.classList.toggle('dark', newTheme === 'dark');
+    if (themeToggleDesktop) themeToggleDesktop.classList.toggle('dark', newTheme === 'dark');
+    localStorage.setItem('theme', newTheme);
+    if (themeToggle) themeToggle.setAttribute('aria-label', newTheme === 'dark' ? 'Açık moda geç' : 'Koyu moda geç');
+    if (themeToggleDesktop) themeToggleDesktop.setAttribute('aria-label', newTheme === 'dark' ? 'Açık moda geç' : 'Koyu moda geç');
+  }
+
+  // Initialize theme on page load
+  initTheme();
+
+  // Theme toggle event listeners
+  if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
+  if (themeToggleDesktop) themeToggleDesktop.addEventListener('click', toggleTheme);
+
+  // Listen for system theme changes
+  if (window.matchMedia) {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      if (!localStorage.getItem('theme')) {
+        document.documentElement.classList.toggle('dark', e.matches);
+        if (themeToggle) themeToggle.classList.toggle('dark', e.matches);
+        if (themeToggleDesktop) themeToggleDesktop.classList.toggle('dark', e.matches);
+        if (themeToggle) themeToggle.setAttribute('aria-label', e.matches ? 'Açık moda geç' : 'Koyu moda geç');
+        if (themeToggleDesktop) themeToggleDesktop.setAttribute('aria-label', e.matches ? 'Açık moda geç' : 'Koyu moda geç');
+      }
+    });
+  }
+
+  // Modern Search Implementation (plain JS)
   class SearchManager {
-    posts: any[];
-    locale: string;
-    
     constructor() {
       this.posts = [];
       this.locale = document.documentElement.lang || 'tr';
@@ -822,18 +870,21 @@ const aboutUrl = locale === 'en' ? '/en/about' : '/about';
         const input = searchWrapper.querySelector('.search-input');
         const results = searchWrapper.querySelector('.search-results');
         const clearBtn = searchWrapper.querySelector('.search-clear');
-        
+
         if (!input || !results || !clearBtn) return;
-        
+
         this.setupEventListeners(input, results, clearBtn, searchWrapper);
       });
+
+      // Previously listened for 'tag-selected' events to auto-run searches.
+      // That behavior was removed to keep tag navigation separate from search.
     }
 
-    setupEventListeners(input: any, results: any, clearBtn: any, wrapper: any) {
+    setupEventListeners(input, results, clearBtn, wrapper) {
       // Search input event
-      input.addEventListener('input', (e: any) => {
-        const query = e.target.value.trim();
-        
+      input.addEventListener('input', (e) => {
+        const query = input.value.trim();
+
         if (query) {
           clearBtn.style.display = 'flex';
           this.performSearch(query, results);
@@ -860,13 +911,15 @@ const aboutUrl = locale === 'en' ? '/en/about' : '/about';
 
       // Click outside to close
       document.addEventListener('click', (e) => {
-        if (!wrapper.contains(e.target)) {
+        const target = e.target;
+        if (!(target instanceof Node)) return;
+        if (!wrapper.contains(target)) {
           this.hideResults(results);
         }
       });
 
       // Keyboard shortcuts
-      input.addEventListener('keydown', (e: any) => {
+      input.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
           this.hideResults(results);
           input.blur();
@@ -874,30 +927,71 @@ const aboutUrl = locale === 'en' ? '/en/about' : '/about';
       });
     }
 
-    performSearch(query: any, resultsElement: any) {
-      const filtered = this.posts.filter((post: any) => 
-        post.title.toLowerCase().includes(query.toLowerCase())
-      );
+    performSearch(query, resultsElement) {
+      const raw = String(query).toLowerCase();
+      // support queries like '#teknoloji' or plain 'teknoloji'
+      const q = raw.startsWith('#') ? raw.slice(1).trim() : raw.trim();
+      const qNormalized = q.replace(/\s+/g, ' ');
+      const qAsTag = qNormalized.replace(/\s+/g, '-');
 
-      if (filtered.length === 0) {
+      const filtered = this.posts.filter((post) => {
+        const inTitle = (post.title || '').toLowerCase().includes(q);
+        const inDesc = (post.description || '').toLowerCase().includes(q);
+        const inTags = Array.isArray(post.tags) && post.tags.some(t => {
+          const tagRaw = String(t || '').toLowerCase();
+          const tagDisplay = tagRaw.replace(/-/g, ' ');
+          return tagRaw.includes(q) || tagDisplay.includes(q) || tagRaw.includes(qAsTag);
+        });
+
+        return inTitle || inDesc || inTags;
+      });
+
+      // Clear existing
+      resultsElement.innerHTML = '';
+
+      if (!filtered.length) {
         const noResultsText = this.locale === 'en' ? 'No results found' : 'Sonuç bulunamadı';
-        resultsElement.innerHTML = `<div class="search-result">${noResultsText}</div>`;
+        const empty = document.createElement('div');
+        empty.className = 'search-result';
+        empty.textContent = noResultsText;
+        resultsElement.appendChild(empty);
       } else {
         const urlPrefix = this.locale === 'en' ? '/en/' : '/';
-        resultsElement.innerHTML = filtered.map((post: any) => 
-          `<a href="${urlPrefix}${post.slug}/" class="search-result">${post.title}</a>`
-        ).join('');
+        filtered.slice(0, 8).forEach((post) => {
+          const a = document.createElement('a');
+          a.className = 'search-result';
+          a.href = `${urlPrefix}${post.slug}/`;
+          a.setAttribute('role', 'option');
+
+          const thumbHtml = post.heroImage ? `<div class="search-thumb"><img src="${post.heroImage}" alt="" loading="lazy"/></div>` : '';
+          const titleHtml = `<div class="search-result-title">${post.title || ''}</div>`;
+          const descHtml = post.description ? `<div class="search-result-desc">${post.description}</div>` : '';
+
+          a.innerHTML = `
+            <div class="search-result-row">
+              ${thumbHtml}
+              <div class="search-result-content">
+                ${titleHtml}
+                ${descHtml}
+              </div>
+            </div>
+          `;
+
+          resultsElement.appendChild(a);
+        });
       }
 
       this.showResults(resultsElement);
     }
 
-    showResults(element: any) {
+    showResults(element) {
       element.style.display = 'block';
+      element.classList.add('open');
     }
 
-    hideResults(element: any) {
+    hideResults(element) {
       element.style.display = 'none';
+      element.classList.remove('open');
     }
   }
 

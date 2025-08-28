@@ -1,5 +1,5 @@
-<div class="search-wrapper">
-  <div class="search-container">
+<div class="search-wrapper site-search">
+  <div class="search-container" role="search">
     <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
       <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" fill="none"/>
       <line x1="16.65" y1="16.65" x2="22" y2="22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -7,7 +7,7 @@
     <input class="search-input" type="search" placeholder="Arama yapın..." aria-label="Search posts" autocomplete="off" />
     <button class="clear-btn" type="button" aria-label="Clear search">&times;</button>
   </div>
-  <div class="search-results"></div>
+  <div class="search-results" role="listbox" aria-label="Search results"></div>
 </div>
 
 <style>
@@ -20,16 +20,96 @@
   align-items: center;
   gap: 0.75rem;
   background: rgba(255,255,255,0.95);
-  border: 2px solid rgba(2,6,23,0.1);
+  border: 2px solid rgba(2,6,23,0.08);
   border-radius: 50px;
-  padding: 0.65rem 1rem;
+  padding: 0.6rem 0.9rem;
   box-shadow: 0 2px 8px rgba(2,6,23,0.06);
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-  cursor: pointer;
+  transition: box-shadow 0.18s ease, transform 120ms ease;
+  backdrop-filter: blur(8px);
+  cursor: text;
+}
+.site-search .search-wrapper {
+  position: relative;
 }
 
+.site-search .search-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(255,255,255,0.95);
+  border: 2px solid rgba(2,6,23,0.08);
+  border-radius: 50px;
+  padding: 0.6rem 0.9rem;
+  box-shadow: 0 2px 8px rgba(2,6,23,0.06);
+  transition: box-shadow 0.18s ease, transform 120ms ease;
+  backdrop-filter: blur(8px);
+  cursor: text;
+}
+/* search results hidden by default; `.open` shows them */
+.search-results {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid rgba(2,6,23,0.08);
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(2,6,23,0.12);
+  z-index: 999999;
+  max-height: 420px;
+  overflow-y: auto;
+  display: none; /* hidden until .open is present */
+  padding: 8px; /* uniform padding */
+  box-sizing: border-box;
+}
+
+.search-results.open {
+  display: block;
+}
+.site-search .search-results {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid rgba(2,6,23,0.08);
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(2,6,23,0.12);
+  z-index: 999999;
+  max-height: 420px;
+  overflow-y: auto;
+  display: none; /* hidden until .open is present */
+  padding: 8px; /* uniform padding */
+  box-sizing: border-box;
+}
+
+.site-search .search-results.open {
+  display: block;
+}
+
+/* Temporary: force layout if other global/header styles are overriding component styles */
+.site-search .search-results.open {
+  /* Ensure component styles win over broader global selectors by using
+     a slightly more specific selector rather than !important */
+  display: block;
+}
+
+.site-search .search-result {
+  display: block;
+  width: 100%;
+  margin: 6px 0;
+  padding: 10px 12px;
+  box-sizing: border-box;
+}
 .search-input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font: inherit;
+  flex: 1;
+  padding: 0.3rem 0;
+}
+.site-search .search-input {
   border: none;
   background: transparent;
   outline: none;
@@ -39,6 +119,11 @@
 }
 
 .search-icon {
+  opacity: 0.6;
+  color: var(--text-color, #333);
+  flex-shrink: 0;
+}
+.site-search .search-icon {
   opacity: 0.6;
   color: var(--text-color, #333);
   flex-shrink: 0;
@@ -55,73 +140,122 @@
   flex-shrink: 0;
   display: none;
 }
-
-.clear-btn:hover {
-  background: rgba(2,6,23,0.08);
-}
-
-.search-results {
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 0;
-  right: 0;
-  background: white;
-  border: 1px solid rgba(2,6,23,0.1);
-  border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(2,6,23,0.15);
-  z-index: 999999;
-  max-height: 400px;
-  overflow-y: auto;
+.site-search .clear-btn {
+  background: transparent;
+  border: 0;
+  color: rgba(2,6,23,0.5);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.2rem;
+  border-radius: 50%;
+  flex-shrink: 0;
   display: none;
 }
 
-.search-result {
-  padding: 12px 16px;
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  border-bottom: 1px solid rgba(2,6,23,0.05);
+/* Layout for each result row (thumbnail + content) */
+.site-search .search-result {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
   text-decoration: none;
   color: inherit;
-  transition: background 0.2s ease;
+  transition: background 0.14s ease, transform 0.12s ease;
+  outline: none;
 }
 
-.search-result:hover {
-  background: rgba(2,6,23,0.03);
+.site-search .search-result-row {
+  display: grid;
+  grid-template-columns: 84px 1fr;
+  gap: 12px;
+  align-items: start;
+  width: 100%;
 }
 
-.search-result:last-child {
-  border-bottom: none;
-}
-
-.search-result img {
-  width: 60px;
-  height: 40px;
+.site-search .search-thumb img {
+  width: 84px;
+  height: 56px;
   object-fit: cover;
   border-radius: 8px;
   background: #f8f9fa;
+  display: block;
 }
 
-.search-result-content {
+.site-search .search-result-content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
   flex: 1;
+  min-width: 0;
 }
 
-.search-result-title {
-  font-weight: 600;
-  margin: 0 0 4px;
-  font-size: 0.9rem;
-  line-height: 1.3;
+.site-search .search-result:hover,
+.site-search .search-result[aria-selected="true"],
+.site-search .search-result:focus {
+  background: rgba(2,6,23,0.04);
+  transform: translateY(-1px);
 }
 
-.search-result-date {
-  font-size: 0.75rem;
-  color: rgba(2,6,23,0.6);
+.site-search .search-result:last-child {
+  border-bottom: none;
 }
+
+.site-search .search-result img {
+  width: 72px;
+  height: 52px;
+  object-fit: cover;
+  border-radius: 6px;
+  background: #f8f9fa;
+  flex-shrink: 0;
+}
+
+.site-search .search-result-title {
+  font-weight: 700;
+  margin: 0 0 6px;
+  font-size: 0.98rem;
+  line-height: 1.25;
+  color: rgb(var(--black));
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+}
+
+.site-search .search-result-date {
+  font-size: 0.78rem;
+  color: rgba(2,6,23,0.65);
+}
+
+.site-search .search-result-desc {
+  font-size: 0.86rem;
+  color: rgba(2,6,23,0.7);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+  /* each result is a separate card inside the dropdown */
+  .site-search .search-results .search-result {
+    background: var(--card-bg, #ffffff);
+    border: 1px solid rgba(2,6,23,0.06);
+    border-radius: 8px;
+    margin: 6px 0;
+    padding: 10px 12px;
+    box-shadow: 0 4px 12px rgba(2,6,23,0.04);
+    display: block;
+  }
+
+  .site-search .search-results .search-result:last-child {
+    margin-bottom: 0;
+  }
 
 /* Desktop - smaller search bar */
 @media (min-width: 769px) {
   .search-container {
-    width: 280px;
+    width: 320px;
     min-width: 280px;
   }
   
@@ -134,7 +268,8 @@
   }
   
   .search-results {
-    width: 280px;
+    width: 320px;
+    right: auto;
   }
 }
 
@@ -181,29 +316,27 @@ window.addEventListener('load', () => {
   
   if (!wrapper || !container || !input || !results || !clearBtn) return;
   
-  let posts = [
-    {
-      slug: 'test-search',
-      title: 'Test Search Post',
-      description: 'Bu bir test yazısı arama fonksiyonunu test etmek için',
-      pubDate: '2025-08-23',
-      heroImage: '/blog-placeholder-2.jpg'
-    },
-    {
-      slug: 'javascript-modern',
-      title: 'JavaScript Modern Özellikler',
-      description: 'Modern JavaScript ile web geliştirme teknikleri',
-      pubDate: '2025-08-21',
-      heroImage: '/blog-placeholder-3.jpg'
-    },
-    {
-      slug: 'rog-xbox',
-      title: 'Rog Xbox Ally Geliyor',
-      description: 'Xbox artık her yerde',
-      pubDate: '2025-08-22',
-      heroImage: '/blog-placeholder-4.png'
+  let posts = [];
+
+  // Load posts from site's API if available
+  async function loadPosts() {
+    try {
+      const resp = await fetch('/api/posts.json');
+      if (!resp.ok) throw new Error('no posts');
+      const json = await resp.json();
+      // Expecting array of posts with { slug, title, description, pubDate, heroImage }
+      posts = (json.posts || json || []).map(p => ({
+        slug: p.slug || p.id || '',
+        title: p.title || p.data?.title || '',
+        description: p.description || p.data?.description || p.data?.excerpt || '',
+        pubDate: p.pubDate || p.data?.pubDate || p.data?.date || '',
+        heroImage: p.heroImage || p.data?.heroImage || p.data?.image || p.data?.hero || ''
+      }));
+    } catch (e) {
+      // fallback: leave posts empty (component still works with demo data previously set)
+      posts = [];
     }
-  ];
+  }
 
   const turkishMonths = {
     1: 'ocak', 2: 'şubat', 3: 'mart', 4: 'nisan', 
@@ -232,24 +365,62 @@ window.addEventListener('load', () => {
     ).slice(0, 5);
   }
 
+  let currentIndex = -1;
+
   function renderResults(resultList) {
-    if (!resultList.length) {
-      results.style.display = 'none';
-      return;
-    }
+      if (!resultList.length) {
+        results.innerHTML = '';
+        results.classList.remove('open');
+        currentIndex = -1;
+        return;
+      }
 
-    const html = resultList.map(post => `
-      <a href="/${post.slug}/" class="search-result">
-        ${post.heroImage ? `<img src="${post.heroImage}" alt="" loading="lazy"/>` : ''}
-        <div class="search-result-content">
-          <div class="search-result-title">${post.title}</div>
-          <div class="search-result-date">${formatDate(post.pubDate)}</div>
+    const nodes = resultList.map((post, idx) => {
+      const img = post.heroImage ? `<img src="${post.heroImage}" alt="" loading="lazy"/>` : '';
+      const title = `<div class="search-result-title">${post.title}</div>`;
+      const date = `<div class="search-result-date">${formatDate(post.pubDate)}</div>`;
+      const desc = post.description ? `<div class="search-result-desc">${post.description}</div>` : '';
+      const item = document.createElement('a');
+      item.className = 'search-result';
+      item.href = `/${post.slug}/`;
+      item.setAttribute('role', 'option');
+      item.setAttribute('data-index', String(idx));
+      // Layout: thumbnail left, stacked content to the right (title, desc, date)
+      item.innerHTML = `
+        <div class="search-result-row">
+          ${img ? `<div class="search-thumb">${img}</div>` : ''}
+          <div class="search-result-content">
+            ${title}
+            ${desc}
+            ${date}
+          </div>
         </div>
-      </a>
-    `).join('');
+      `;
 
-    results.innerHTML = html;
-    results.style.display = 'block';
+      return item;
+    });
+
+    // Clear and append
+    results.innerHTML = '';
+    nodes.forEach(n => results.appendChild(n));
+    results.classList.add('open');
+    currentIndex = -1;
+    setSelected(currentIndex);
+  }
+
+  function setSelected(index) {
+    const items = results.querySelectorAll('.search-result');
+    items.forEach((it, i) => {
+      const el = it;
+      if (i === index) {
+        el.setAttribute('aria-selected', 'true');
+        el.classList.add('focused');
+        el.focus({preventScroll: true});
+      } else {
+        el.setAttribute('aria-selected', 'false');
+        el.classList.remove('focused');
+      }
+    });
   }
 
   // Event handlers
@@ -265,6 +436,9 @@ window.addEventListener('load', () => {
       renderResults([]);
     }
   });
+
+  // load posts once
+  loadPosts();
 
   input.addEventListener('blur', () => {
     setTimeout(() => {
@@ -284,7 +458,7 @@ window.addEventListener('load', () => {
   // Close on outside click
   document.addEventListener('click', (e) => {
     if (!wrapper.contains(e.target)) {
-      results.style.display = 'none';
+      results.classList.remove('open');
     }
   });
 
@@ -293,6 +467,30 @@ window.addEventListener('load', () => {
     if (e.key === '/' && document.activeElement !== input) {
       e.preventDefault();
       input.focus();
+    }
+  });
+  
+  // keyboard navigation within results
+  input.addEventListener('keydown', (e) => {
+    const items = results.querySelectorAll('.search-result');
+    if (!items.length) return;
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      currentIndex = Math.min(currentIndex + 1, items.length - 1);
+      setSelected(currentIndex);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      currentIndex = Math.max(currentIndex - 1, 0);
+      setSelected(currentIndex);
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (currentIndex >= 0 && items[currentIndex]) {
+        window.location.href = items[currentIndex].getAttribute('href');
+      }
+    } else if (e.key === 'Escape') {
+      results.classList.remove('open');
+      input.blur();
     }
   });
 });

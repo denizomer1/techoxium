@@ -1,10 +1,15 @@
 ---
 import '../styles/global.css';
 
-interface Props { title: string; description: string; image?: string; locale?: string }
-const { title, description, image = '', locale = 'tr' } = Astro.props as Props;
+interface Props { title: string; description?: string; image?: string; locale?: string }
+const { title, description = '', image = '', locale = 'tr' } = Astro.props as Props;
+// Use a concise default site description for social previews when none provided
+const DEFAULT_DESCRIPTION = 'Teknolojinin Elementi';
+const metaDescription = description && description.trim().length > 0 ? description : DEFAULT_DESCRIPTION;
 const canonicalURL = new globalThis.URL(Astro.url.pathname, Astro.site);
-const ogImage = image ? new globalThis.URL(image, Astro.url).toString() : '';
+// Default OG image uses the site logo when no per-page image is provided
+const DEFAULT_OG = '/logo.png';
+const ogImage = new globalThis.URL(image || DEFAULT_OG, Astro.url).toString();
 ---
 
 <!-- Global Metadata -->
@@ -32,13 +37,21 @@ const ogImage = image ? new globalThis.URL(image, Astro.url).toString() : '';
 <!-- Primary Meta Tags -->
 <title>{title}</title>
 <meta name="title" content={title} />
-<meta name="description" content={description} />
+<meta name="description" content={metaDescription} />
+<meta name="author" content="Techoxium" />
+<meta name="robots" content="index, follow" />
+<meta name="googlebot" content="index, follow" />
+
+<!-- Additional SEO Meta Tags -->
+<meta name="theme-color" content="#2337ff" />
+<meta name="msapplication-TileColor" content="#2337ff" />
+<meta name="application-name" content="Techoxium" />
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
-<meta property="og:description" content={description} />
+<meta property="og:description" content={metaDescription} />
 <meta property="og:locale" content={locale === 'en' ? 'en_US' : 'tr_TR'} />
 {ogImage && <meta property="og:image" content={ogImage} />}
 
@@ -46,7 +59,7 @@ const ogImage = image ? new globalThis.URL(image, Astro.url).toString() : '';
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={Astro.url} />
 <meta property="twitter:title" content={title} />
-<meta property="twitter:description" content={description} />
+<meta property="twitter:description" content={metaDescription} />
 {ogImage && <meta property="twitter:image" content={ogImage} />}
 
 <!-- Google tag (gtag.js) -->

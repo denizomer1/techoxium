@@ -4,8 +4,14 @@ Allow: /
 # Allow all crawlers to access all content
 # This is optimal for a blog/content website
 
-# Sitemap location
+# Sitemap locations for different locales
 Sitemap: https://techoxium.com/sitemap.xml
+Sitemap: https://techoxium.com/sitemap-0.xml
 
 # Optional: Crawl delay (uncomment if needed)
 # Crawl-delay: 1
+
+# Disallow admin areas if any
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_astro/

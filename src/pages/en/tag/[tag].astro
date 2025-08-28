@@ -1,0 +1,50 @@
+---
+import BaseHead from '../../../components/BaseHead.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import { getCollection } from 'astro:content';
+import { postMatchesTag } from '../../../lib/tag-utils.js';
+
+const { params } = Astro;
+const tag = String(params.tag || '');
+const locale = 'en';
+const collection = 'blogEn';
+const posts = /** @type {any[]} */ (await getCollection(/** @type {any} */ (collection)));
+
+// allow matching by the displayed tag or by the kebab slug
+const filtered = posts.filter(p => postMatchesTag(p, tag));
+---
+
+<html lang="en">
+  <head>
+    <BaseHead title={`#${tag}`} locale={locale} />
+  </head>
+  <body>
+    <Header locale={locale} />
+    <main class="tag-main">
+      <div class="container">
+        <h1>#{tag}</h1>
+        {filtered.length ? (
+          <ul class="tag-list">
+            {filtered.map(p => {
+              const post = /** @type {any} */ (p);
+              return (
+                <li class="tag-item"><a href={`/${locale === 'en' ? 'en/' : ''}${post.id}/`}>{post.data.title}</a></li>
+              );
+            })}
+          </ul>
+        ) : (
+          <p>No posts in this category yet.</p>
+        )}
+      </div>
+    </main>
+    <Footer locale={locale} />
+  </body>
+</html>
+
+<style>
+.tag-main { padding: 2rem 1rem; }
+.tag-list { list-style:none; padding:0; margin:1rem 0; display:grid; gap:1rem }
+.tag-item a { display:block; padding:1rem; background:var(--card-bg,#fff); border-radius:8px; box-shadow:var(--box-shadow); text-decoration:none }
+@media (prefers-color-scheme: dark) { .tag-item a { background:#2a2a38 } }
+</style>
