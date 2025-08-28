@@ -18,7 +18,7 @@ const serverListHtml = serverTags.length ? serverTags.map(rawTag => {
   const tag = String(rawTag);
   const slug = tagToSlug(tag);
   const prefix = locale === 'en' ? '/en' : '';
-  return `<li class="cat-item"><a href="${prefix}/tag/${slug}/" class="cat-item-link"><span class="cat-pill">#${tag}</span><span style="flex:1;margin-left:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${tag.replace(/-/g,' ')}</span></a></li>`;
+  return `<li class="cat-item"><a href="${prefix}/tag/${slug}/" class="cat-item-link" data-tag="${tag}"><span class="cat-pill">#${tag}</span><span style="flex:1;margin-left:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${tag.replace(/-/g,' ')}</span></a></li>`;
 }).join('') : `<li class="cat-item">${locale === 'en' ? 'No categories' : 'Kategori yok'}</li>`;
 ---
 
@@ -93,31 +93,6 @@ const serverListHtml = serverTags.length ? serverTags.map(rawTag => {
           console.debug('CategoryDropdown: fetched', pageLocale, 'tagsCount=', tags.length);
         }catch(e){ tags = []; postsData = []; }
 
-        function render(listEl, items){
-          listEl.innerHTML = '';
-          if(!items.length){ const li = document.createElement('li'); li.className='cat-item'; li.textContent = (document.documentElement.lang==='en' ? 'No categories' : 'Kategori yok'); listEl.appendChild(li); return }
-          items.forEach(tag => {
-            const li = document.createElement('li');
-            li.className = 'cat-item';
-            li.setAttribute('role','option');
-            li.tabIndex = 0;
-            li.innerHTML = `<span class="cat-pill">#${tag}</span><span style="flex:1;margin-left:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${tag.replace(/-/g,' ')}</span>`;
-            li.addEventListener('click', ()=> selectTag(tag));
-            li.addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' ') { e.preventDefault(); selectTag(tag) } });
-            listEl.appendChild(li);
-          });
-        }
-
-        function open(){ panel.setAttribute('aria-hidden','false'); toggle.setAttribute('aria-expanded','true'); input.focus(); }
-        function close(){ panel.setAttribute('aria-hidden','true'); toggle.setAttribute('aria-expanded','false'); }
-
-        toggle.addEventListener('click', (e)=>{ e.stopPropagation(); const expanded = toggle.getAttribute('aria-expanded')==='true'; if(expanded) close(); else open(); });
-
-        // Close when clicking outside this instance
-        document.addEventListener('click', (e)=>{ if(!root.contains(e.target)) close(); });
-
-        input.addEventListener('input', ()=>{ const q = input.value.trim().toLowerCase(); render(list, tags.filter(t=>String(t).toLowerCase().includes(q))); });
-
         function toSlug(t){
           try{
             return String(t)
@@ -133,25 +108,57 @@ const serverListHtml = serverTags.length ? serverTags.map(rawTag => {
             return String(t).toLowerCase().replace(/[^a-z0-9\\s-]/g,'').replace(/\\s+/g,'-');
           }
         }
-        function selectTag(tag){
-          if(!tag) return;
+
+        function selectTagHref(tag){
+          if(!tag) return '#';
           const pageLocale = root.dataset.locale || document.documentElement.lang || 'tr';
           const langPrefix = pageLocale === 'en' ? '/en' : '';
 
-          // Prefer API-provided tag slug if available (find a post that contains the tag and has tagSlugs)
+          // Prefer API-provided tag slug if available
           let slug = toSlug(tag);
           if(postsData && postsData.length){
             for(const p of postsData){
               if(Array.isArray(p.tags) && p.tags.includes(tag) && Array.isArray(p.tagSlugs)){
-                // find matching index and use the same slug
                 const idx = p.tags.indexOf(tag);
                 if(p.tagSlugs[idx]){ slug = p.tagSlugs[idx]; break; }
               }
             }
           }
 
-          window.location.href = `${langPrefix}/tag/${slug}/`;
+          return `${langPrefix}/tag/${slug}/`;
         }
+
+        function render(listEl, items){
+          if(!listEl || !Array.isArray(items)) return;
+          const pageLocale = root.dataset.locale || document.documentElement.lang || 'tr';
+          const langPrefix = pageLocale === 'en' ? '/en' : '';
+          
+          listEl.innerHTML = items.length ? items.map(rawTag => {
+            const tag = String(rawTag);
+            const href = selectTagHref(tag);
+            return `<li class="cat-item" role="option"><a href="${href}" class="cat-item-link" data-tag="${tag}"><span class="cat-pill">#${tag}</span><span style="flex:1;margin-left:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${tag.replace(/-/g,' ')}</span></a></li>`;
+          }).join('') : `<li class="cat-item" role="option">${pageLocale === 'en' ? 'No categories' : 'Kategori yok'}</li>`;
+        }
+
+        function open(){ 
+          panel.setAttribute('aria-hidden','false'); 
+          toggle.setAttribute('aria-expanded','true'); 
+          input.focus(); 
+        }
+        function close(){ 
+          panel.setAttribute('aria-hidden','true'); 
+          toggle.setAttribute('aria-expanded','false'); 
+        }
+
+        toggle.addEventListener('click', (e)=>{ e.stopPropagation(); const expanded = toggle.getAttribute('aria-expanded')==='true'; if(expanded) close(); else open(); });
+
+        // Close when clicking outside this instance
+        document.addEventListener('click', (e)=>{ if(!root.contains(e.target)) close(); });
+
+        input.addEventListener('input', ()=>{ 
+          const q = input.value.trim().toLowerCase(); 
+          render(list, tags.filter(t=>String(t).toLowerCase().includes(q))); 
+        });
 
         // update toggle label and state to show if we have tags
         try{

@@ -1,7 +1,7 @@
 globalThis.process ??= {}; globalThis.process.env ??= {};
 import { c as createComponent, r as renderComponent, a as renderTemplate } from '../../chunks/astro/server_Dwc-Xb_E.mjs';
-import { $ as $$AboutPage } from '../../chunks/AboutPage_CnOkIYfH.mjs';
-import { t } from '../../chunks/Footer_DWOQ9eDf.mjs';
+import { $ as $$AboutPage } from '../../chunks/AboutPage_BZMEVo4C.mjs';
+import { t } from '../../chunks/Footer_DqNLYxEy.mjs';
 export { renderers } from '../../renderers.mjs';
 
 const $$About = createComponent(($$result, $$props, $$slots) => {
