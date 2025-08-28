@@ -1,6 +1,6 @@
 globalThis.process ??= {}; globalThis.process.env ??= {};
-import { b as createAstro, c as createComponent, v as maybeRenderHead, d as addAttribute, a as renderTemplate, r as renderComponent } from './astro/server_Dwc-Xb_E.mjs';
-import { $ as $$FormattedDate } from './FormattedDate_BwUQSVsc.mjs';
+import { d as createAstro, c as createComponent, w as maybeRenderHead, e as addAttribute, r as renderTemplate, a as renderComponent } from './astro/server_C-RMCnIV.mjs';
+import { $ as $$FormattedDate } from './FormattedDate_XWNlACoW.mjs';
 /* empty css                         */
 
 const $$Astro = createAstro("https://techoxium.com");

@@ -1,5 +1,5 @@
 globalThis.process ??= {}; globalThis.process.env ??= {};
-import { o as objectType, g as dateType, n as numberType, f as arrayType, s as stringType, A as AstroError, U as UnknownContentCollectionError, c as createComponent, R as RenderUndefinedEntryError, x as unescapeHTML, a as renderTemplate, z as escape, B as renderUniqueStylesheet, C as renderScriptElement, D as createHeadAndContent, r as renderComponent } from './astro/server_Dwc-Xb_E.mjs';
+import { o as objectType, h as dateType, n as numberType, f as arrayType, s as stringType, A as AstroError, U as UnknownContentCollectionError, c as createComponent, R as RenderUndefinedEntryError, u as unescapeHTML, r as renderTemplate, z as escape, B as renderUniqueStylesheet, C as renderScriptElement, D as createHeadAndContent, a as renderComponent } from './astro/server_C-RMCnIV.mjs';
 import { r as removeBase, i as isRemotePath, p as prependForwardSlash } from './path_u5O9njcM.mjs';
 import { u as unflatten } from './parse_yL_293SP.mjs';
 
@@ -434,7 +434,7 @@ const CONTENT_LAYER_IMAGE_REGEX = /__ASTRO_IMAGE_="([^"]+)"/g;
 async function updateImageReferencesInBody(html, fileName) {
   const { default: imageAssetMap } = await import('./content-assets_XqCgPAV2.mjs');
   const imageObjects = /* @__PURE__ */ new Map();
-  const { getImage } = await import('./_astro_assets_BywZmciR.mjs').then(n => n._);
+  const { getImage } = await import('./_astro_assets_kWExcCoV.mjs').then(n => n._);
   for (const [_full, imagePath] of html.matchAll(CONTENT_LAYER_IMAGE_REGEX)) {
     try {
       const decodedImagePath = JSON.parse(imagePath.replaceAll("&#x22;", '"'));
