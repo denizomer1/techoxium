@@ -6,20 +6,25 @@
   "exclude": [
     "/_astro/*",
     "/.assetsignore",
+    "/Gearsofwar108.jpg",
     "/ads.txt",
+    "/apple-etkinlik.png",
     "/blog-placeholder-2.jpg",
     "/blog-placeholder-3.jpg",
     "/blog-placeholder-4.png",
     "/blog-placeholder-5.jpg",
+    "/brain.png",
     "/favicon-alt.svg",
     "/gamescom-2025-hero.svg",
     "/logo.png",
     "/robots.txt",
     "/site.webmanifest",
     "/social_media.png",
+    "/windows-11-24h2.jpg",
     "/windows-error.png",
     "/fonts/atkinson-bold.woff",
     "/fonts/atkinson-regular.woff",
+    "/images/gearsofwar108.jpg",
     "/js/language-switcher.js"
   ]
 }

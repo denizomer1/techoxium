@@ -1,7 +1,7 @@
 globalThis.process ??= {}; globalThis.process.env ??= {};
 import { j as joinPaths, i as isRemotePath } from './path_u5O9njcM.mjs';
-import { A as AstroError, aA as ExpectedImage, aB as LocalImageUsedWrongly, aC as MissingImageDimension, aD as UnsupportedImageFormat, aE as IncompatibleDescriptorOptions, aF as UnsupportedImageConversion, aG as toStyleString, aH as NoImageMetadata, aI as FailedToFetchRemoteImageDimensions, aJ as ExpectedImageOptions, aK as ExpectedNotESMImage, aL as InvalidImageService, b as createAstro, c as createComponent, aM as ImageMissingAlt, t as maybeRenderHead, d as addAttribute, v as spreadAttributes, a as renderTemplate, aN as ExperimentalFontsNotEnabled, aO as FontFamilyNotFound, x as unescapeHTML } from './astro/server_DCU9xl9x.mjs';
-import { D as DEFAULT_OUTPUT_FORMAT, V as VALID_SUPPORTED_FORMATS, a as DEFAULT_HASH_PROPS } from './_astro_content_D-tSfqIq.mjs';
+import { A as AstroError, az as ExpectedImage, aA as LocalImageUsedWrongly, aB as MissingImageDimension, aC as UnsupportedImageFormat, aD as IncompatibleDescriptorOptions, aE as UnsupportedImageConversion, aF as toStyleString, aG as NoImageMetadata, aH as FailedToFetchRemoteImageDimensions, aI as ExpectedImageOptions, aJ as ExpectedNotESMImage, aK as InvalidImageService, b as createAstro, c as createComponent, aL as ImageMissingAlt, v as maybeRenderHead, d as addAttribute, w as spreadAttributes, a as renderTemplate, aM as ExperimentalFontsNotEnabled, aN as FontFamilyNotFound, x as unescapeHTML } from './astro/server_Dwc-Xb_E.mjs';
+import { D as DEFAULT_OUTPUT_FORMAT, V as VALID_SUPPORTED_FORMATS, a as DEFAULT_HASH_PROPS } from './_astro_content_D24jhqoj.mjs';
 
 const DEFAULT_RESOLUTIONS = [
   640,
@@ -1235,7 +1235,7 @@ async function getConfiguredImageService() {
   if (!globalThis?.astroAsset?.imageService) {
     const { default: service } = await import(
       // @ts-expect-error
-      './sharp_Cd_sD7E4.mjs'
+      './sharp_o9X7H-8T.mjs'
     ).catch((e) => {
       const error = new AstroError(InvalidImageService);
       error.cause = e;
@@ -1401,7 +1401,7 @@ const $$Image = createComponent(async ($$result, $$props, $$slots) => {
   }
   const { class: className, ...attributes } = { ...additionalAttributes, ...image.attributes };
   return renderTemplate`${maybeRenderHead()}<img${addAttribute(image.src, "src")}${spreadAttributes(attributes)}${addAttribute(className, "class")}>`;
-}, "/Users/mac/Documents/techoxium/node_modules/astro/components/Image.astro", void 0);
+}, "/Users/mac/Desktop/techoxium/node_modules/astro/components/Image.astro", void 0);
 
 const mimes = {
   "3g2": "video/3gpp2",
@@ -1919,7 +1919,7 @@ const $$Picture = createComponent(async ($$result, $$props, $$slots) => {
     const srcsetAttribute = props.densities || !props.densities && !props.widths && !useResponsive ? `${image.src}${image.srcSet.values.length > 0 ? ", " + image.srcSet.attribute : ""}` : image.srcSet.attribute;
     return renderTemplate`<source${addAttribute(srcsetAttribute, "srcset")}${addAttribute(lookup(image.options.format ?? image.src) ?? `image/${image.options.format}`, "type")}${spreadAttributes(sourceAdditionalAttributes)}>`;
   })}  <img${addAttribute(fallbackImage.src, "src")}${spreadAttributes(attributes)}${addAttribute(className, "class")}> </picture>`;
-}, "/Users/mac/Documents/techoxium/node_modules/astro/components/Picture.astro", void 0);
+}, "/Users/mac/Desktop/techoxium/node_modules/astro/components/Picture.astro", void 0);
 
 const mod = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null
@@ -1942,7 +1942,7 @@ const $$Font = createComponent(($$result, $$props, $$slots) => {
     });
   }
   return renderTemplate`${preload && data.preloadData.map(({ url, type }) => renderTemplate`<link rel="preload"${addAttribute(url, "href")} as="font"${addAttribute(`font/${type}`, "type")} crossorigin>`)}<style>${unescapeHTML(data.css)}</style>`;
-}, "/Users/mac/Documents/techoxium/node_modules/astro/components/Font.astro", void 0);
+}, "/Users/mac/Desktop/techoxium/node_modules/astro/components/Font.astro", void 0);
 
 const imageConfig = {"endpoint":{"route":"/_image","entrypoint":"@astrojs/cloudflare/image-endpoint"},"service":{"entrypoint":"astro/assets/services/sharp","config":{}},"domains":[],"remotePatterns":[],"responsiveStyles":false};
 							const getImage = async (options) => await getImage$1(options, imageConfig);

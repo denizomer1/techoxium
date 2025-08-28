@@ -1,5 +1,5 @@
 globalThis.process ??= {}; globalThis.process.env ??= {};
-import { G as renderJSX, H as createVNode, I as AstroJSX, J as AstroUserError } from './chunks/astro/server_DCU9xl9x.mjs';
+import { F as renderJSX, G as createVNode, H as AstroJSX, I as AstroUserError } from './chunks/astro/server_Dwc-Xb_E.mjs';
 
 const slotName = (str) => str.trim().replace(/[-_]([a-z])/g, (_, w) => w.toUpperCase());
 async function check(Component, props, { default: children = null, ...slotted } = {}) {
@@ -47,6 +47,6 @@ const renderer = {
 };
 var server_default = renderer;
 
-const renderers = [Object.assign({"name":"astro:jsx","serverEntrypoint":"file:///Users/mac/Documents/techoxium/node_modules/@astrojs/mdx/dist/server.js"}, { ssr: server_default }),];
+const renderers = [Object.assign({"name":"astro:jsx","serverEntrypoint":"file:///Users/mac/Desktop/techoxium/node_modules/@astrojs/mdx/dist/server.js"}, { ssr: server_default }),];
 
 export { renderers };

@@ -47,5 +47,3 @@ Birçok kullanıcı forumlarda benzer sorunları paylaşıyor:
 - "Verilerim bozuldu, geri yükleyemedim"
 
 Bu sorunlar henüz Microsoft tarafından resmi olarak kabul edilmedi. Resmi bir düzeltme yayınlanana kadar, özellikle Phison kontrolcülü SSD kullananların güncellemeyi ertelemesi önerilir.
-
-**Uyarı**: Bu makale kullanıcı raporlarına dayanmaktadır. Kritik verileriniz varsa, güncelleme öncesi mutlaka yedek alın.

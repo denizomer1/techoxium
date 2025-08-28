@@ -68,5 +68,3 @@ Etkinlik sonrası:
 - Detaylı inceleme ve benchmark testleri
 
 Apple'ın Eylül etkinliği, teknoloji sektörünün en önemli etkinliklerinden biri olmaya devam ediyor. Yeni ürünlerin resmi tanıtımıyla birlikte, tüketicilerin ve teknoloji meraklılarının beklentileri de giderek artıyor.
-
-*Bu makaledeki bilgiler mevcut sızıntı ve tahminlere dayanmaktadır. Kesin bilgiler için Apple'ın resmi duyurusunu bekleyin.*

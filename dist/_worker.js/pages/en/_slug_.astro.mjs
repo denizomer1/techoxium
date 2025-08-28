@@ -1,7 +1,7 @@
 globalThis.process ??= {}; globalThis.process.env ??= {};
-import { b as createAstro, c as createComponent, r as renderComponent, a as renderTemplate } from '../../chunks/astro/server_DCU9xl9x.mjs';
-import { g as getCollection, r as renderEntry } from '../../chunks/_astro_content_D-tSfqIq.mjs';
-import { $ as $$BlogPost } from '../../chunks/BlogPost_DS3NxjC3.mjs';
+import { b as createAstro, c as createComponent, r as renderComponent, a as renderTemplate } from '../../chunks/astro/server_Dwc-Xb_E.mjs';
+import { g as getCollection, r as renderEntry } from '../../chunks/_astro_content_D24jhqoj.mjs';
+import { $ as $$BlogPost } from '../../chunks/BlogPost_BVGj4lAn.mjs';
 export { renderers } from '../../renderers.mjs';
 
 const $$Astro = createAstro("https://techoxium.com");
@@ -19,9 +19,9 @@ const $$slug = createComponent(async ($$result, $$props, $$slots) => {
   }
   const { Content } = await renderEntry(post);
   return renderTemplate`${renderComponent($$result, "BlogPost", $$BlogPost, { "title": post.data.title, "description": post.data.description, "pubDate": post.data.pubDate, "updatedDate": post.data.updatedDate, "heroImage": post.data.heroImage, "locale": "en" }, { "default": async ($$result2) => renderTemplate` ${renderComponent($$result2, "Content", Content, {})} ` })}`;
-}, "/Users/mac/Documents/techoxium/src/pages/en/[slug].astro", void 0);
+}, "/Users/mac/Desktop/techoxium/src/pages/en/[slug].astro", void 0);
 
-const $$file = "/Users/mac/Documents/techoxium/src/pages/en/[slug].astro";
+const $$file = "/Users/mac/Desktop/techoxium/src/pages/en/[slug].astro";
 const $$url = "/en/[slug]";
 
 const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({

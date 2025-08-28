@@ -11,5 +11,3 @@ Kısa öneriler:
 
 - Eğer güncellemeden sonra SSD sorunları yaşıyorsanız, güncellemeyi geri alın (Ayarlar > Sistem > Kurtarma) ve üretici firmware güncellemelerini kontrol edin.
 - `chkdsk /f` ile disk hatalarını kontrol edin ve gerekiyorsa üretici desteğine başvurun.
-
-Bu kısa bilgilendirme güncel kullanıcı raporlarına dayanıyor; Microsoft veya üreticiler tarafından resmi bir düzeltme yayınlanana kadar kritik makinelerde güncellemeyi ertelemenizi öneririz.

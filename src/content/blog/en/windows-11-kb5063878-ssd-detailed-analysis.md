@@ -47,5 +47,3 @@ Many users are sharing similar issues on forums:
 - "My data got corrupted, couldn't recover it"
 
 These issues have not yet been officially acknowledged by Microsoft. Until an official fix is released, users with Phison controller SSDs are advised to delay the update.
-
-**Warning**: This article is based on user reports. If you have critical data, always backup before updating.

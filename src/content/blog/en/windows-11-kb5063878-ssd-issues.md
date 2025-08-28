@@ -12,5 +12,3 @@ Quick steps:
 
 - If you experience SSD problems after the update, roll back the update (Settings > System > Recovery) and check for firmware updates from your drive manufacturer.
 - Run `chkdsk /f` to check for disk errors and contact vendor support if issues persist.
-
-This notice is based on early user reports; until Microsoft or drive vendors release an official fix, consider delaying the update on critical systems.

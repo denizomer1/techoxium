@@ -1,5 +1,5 @@
 globalThis.process ??= {}; globalThis.process.env ??= {};
-import { g as getCollection } from '../../chunks/_astro_content_D-tSfqIq.mjs';
+import { g as getCollection } from '../../chunks/_astro_content_D24jhqoj.mjs';
 export { renderers } from '../../renderers.mjs';
 
 async function GET(context) {
@@ -13,7 +13,10 @@ async function GET(context) {
       title: p.data.title ?? "",
       description: p.data.description ?? "",
       pubDate: p.data.pubDate ? String(p.data.pubDate) : "",
-      heroImage: p.data.heroImage ?? null
+      heroImage: p.data.heroImage ?? null,
+      tags: p.data.tags ?? [],
+      // generate a kebab-case slug for each tag for robust routing
+      tagSlugs: (p.data.tags || []).map((t) => String(t).toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-"))
     }));
     return new Response(JSON.stringify(items), {
       headers: {

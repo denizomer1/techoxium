@@ -68,5 +68,3 @@ After the event:
 - Detailed reviews and benchmark tests
 
 Apple's September event continues to be one of the most important events in the technology sector. With the official unveiling of new products, expectations from consumers and tech enthusiasts are increasing.
-
-*This article is based on current leaks and predictions. Please wait for Apple's official announcement for confirmed information.*
