@@ -25,7 +25,6 @@ const aboutUrl = locale === 'en' ? '/en/about' : '/about';
     
     <div class="nav-header-actions">
   <LanguageSwitcher locale={locale} currentPath={Astro.url.pathname} />
-  <CategoryDropdown locale={locale} tags={[]} />
       <button class="theme-toggle" id="theme-toggle" aria-label={t(locale, 'nav.themeToggle') || 'Tema değiştir'}>
         <div class="theme-icon">
           <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

@@ -1,8 +1,8 @@
 globalThis.process ??= {}; globalThis.process.env ??= {};
 import { d as createAstro, c as createComponent, r as renderTemplate, q as renderScript, a as renderComponent, t as renderSlot, e as addAttribute, b as renderHead, u as unescapeHTML } from './astro/server_C-RMCnIV.mjs';
-import { $ as $$Footer, a as $$Header, b as $$BaseHead } from './Footer_DVz6FYfL.mjs';
+import { $ as $$Footer, a as $$Header, b as $$BaseHead } from './Footer_C60ded2b.mjs';
 import { $ as $$FormattedDate } from './FormattedDate_XWNlACoW.mjs';
-import { b as $$BlogComment, a as $$TextToSpeech, $ as $$FontSizeControl } from './TextToSpeech_CtT99_xC.mjs';
+import { b as $$BlogComment, a as $$TextToSpeech, $ as $$FontSizeControl } from './TextToSpeech_D-rLkuER.mjs';
 /* empty css                          */
 
 var __freeze = Object.freeze;
