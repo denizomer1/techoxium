@@ -1,5 +1,5 @@
 globalThis.process ??= {}; globalThis.process.env ??= {};
-import { d as createAstro, c as createComponent } from '../chunks/astro/server_C-RMCnIV.mjs';
+import { d as createAstro, c as createComponent } from '../chunks/astro/server_B-4SWSrX.mjs';
 export { renderers } from '../renderers.mjs';
 
 const $$Astro = createAstro("https://techoxium.com");
