@@ -14,12 +14,12 @@ const cspDirectives = [
 // Language detection function
 function detectPreferredLanguage(request: Request): string {
   // Get the current URL
-  const url = new URL(request.url);
+  const currentUrl = new URL(request.url);
   
   // Skip language detection for API routes and assets
-  if (url.pathname.startsWith('/api/') || 
-      url.pathname.startsWith('/_') || 
-      url.pathname.includes('.')) {
+  if (currentUrl.pathname.startsWith('/api/') || 
+      currentUrl.pathname.startsWith('/_') || 
+      currentUrl.pathname.includes('.')) {
     return 'skip';
   }
 
