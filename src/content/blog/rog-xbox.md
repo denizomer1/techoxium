@@ -1,12 +1,28 @@
 ---
-title: "Rog Xbox Ally Geliyor"
-description: "Xbox artık her yerde"
+title: "ROG Xbox Ally: Xbox'un Yeni Taşınabilir Konsolu"
+description: "Microsoft'un AMD işbirliğiyle geliştirdiği yeni taşınabilir oyun konsolu ROG Xbox Ally tanıtıldı."
 pubDate: "2025-08-22"
 heroImage: "/blog-placeholder-4.png"
+tags: ["xbox", "rog-ally", "oyun-konsolu", "amd", "microsoft", "gaming"]
 ---
-<p>
-Xbox'ın konsol tarafındaki girişimi xbox series s ve x 'ten sonra xbox yeni bir sisteme geçiş yapmaya hazırlanıyor yeni tanıtım ile microsoft xbox markasını her yerde kullanılabilir hale getirmek ve oyunu heryerde erişilebilir hale getirebilmek için amd ile iş birliğine gidiyor. bu birlik sonraki xbox konsolunun pc'ye daha yakın olabileceği ve steam ,gog,epic games 'deki oyunları tek bir yerden oynama imkanı sunabilir. microsoft'a göre rog xbox ally işletim sistemi kişiselleştirilmiş bir windows 11 versiyonu olacak ve buda oyunculara daha çok özelliği ve imkanı sağlayacak . rog xbox ally gücünü amd'nin yeni nesil rdna2 mimarisine sahip AMD Ryzen Z2 işlemcisinden alıyor 1.6 tflops işlem gücüne sahip bu işlemci ile yeni nesil oyunları oynayabilir. xbox kütüphanesine her yerden erişim sağlanabilir. rog xbox ally ve rog xbox ally x 'in bu yılbaşı çıkması bekleniyor.
-</p>
+
+Microsoft, Xbox ekosistemini genişletmek için yeni bir taşınabilir oyun konsolu geliştirdi. ROG Xbox Ally, AMD'nin güçlü işlemcisi ve kişiselleştirilmiş Windows 11 işletim sistemiyle dikkat çekiyor.
+
+## Teknik Özellikler
+
+ROG Xbox Ally, AMD'nin yeni nesil Ryzen Z2 işlemcisinden güç alıyor. 1.6 TFLOPS işlem gücüne sahip olan cihaz, yeni nesil oyunları akıcı bir şekilde çalıştırabiliyor.
+
+## İşletim Sistemi ve Özellikler
+
+Cihaz, kişiselleştirilmiş bir Windows 11 sürümüyle çalışıyor. Bu sayede kullanıcılara daha fazla özellik ve özelleştirme imkanı sunuluyor. Xbox kütüphanesine her yerden erişim sağlanabiliyor.
+
+## İş Birliği ve Vizyon
+
+Microsoft ve AMD arasındaki işbirliği, oyun deneyimini farklı platformlarda erişilebilir hale getirmeyi hedefliyor. ROG Xbox Ally, bu vizyonun önemli bir parçası olarak öne çıkıyor.
+
+## Yayın Zamanlaması
+
+ROG Xbox Ally ve ROG Xbox Ally X'in yılbaşı döneminde piyasaya sürülmesi bekleniyor.
 
 <div class="video-wrap">
 	<iframe src="https://www.youtube.com/embed/SOKm9dDOSC8?si=lRZuHOxq6693-hxx" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

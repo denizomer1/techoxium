@@ -1,7 +1,7 @@
 globalThis.process ??= {}; globalThis.process.env ??= {};
 import { d as createAstro, c as createComponent, r as renderTemplate, e as addAttribute, w as maybeRenderHead, x as spreadAttributes, t as renderSlot, u as unescapeHTML, a as renderComponent, q as renderScript } from './astro/server_C-RMCnIV.mjs';
 /* empty css                         */
-import { g as getCollection } from './_astro_content_B2c4wXOt.mjs';
+import { g as getCollection } from './_astro_content_EW_c4Bvs.mjs';
 import { a as SITE_TITLE } from './consts_pVytapcw.mjs';
 
 var __freeze$2 = Object.freeze;
@@ -339,7 +339,7 @@ const $$Social = createComponent(($$result, $$props, $$slots) => {
     md: "social-md",
     lg: "social-lg"
   };
-  return renderTemplate`${maybeRenderHead()}<a${addAttribute(`social-link ${sizeClasses[size]} social-${variant}`, "class")}${addAttribute(link, "href")}${addAttribute(`Visit our ${config.name}`, "aria-label")} rel="noopener noreferrer" target="_blank"${addAttribute(platform, "data-platform")}${addAttribute(`--social-color: ${config.color};`, "style")} data-astro-cid-yxtifmrq> <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-astro-cid-yxtifmrq> <g data-astro-cid-yxtifmrq>${unescapeHTML(config.icon)}</g> </svg> <span class="social-tooltip" data-astro-cid-yxtifmrq>${config.name}</span> </a> `;
+  return renderTemplate`${maybeRenderHead()}<a${addAttribute(`social-link ${sizeClasses[size]} social-${variant}`, "class")}${addAttribute(link, "href")}${addAttribute(`Visit our ${config.name}`, "aria-label")} rel="noopener noreferrer" target="_blank"${addAttribute(platform, "data-platform")}${addAttribute(`--social-color: ${config.color};`, "style")} data-astro-cid-yxtifmrq> ${platform === "x" ? renderTemplate`<span class="social-text" data-astro-cid-yxtifmrq>X</span>` : renderTemplate`<svg class="social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-astro-cid-yxtifmrq> <g data-astro-cid-yxtifmrq>${unescapeHTML(config.icon)}</g> </svg>`} <span class="social-tooltip" data-astro-cid-yxtifmrq>${config.name}</span> </a> `;
 }, "/Users/mac/Desktop/techoxium/src/components/Social.astro", void 0);
 
 const $$Astro = createAstro("https://techoxium.com");
@@ -349,7 +349,7 @@ const $$Footer = createComponent(($$result, $$props, $$slots) => {
   const { locale = "tr" } = Astro2.props;
   const today = new globalThis.Date();
   return renderTemplate`${maybeRenderHead()}<footer data-astro-cid-sz7xmlte>
-&copy; ${today.getFullYear()} Techoxium. ${t(locale, "footer.allRightsReserved")} <div class="social-links" data-astro-cid-sz7xmlte> ${renderComponent($$result, "Social", $$Social, { "platform": "yt", "link": "https://www.youtube.com/@TechOxium", "size": "lg", "variant": "filled", "data-astro-cid-sz7xmlte": true })} ${renderComponent($$result, "Social", $$Social, { "platform": "nxt", "link": "https://sosyal.teknofest.app/@techoxium", "size": "lg", "variant": "filled", "data-astro-cid-sz7xmlte": true })} ${renderComponent($$result, "Social", $$Social, { "platform": "instagram", "link": "https://instagram.com/techoxium", "size": "lg", "variant": "filled", "data-astro-cid-sz7xmlte": true })} </div> </footer>  ${renderScript($$result, "/Users/mac/Desktop/techoxium/src/components/Footer.astro?astro&type=script&index=0&lang.ts")}`;
+&copy; ${today.getFullYear()} Techoxium. ${t(locale, "footer.allRightsReserved")} <div class="social-links" data-astro-cid-sz7xmlte> ${renderComponent($$result, "Social", $$Social, { "platform": "yt", "link": "https://www.youtube.com/@TechOxium", "size": "lg", "variant": "filled", "data-astro-cid-sz7xmlte": true })} ${renderComponent($$result, "Social", $$Social, { "platform": "x", "link": "https://x.com/techoxium", "size": "lg", "variant": "filled", "data-astro-cid-sz7xmlte": true })} ${renderComponent($$result, "Social", $$Social, { "platform": "nxt", "link": "https://sosyal.teknofest.app/@techoxium", "size": "lg", "variant": "filled", "data-astro-cid-sz7xmlte": true })} ${renderComponent($$result, "Social", $$Social, { "platform": "instagram", "link": "https://instagram.com/techoxium", "size": "lg", "variant": "filled", "data-astro-cid-sz7xmlte": true })} </div> </footer>  ${renderScript($$result, "/Users/mac/Desktop/techoxium/src/components/Footer.astro?astro&type=script&index=0&lang.ts")}`;
 }, "/Users/mac/Desktop/techoxium/src/components/Footer.astro", void 0);
 
 export { $$Footer as $, $$Header as a, $$BaseHead as b, postMatchesTag as p, t };

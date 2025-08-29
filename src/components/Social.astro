@@ -94,9 +94,13 @@ const sizeClasses = {
   data-platform={platform}
   style={`--social-color: ${config.color};`}
 >
-  <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-    <g set:html={config.icon} />
-  </svg>
+  {platform === 'x' ? (
+    <span class="social-text">X</span>
+  ) : (
+    <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <g set:html={config.icon} />
+    </svg>
+  )}
   <span class="social-tooltip">{config.name}</span>
 </a>
 
@@ -154,9 +158,21 @@ const sizeClasses = {
     position: relative;
   }
   
+  .social-text {
+    transition: all 0.3s ease;
+    z-index: 2;
+    position: relative;
+    font-weight: 600;
+    line-height: 1;
+  }
+  
   .social-sm .social-icon {
     width: 1rem;
     height: 1rem;
+  }
+  
+  .social-sm .social-text {
+    font-size: 1rem;
   }
   
   .social-md .social-icon {
@@ -164,9 +180,17 @@ const sizeClasses = {
     height: 1.25rem;
   }
   
+  .social-md .social-text {
+    font-size: 1.25rem;
+  }
+  
   .social-lg .social-icon {
     width: 1.5rem;
     height: 1.5rem;
+  }
+  
+  .social-lg .social-text {
+    font-size: 1.5rem;
   }
   
   /* Hover effects: static by default, animate on hover */
