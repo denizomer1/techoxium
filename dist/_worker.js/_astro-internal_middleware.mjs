@@ -1,7 +1,7 @@
 globalThis.process ??= {}; globalThis.process.env ??= {};
-import './chunks/astro-designed-error-pages_DlCV-GvE.mjs';
-import './chunks/astro/server_C-RMCnIV.mjs';
-import { s as sequence } from './chunks/index_CQ9HfdAN.mjs';
+import './chunks/astro-designed-error-pages_DVsTSXIh.mjs';
+import './chunks/astro/server_B-4SWSrX.mjs';
+import { s as sequence } from './chunks/index_CcotjSbc.mjs';
 
 const cspDirectives = [
   "default-src 'self'",
@@ -14,8 +14,8 @@ const cspDirectives = [
   "object-src 'none'"
 ];
 function detectPreferredLanguage(request) {
-  const url = new URL(request.url);
-  if (url.pathname.startsWith("/api/") || url.pathname.startsWith("/_") || url.pathname.includes(".")) {
+  const currentUrl = new URL(request.url);
+  if (currentUrl.pathname.startsWith("/api/") || currentUrl.pathname.startsWith("/_") || currentUrl.pathname.includes(".")) {
     return "skip";
   }
   const cookies = request.headers.get("cookie");
@@ -36,13 +36,33 @@ function detectPreferredLanguage(request) {
   }
   return preferredLanguage;
 }
-const onRequest$2 = async (context, next) => {
-  const url = new URL(context.request.url);
-  const preferredLanguage = detectPreferredLanguage(context.request);
+function checkAuth(request) {
+  const authHeader = request.headers.get("authorization");
+  if (!authHeader || !authHeader.startsWith("Basic ")) {
+    return false;
+  }
+  const credentials = authHeader.slice(6);
+  const decoded = atob(credentials);
+  const [username, password] = decoded.split(":");
+  return username === "admin" && password === "135790Bq";
+}
+const onRequest$2 = async ({ request }, next) => {
+  const url = new URL(request.url);
+  if (url.pathname.startsWith("/keystatic")) {
+    if (!checkAuth(request)) {
+      return new Response("Authentication required", {
+        status: 401,
+        headers: {
+          "WWW-Authenticate": 'Basic realm="Keystatic Admin"'
+        }
+      });
+    }
+  }
+  const preferredLanguage = detectPreferredLanguage(request);
   if (preferredLanguage !== "skip") {
     const isEnglishPath = url.pathname.startsWith("/en");
     const isTurkishPath = !isEnglishPath;
-    const cookies = context.request.headers.get("cookie");
+    const cookies = request.headers.get("cookie");
     const langCookie = cookies?.match(/language=([^;]+)/)?.[1];
     if (!langCookie) {
       if (preferredLanguage === "en" && isTurkishPath && url.pathname !== "/") {
