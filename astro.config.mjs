@@ -18,7 +18,10 @@ export default defineConfig({
     sitemap(),
     markdoc(),
     // Only include React + Keystatic admin in dev or when explicitly enabled.
-    ...(enableKeystaticAdmin ? [react({ include: ['**/keystatic/**'] }), keystatic()] : []),
+    ...(enableKeystaticAdmin ? [react({ 
+      include: ['**/keystatic/**'],
+      experimentalReactChildren: true 
+    }), keystatic()] : []),
   ],
   i18n: {
     defaultLocale: "tr",
@@ -36,11 +39,20 @@ export default defineConfig({
   vite: {
     build: {
       minify: 'esbuild',
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            // Split large dependencies into separate chunks
+            vendor: ['@astrojs/markdoc', '@astrojs/mdx'],
+            keystatic: ['@keystatic/core', '@keystatic/astro'],
+          },
+        },
+      },
     },
   },
   image: {
     service: {
-      entrypoint: "astro/assets/services/noop",
+      entrypoint: "astro/assets/services/sharp",
     },
   },
   build: {

@@ -1,7 +1,7 @@
 globalThis.process ??= {}; globalThis.process.env ??= {};
 import { d as createAstro, c as createComponent, a as renderComponent, r as renderTemplate } from '../../chunks/astro/server_B-4SWSrX.mjs';
-import { g as getCollection, r as renderEntry } from '../../chunks/_astro_content_CIrT8JV6.mjs';
-import { $ as $$BlogPost } from '../../chunks/BlogPost_D_XgRvNO.mjs';
+import { g as getCollection, r as renderEntry } from '../../chunks/_astro_content_D1v3mtrW.mjs';
+import { $ as $$BlogPost } from '../../chunks/BlogPost_DAv-OgUZ.mjs';
 export { renderers } from '../../renderers.mjs';
 
 const $$Astro = createAstro("https://techoxium.com");
