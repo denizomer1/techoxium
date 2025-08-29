@@ -21,7 +21,6 @@ Apple is preparing to capture the technology world's attention again with their 
 Apple's new flagship models, the iPhone 17 series, are expected to be announced:
 
 - **iPhone 17**: Performance and camera improvements in the standard model
-- **iPhone 17 Plus**: Larger screen and enhanced battery life
 - **iPhone 17 Pro**: Titanium design and new camera features in Pro models
 - **iPhone 17 Pro Max**: Top-tier model with premium features
 

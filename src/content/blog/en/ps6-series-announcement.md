@@ -1,0 +1,35 @@
+---
+title: "PS6 Series: Sony's Next-Gen Consoles Detailed"
+description: "PS6 series consoles with three different models, technical specifications and price estimates"
+pubDate: "2025-08-29"
+heroImage: "/ps6-console.png"
+tags: ["ps6", "sony", "gaming", "console", "technology", "gaming"]
+---
+
+PS6 series, similar to Xbox Series S, will be released with three different models including a smaller and more economical option.
+
+Models:
+• PS6 Mini (Canis APU)
+More compact and budget-friendly version. 
+Estimated price: 299–399 USD
+• PS6 Portable (Canis APU)
+Handheld console that can be used with a dock station. 
+Estimated price: 399–499 USD
+• PS6 Pro (Orion APU)
+Main console, high-performance version. 
+Estimated price: 549–699 USD
+
+Technical Specifications
+• Canis APU (S & Portable):
+• 4× Zen 6c cores (gaming) + 2× Zen 6 LP cores (system)
+• 16× RDNA5 CU (up to 60% additional performance)
+• 24–36 GB LPDDR5X RAM
+• 3nm manufacturing technology
+• Portable: 1.2 GHz (handheld), 1.65 GHz (dock)
+• Up to 2x CPU power compared to PS5, 1.3–2.6x RayTracing power
+• Orion APU (Main PS6):
+• 8× Zen 6 cores
+• 40–48× RDNA5 CU (3GHz+)
+• 40 GB RAM
+• 3x PS5 raster performance
+• GPU power close to RTX 5080 level
