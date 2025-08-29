@@ -80,7 +80,7 @@ This project uses the `@astrojs/cloudflare` adapter and `wrangler` for deploymen
 ---
 
 <div align="center">
-  Made with ❤️ and ☕ | <strong>v1.0.0 Stable Release</strong>
+  Made with ❤️
 </div>
 
 ---
