@@ -14,12 +14,12 @@ const cspDirectives = [
 // Language detection function
 function detectPreferredLanguage(request: Request): string {
   // Get the current URL
-  const url = new URL(request.url);
+  const currentUrl = new URL(request.url);
   
   // Skip language detection for API routes and assets
-  if (url.pathname.startsWith('/api/') || 
-      url.pathname.startsWith('/_') || 
-      url.pathname.includes('.')) {
+  if (currentUrl.pathname.startsWith('/api/') || 
+      currentUrl.pathname.startsWith('/_') || 
+      currentUrl.pathname.includes('.')) {
     return 'skip';
   }
 
@@ -54,11 +54,39 @@ function detectPreferredLanguage(request: Request): string {
   return preferredLanguage;
 }
 
-export const onRequest: MiddlewareHandler = async (context, next) => {
-  const url = new URL(context.request.url);
+// Basic authentication for Keystatic
+function checkAuth(request: Request): boolean {
+  const authHeader = request.headers.get('authorization');
+  
+  if (!authHeader || !authHeader.startsWith('Basic ')) {
+    return false;
+  }
+  
+  const credentials = authHeader.slice(6); // Remove 'Basic '
+  const decoded = atob(credentials);
+  const [username, password] = decoded.split(':');
+  
+  // Simple authentication - you can change these credentials
+  return username === 'admin' && password === '135790Bq';
+}
+
+export const onRequest: MiddlewareHandler = async ({ request }, next) => {
+  const url = new URL(request.url);
+  
+  // Check if the request is for Keystatic admin
+  if (url.pathname.startsWith('/keystatic')) {
+    if (!checkAuth(request)) {
+      return new Response('Authentication required', {
+        status: 401,
+        headers: {
+          'WWW-Authenticate': 'Basic realm="Keystatic Admin"'
+        }
+      });
+    }
+  }
   
   // Language detection and redirection
-  const preferredLanguage = detectPreferredLanguage(context.request);
+  const preferredLanguage = detectPreferredLanguage(request);
   
   if (preferredLanguage !== 'skip') {
     // Check current path locale
@@ -66,7 +94,7 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
     const isTurkishPath = !isEnglishPath;
     
     // Get language cookie to see if user has made explicit choice
-    const cookies = context.request.headers.get('cookie');
+    const cookies = request.headers.get('cookie');
     const langCookie = cookies?.match(/language=([^;]+)/)?.[1];
     
     // Only redirect if there's a language mismatch and no explicit language cookie

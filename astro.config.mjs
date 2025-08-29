@@ -3,11 +3,14 @@ import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import cloudflare from "@astrojs/cloudflare";
+import react from "@astrojs/react";
+import markdoc from "@astrojs/markdoc";
+import keystatic from "@keystatic/astro";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://techoxium.com",
-  integrations: [mdx(), sitemap()],
+  integrations: [mdx(), sitemap(), react(), markdoc(), keystatic()],
   i18n: {
     defaultLocale: "tr",
     locales: ["tr", "en"],

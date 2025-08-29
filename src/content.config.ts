@@ -2,8 +2,8 @@ import { glob } from "astro/loaders";
 import { defineCollection, z } from "astro:content";
 
 const blogSchema = z.object({
-  title: z.string(),
-  description: z.string(),
+  title: z.string().optional(),
+  description: z.string().optional(),
   // Transform string to Date object
   pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
@@ -14,13 +14,13 @@ const blogSchema = z.object({
 
 const blog = defineCollection({
   // Load Turkish blog posts (root level)
-  loader: glob({ base: "./src/content/blog", pattern: "*.{md,mdx}" }),
+  loader: glob({ base: "./src/content/blog", pattern: "*.{md,mdx,mdoc}" }),
   schema: blogSchema,
 });
 
 const blogEn = defineCollection({
   // Load English blog posts
-  loader: glob({ base: "./src/content/blog/en", pattern: "*.{md,mdx}" }),
+  loader: glob({ base: "./src/content/blog/en", pattern: "*.{md,mdx,mdoc}" }),
   schema: blogSchema,
 });
 
