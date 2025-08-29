@@ -1,5 +1,5 @@
 globalThis.process ??= {}; globalThis.process.env ??= {};
-import { g as getCollection } from '../../chunks/_astro_content_EW_c4Bvs.mjs';
+import { g as getCollection } from '../../chunks/_astro_content_IVToqrE3.mjs';
 export { renderers } from '../../renderers.mjs';
 
 async function GET(context) {

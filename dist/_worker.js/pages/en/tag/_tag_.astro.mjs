@@ -1,7 +1,7 @@
 globalThis.process ??= {}; globalThis.process.env ??= {};
 import { d as createAstro, c as createComponent, a as renderComponent, b as renderHead, e as addAttribute, r as renderTemplate } from '../../../chunks/astro/server_C-RMCnIV.mjs';
-import { p as postMatchesTag, b as $$BaseHead, a as $$Header, $ as $$Footer } from '../../../chunks/Footer_CH2mcyHc.mjs';
-import { g as getCollection } from '../../../chunks/_astro_content_EW_c4Bvs.mjs';
+import { p as postMatchesTag, b as $$BaseHead, a as $$Header, $ as $$Footer } from '../../../chunks/Footer_cm_pO1qj.mjs';
+import { g as getCollection } from '../../../chunks/_astro_content_IVToqrE3.mjs';
 /* empty css                                       */
 export { renderers } from '../../../renderers.mjs';
 

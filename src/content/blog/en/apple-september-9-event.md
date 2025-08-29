@@ -25,9 +25,9 @@ Apple's new flagship models, the iPhone 17 series, are expected to be announced:
 - **iPhone 17 Pro**: Titanium design and new camera features in Pro models
 - **iPhone 17 Pro Max**: Top-tier model with premium features
 
-### Apple Watch Series 10 & Series 2 Updates
+### Apple Watch Series 11 & Series 2 Updates
 New generation smartwatches with significant updates:
-- **Apple Watch Series 10**: Thinner design, advanced health features, new watchOS updates
+- **Apple Watch Series 11**: Thinner design, advanced health features, new watchOS updates
 - **Apple Watch Series 2**: Enhanced battery life, improved water resistance, updated sensors for better fitness tracking
 
 ### Other Expected Products

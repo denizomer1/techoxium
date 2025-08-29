@@ -1,7 +1,7 @@
 globalThis.process ??= {}; globalThis.process.env ??= {};
 import { d as createAstro, c as createComponent, r as renderTemplate, e as addAttribute, w as maybeRenderHead, x as spreadAttributes, t as renderSlot, u as unescapeHTML, a as renderComponent, q as renderScript } from './astro/server_C-RMCnIV.mjs';
 /* empty css                         */
-import { g as getCollection } from './_astro_content_EW_c4Bvs.mjs';
+import { g as getCollection } from './_astro_content_IVToqrE3.mjs';
 import { a as SITE_TITLE } from './consts_pVytapcw.mjs';
 
 var __freeze$2 = Object.freeze;
