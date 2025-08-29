@@ -24,7 +24,7 @@ Yeni iPhone serisi, Apple'ın mobil teknolojisindeki en son gelişmeleri temsil 
 - **iPhone 17 Pro**: Profesyonel kullanım için titanyum yapı ve ileri kamera teknolojileri
 - **iPhone 17 Pro Max**: En yüksek performans ve ekran kalitesi sunan amiral gemisi model
 
-### Apple Watch Serisi 10
+### Apple Watch Serisi 11
 Yeni nesil akıllı saat, sağlık ve fitness özelliklerinde önemli gelişmeler getiriyor:
 - İyileştirilmiş tasarım ve daha uzun pil ömrü
 - Gelişmiş sağlık izleme sensörleri
