@@ -49,8 +49,8 @@ const [firstPost, ...restPosts] = posts;
 					<div class="featured-list">
 						<PostCard
 							href={`/${firstPost.id}/`}
-							title={firstPost.data.title}
-							description={firstPost.data.description}
+							title={firstPost.data.title || 'Untitled'}
+							description={firstPost.data.description || ''}
 							pubDate={firstPost.data.pubDate}
 							heroImage={firstPost.data.heroImage}
 							large={true}
@@ -61,8 +61,8 @@ const [firstPost, ...restPosts] = posts;
 					{restPosts.map((post) => (
 						<PostCard
 							href={`/${post.id}/`}
-							title={post.data.title}
-							description={post.data.description}
+							title={post.data.title || 'Untitled'}
+							description={post.data.description || ''}
 							pubDate={post.data.pubDate}
 							heroImage={post.data.heroImage}
 						/>
