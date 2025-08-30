@@ -369,7 +369,6 @@ $RECYCLE.BIN/
 
 # Web assets
 *.webm
-*.mp4
 *.avi
 *.mov
 *.wmv
