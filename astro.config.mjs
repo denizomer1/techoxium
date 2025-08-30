@@ -14,13 +14,15 @@ export default defineConfig({
     markdoc({
       allowHTML: true,
     }),
-    // React for Keystatic admin routes
-    react({
-      include: ['**/keystatic/**'],
-      exclude: ['**/*.server.*', '**/*.server.tsx', '**/*.server.jsx']
-    }),
-    // Include Keystatic
-    keystatic(),
+    // React for Keystatic admin routes (only in development)
+    ...(process.env.ENABLE_REACT === 'true' ? [
+      react({
+        include: ['**/keystatic/**'],
+        exclude: ['**/*.server.*', '**/*.server.tsx', '**/*.server.jsx']
+      })
+    ] : []),
+    // Include Keystatic (only in development)
+    ...(process.env.KEYSTATIC_ADMIN === 'true' ? [keystatic()] : []),
   ],
   vite: {
     ssr: {

@@ -18,8 +18,8 @@ enabled = true
 
 # Environment variables
 [vars]
-KEYSTATIC_ADMIN = "true"
-ENABLE_REACT = "true"
+KEYSTATIC_ADMIN = "false"
+ENABLE_REACT = "false"
 
 # Build configuration - required for Pages Functions
 [build]
