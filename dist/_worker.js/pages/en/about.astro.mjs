@@ -1,8 +1,8 @@
 globalThis.process ??= {}; globalThis.process.env ??= {};
-import { c as createComponent, a as renderComponent, r as renderTemplate } from '../../chunks/astro/server_B-4SWSrX.mjs';
-import { $ as $$AboutPage } from '../../chunks/AboutPage_BXPkeFvW.mjs';
-import { t } from '../../chunks/Footer_BeM5TmgP.mjs';
-export { renderers } from '../../renderers.mjs';
+import { c as createComponent, a as renderComponent, r as renderTemplate } from '../../chunks/astro/server_Dinni5C1.mjs';
+import { $ as $$AboutPage } from '../../chunks/AboutPage_D7LsjuwH.mjs';
+import { t } from '../../chunks/Footer_DhiF-3th.mjs';
+export { r as renderers } from '../../chunks/_@astro-renderers_DMtOQAGl.mjs';
 
 const $$About = createComponent(($$result, $$props, $$slots) => {
   const locale = "en";

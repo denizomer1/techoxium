@@ -9,7 +9,7 @@ import keystatic from "@keystatic/astro";
 
 // https://astro.build/config
 const isDev = process.env.NODE_ENV !== 'production';
-const enableKeystaticAdmin = isDev || process.env.KEYSTATIC_ADMIN === 'true';
+const enableKeystaticAdmin = isDev || process.env.KEYSTATIC_ADMIN === 'true' || process.env.CF_PAGES === '1';
 
 export default defineConfig({
   site: "https://techoxium.com",
@@ -17,11 +17,13 @@ export default defineConfig({
     mdx(),
     sitemap(),
     markdoc(),
-    // Only include React + Keystatic admin in dev or when explicitly enabled.
-    ...(enableKeystaticAdmin ? [react({ 
+    // Always include React for Keystatic admin
+    react({
       include: ['**/keystatic/**'],
-      experimentalReactChildren: true 
-    }), keystatic()] : []),
+      experimentalReactChildren: true
+    }),
+    // Include Keystatic when enabled
+    ...(enableKeystaticAdmin ? [keystatic()] : []),
   ],
   i18n: {
     defaultLocale: "tr",

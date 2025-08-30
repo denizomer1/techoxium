@@ -1,8 +1,8 @@
 globalThis.process ??= {}; globalThis.process.env ??= {};
-import { d as createAstro, c as createComponent, a as renderComponent, r as renderTemplate } from '../chunks/astro/server_B-4SWSrX.mjs';
-import { g as getCollection, r as renderEntry } from '../chunks/_astro_content_D1v3mtrW.mjs';
-import { $ as $$BlogPost } from '../chunks/BlogPost_DAv-OgUZ.mjs';
-export { renderers } from '../renderers.mjs';
+import { d as createAstro, c as createComponent, a as renderComponent, r as renderTemplate } from '../chunks/astro/server_Dinni5C1.mjs';
+import { g as getCollection, r as renderEntry } from '../chunks/_astro_content_BbGmYRSZ.mjs';
+import { $ as $$BlogPost } from '../chunks/BlogPost_DDSyheFB.mjs';
+export { r as renderers } from '../chunks/_@astro-renderers_DMtOQAGl.mjs';
 
 const $$Astro = createAstro("https://techoxium.com");
 const $$slug = createComponent(async ($$result, $$props, $$slots) => {

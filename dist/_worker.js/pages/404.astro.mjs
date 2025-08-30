@@ -1,8 +1,8 @@
 globalThis.process ??= {}; globalThis.process.env ??= {};
-import { c as createComponent, r as renderTemplate, a as renderComponent, b as renderHead } from '../chunks/astro/server_B-4SWSrX.mjs';
-import { $ as $$Footer, a as $$Header, b as $$BaseHead } from '../chunks/Footer_BeM5TmgP.mjs';
+import { c as createComponent, r as renderTemplate, a as renderComponent, b as renderHead } from '../chunks/astro/server_Dinni5C1.mjs';
+import { $ as $$Footer, a as $$Header, b as $$BaseHead } from '../chunks/Footer_DhiF-3th.mjs';
 /* empty css                               */
-export { renderers } from '../renderers.mjs';
+export { r as renderers } from '../chunks/_@astro-renderers_DMtOQAGl.mjs';
 
 var __freeze = Object.freeze;
 var __defProp = Object.defineProperty;

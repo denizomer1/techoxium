@@ -16,6 +16,10 @@ preview_id = "e121541f75e04ac89d00131bb1376031"
 [observability]
 enabled = true
 
+# Environment variables
+[vars]
+KEYSTATIC_ADMIN = "true"
+
 # Build configuration - required for Pages Functions
 [build]
 command = "npm run build"

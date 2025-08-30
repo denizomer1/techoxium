@@ -1,9 +1,9 @@
 globalThis.process ??= {}; globalThis.process.env ??= {};
-import { d as createAstro, c as createComponent, a as renderComponent, b as renderHead, e as addAttribute, r as renderTemplate } from '../../../chunks/astro/server_B-4SWSrX.mjs';
-import { p as postMatchesTag, b as $$BaseHead, a as $$Header, $ as $$Footer } from '../../../chunks/Footer_BeM5TmgP.mjs';
-import { g as getCollection } from '../../../chunks/_astro_content_D1v3mtrW.mjs';
+import { d as createAstro, c as createComponent, a as renderComponent, b as renderHead, e as addAttribute, r as renderTemplate } from '../../../chunks/astro/server_Dinni5C1.mjs';
+import { p as postMatchesTag, b as $$BaseHead, a as $$Header, $ as $$Footer } from '../../../chunks/Footer_DhiF-3th.mjs';
+import { g as getCollection } from '../../../chunks/_astro_content_BbGmYRSZ.mjs';
 /* empty css                                       */
-export { renderers } from '../../../renderers.mjs';
+export { r as renderers } from '../../../chunks/_@astro-renderers_DMtOQAGl.mjs';
 
 const $$Astro = createAstro("https://techoxium.com");
 const $$tag = createComponent(async ($$result, $$props, $$slots) => {

@@ -1,6 +1,6 @@
 globalThis.process ??= {}; globalThis.process.env ??= {};
-import { g as getCollection } from '../../chunks/_astro_content_D1v3mtrW.mjs';
-export { renderers } from '../../renderers.mjs';
+import { g as getCollection } from '../../chunks/_astro_content_BbGmYRSZ.mjs';
+export { r as renderers } from '../../chunks/_@astro-renderers_DMtOQAGl.mjs';
 
 async function GET(context) {
   const locale = context.url.searchParams.get("locale") || "tr";
