@@ -25,8 +25,3 @@ ENABLE_REACT = "true"
 [build]
 command = "npm run build"
 cwd = "."
-
-# Pages configuration
-[pages_build_output_dir]
-# Build output directory for Pages
-dir = "dist"
