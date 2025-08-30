@@ -17,11 +17,14 @@ export default defineConfig({
     mdx(),
     sitemap(),
     markdoc(),
-    // Only include React + Keystatic admin in dev or when explicitly enabled.
-    ...(enableKeystaticAdmin ? [react({ 
+    // React only for Keystatic admin routes in development
+    ...(enableKeystaticAdmin ? [react({
       include: ['**/keystatic/**'],
-      experimentalReactChildren: true 
-    }), keystatic()] : []),
+      exclude: ['**/*.server.*', '**/*.server.tsx', '**/*.server.jsx'],
+      experimentalReactChildren: true
+    })] : []),
+    // Include Keystatic when enabled
+    ...(enableKeystaticAdmin ? [keystatic()] : []),
   ],
   i18n: {
     defaultLocale: "tr",
