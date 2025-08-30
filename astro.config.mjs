@@ -3,6 +3,7 @@ import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import cloudflare from "@astrojs/cloudflare";
+import react from "@astrojs/react";
 import markdoc from "@astrojs/markdoc";
 import keystatic from "@keystatic/astro";
 
@@ -13,6 +14,11 @@ export default defineConfig({
     mdx(),
     sitemap(),
     markdoc(),
+    // React for Keystatic admin routes
+    react({
+      include: ['**/keystatic/**'],
+      exclude: ['**/*.server.*', '**/*.server.tsx', '**/*.server.jsx']
+    }),
     // Include Keystatic
     keystatic(),
   ],
