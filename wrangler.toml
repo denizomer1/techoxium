@@ -17,9 +17,6 @@ preview_id = "e121541f75e04ac89d00131bb1376031"
 enabled = true
 
 # Environment variables
-[vars]
-KEYSTATIC_ADMIN = "false"
-ENABLE_REACT = "false"
 
 # Build configuration - required for Pages Functions
 [build]

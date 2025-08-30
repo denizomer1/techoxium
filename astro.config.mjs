@@ -2,9 +2,7 @@
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import cloudflare from "@astrojs/cloudflare";
-import react from "@astrojs/react";
 import markdoc from "@astrojs/markdoc";
-import keystatic from "@keystatic/astro";
 
 // https://astro.build/config
 export default defineConfig({
@@ -14,15 +12,6 @@ export default defineConfig({
     markdoc({
       allowHTML: true,
     }),
-    // React for Keystatic admin routes (only in development)
-    ...(process.env.ENABLE_REACT === 'true' ? [
-      react({
-        include: ['**/keystatic/**'],
-        exclude: ['**/*.server.*', '**/*.server.tsx', '**/*.server.jsx']
-      })
-    ] : []),
-    // Include Keystatic (only in development)
-    ...(process.env.KEYSTATIC_ADMIN === 'true' ? [keystatic()] : []),
   ],
   vite: {
     ssr: {
