@@ -19,10 +19,8 @@ function turkishToEnglish(text: string): string {
 
 export default config({
   storage: {
-    kind: 'cloud',
-  },
-  cloud: {
-    project: 'techoxium/techoxium',
+    kind: 'github',
+    repo: 'denizomer1/techoxium',
   },
   collections: {
     blog: collection({
