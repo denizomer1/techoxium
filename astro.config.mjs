@@ -13,7 +13,9 @@ export default defineConfig({
   integrations: [
     mdx(),
     sitemap(),
-    markdoc(),
+    markdoc({
+      allowHTML: true,
+    }),
     // React for Keystatic admin routes
     react({
       include: ['**/keystatic/**'],
