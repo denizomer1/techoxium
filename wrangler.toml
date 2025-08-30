@@ -5,7 +5,7 @@ main = "dist/_worker.js/index.js"
 
 [assets]
 directory = "dist"
-binding = "ASSETS"
+binding = "ASSETS_MANUAL"
 
 # Add SESSION KV binding for Astro sessions
 [[kv_namespaces]]
@@ -29,3 +29,4 @@ cwd = "."
 # Pages configuration
 [pages_build_output_dir]
 # Build output directory for Pages
+dir = "dist"
