@@ -22,19 +22,19 @@ export default config({
     kind: 'cloud',
   },
   cloud: {
-    project: 'techoxium/techoxium',
+    project: 'techoxium/techoxium', // Bu değeri Keystatic Cloud'dan alınacak proje adıyla değiştirin
   },
   collections: {
     blog: collection({
       label: 'Blog (TR)',
       slugField: 'title',
-      path: 'src/content/blog/*',
+      path: 'src/content/blog/tr/*',
       format: { contentField: 'content' },
       parseSlugForSort: (slug) => turkishToEnglish(slug),
       schema: {
-        title: fields.slug({ 
+        title: fields.slug({
           name: { label: 'Title' },
-          slug: { 
+          slug: {
             label: 'URL Slug',
             generate: (name) => turkishToEnglish(name)
           }
@@ -54,14 +54,14 @@ export default config({
       format: { contentField: 'content' },
       parseSlugForSort: (slug) => turkishToEnglish(slug),
       schema: {
-        title: fields.slug({ 
+        title: fields.slug({
           name: { label: 'Title' },
-          slug: { 
+          slug: {
             label: 'URL Slug',
             generate: (name) => turkishToEnglish(name)
           }
         }),
-        description: fields.text({ label: 'Description', defaultValue: 'A brief description of this blog post' }),
+        description: fields.text({ label: 'Description', defaultValue: 'Short description of this blog post' }),
         pubDate: fields.date({ label: 'Publish Date', defaultValue: { kind: 'today' } }),
         updatedDate: fields.date({ label: 'Updated Date', defaultValue: { kind: 'today' } }),
         tags: fields.array(fields.text({ label: 'Tag' }), { label: 'Tags' }),

@@ -38,7 +38,8 @@
     "check": "astro build && tsc && wrangler deploy --dry-run",
     "deploy": "npm run build && wrangler deploy",
     "dev": "astro dev",
-    "preview": "astro build && wrangler dev"
+    "preview": "astro build && wrangler dev",
+    "keystatic": "keystatic"
   },
   "engines": {
     "node": ">=18"
