@@ -8,21 +8,18 @@ import markdoc from "@astrojs/markdoc";
 import keystatic from "@keystatic/astro";
 
 // https://astro.build/config
-const isDev = process.env.NODE_ENV !== 'production';
-const enableReact = isDev || process.env.ENABLE_REACT === 'true';
-
 export default defineConfig({
   site: "https://techoxium.com",
   integrations: [
     mdx(),
     sitemap(),
     markdoc(),
-    // React for Keystatic admin routes (conditionally enabled)
-    ...(enableReact ? [react({
+    // React for Keystatic admin routes
+    react({
       include: ['**/keystatic/**'],
       exclude: ['**/*.server.*', '**/*.server.tsx', '**/*.server.jsx'],
       experimentalReactChildren: true
-    })] : []),
+    }),
     // Include Keystatic
     keystatic(),
   ],
