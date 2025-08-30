@@ -6,11 +6,6 @@ interface Props {
 
 const { locale = 'tr', currentPath = '/' } = Astro.props;
 
-// Slug mapping for blog posts with different slugs in different languages
-const slugMap: Record<string, string> = {
-  // All slugs are now the same, no mapping needed
-};
-
 // Generate alternate URLs
 const getAlternateUrl = (targetLocale: string) => {
   const normalized = currentPath.startsWith('/') ? currentPath : `/${currentPath}`;

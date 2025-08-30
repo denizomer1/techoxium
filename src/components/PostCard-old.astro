@@ -6,11 +6,10 @@ interface Props {
   description?: string;
   pubDate?: Date | string;
   heroImage?: string;
-  index?: number;
   large?: boolean;
   clampLines?: number;
 }
-const { href, title, description = '', pubDate, heroImage, index = 0, large = false, clampLines = 3 } = Astro.props as Props;
+const { href, title, description = '', pubDate, heroImage, large = false, clampLines = 3 } = Astro.props as Props;
 const date = pubDate ? (pubDate instanceof Date ? pubDate : new Date(pubDate)) : undefined;
 ---
 <li class={`post-card${large ? ' post-card--large' : ''}`}>

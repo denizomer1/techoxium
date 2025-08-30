@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
 
-interface Props { title: string; description?: string; image?: string; locale?: string }
+interface Props { title: string; description?: string; image?: string | undefined; locale?: string }
 const { title, description = '', image = '', locale = 'tr' } = Astro.props as Props;
 // Use a concise default site description for social previews when none provided
 const DEFAULT_DESCRIPTION = 'Teknolojinin Elementi';
@@ -63,7 +63,7 @@ const ogImage = new globalThis.URL(image || DEFAULT_OG, Astro.url).toString();
 {ogImage && <meta property="twitter:image" content={ogImage} />}
 
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-7V9HE536V0"></script>
+<script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-7V9HE536V0"></script>
 <script is:inline>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -72,7 +72,7 @@ const ogImage = new globalThis.URL(image || DEFAULT_OG, Astro.url).toString();
 </script>
 
 <!-- Google AdSense -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8927381570299660"
+<script is:inline async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8927381570299660"
      crossorigin="anonymous"></script>
 
 <!-- Language Switcher Script -->

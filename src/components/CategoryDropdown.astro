@@ -7,7 +7,7 @@ import { tagToSlug } from '../lib/tag-utils.js';
 const collection = locale === 'en' ? 'blogEn' : 'blog';
 const posts = await getCollection(/** @type {any} */ (collection));
 const tagSet = new Set();
-posts.forEach(post => (post.data.tags || []).forEach(tag => tagSet.add(tag)));
+posts.forEach(post => (post.data.tags || []).forEach((tag: string) => tagSet.add(tag)));
 const serverTags = Array.from(tagSet).sort();
 
 // Generate server-side HTML for initial render
