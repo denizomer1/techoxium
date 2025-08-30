@@ -22,7 +22,7 @@ export default config({
     kind: 'cloud',
   },
   cloud: {
-    project: 'techoxium/techoxium', // Bu değeri Keystatic Cloud'dan alınacak proje adıyla değiştirin
+    project: 'techoxium/techoxium',
   },
   collections: {
     blog: collection({
