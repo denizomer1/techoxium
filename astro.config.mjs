@@ -3,17 +3,27 @@ import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import cloudflare from "@astrojs/cloudflare";
+import react from "@astrojs/react";
 import markdoc from "@astrojs/markdoc";
 import keystatic from "@keystatic/astro";
 
 // https://astro.build/config
+const isDev = process.env.NODE_ENV !== 'production';
+const enableReact = isDev || process.env.ENABLE_REACT === 'true';
+
 export default defineConfig({
   site: "https://techoxium.com",
   integrations: [
     mdx(),
     sitemap(),
     markdoc(),
-    // Keystatic without React to avoid MessageChannel error
+    // React for Keystatic admin routes (conditionally enabled)
+    ...(enableReact ? [react({
+      include: ['**/keystatic/**'],
+      exclude: ['**/*.server.*', '**/*.server.tsx', '**/*.server.jsx'],
+      experimentalReactChildren: true
+    })] : []),
+    // Include Keystatic
     keystatic(),
   ],
   vite: {
