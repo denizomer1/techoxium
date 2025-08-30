@@ -1,6 +1,5 @@
 // @ts-check
 import { defineConfig } from "astro/config";
-import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
@@ -11,7 +10,6 @@ import keystatic from "@keystatic/astro";
 export default defineConfig({
   site: "https://techoxium.com",
   integrations: [
-    mdx(),
     sitemap(),
     markdoc({
       allowHTML: true,
