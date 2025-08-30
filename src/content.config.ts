@@ -13,8 +13,8 @@ const blogSchema = z.object({
 });
 
 const blog = defineCollection({
-  // Load Turkish blog posts (root level)
-  loader: glob({ base: "./src/content/blog", pattern: "*.{md,mdx,mdoc}" }),
+  // Load Turkish blog posts
+  loader: glob({ base: "./src/content/blog/tr", pattern: "*.{md,mdx,mdoc}" }),
   schema: blogSchema,
 });
 

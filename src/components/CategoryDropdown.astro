@@ -14,7 +14,7 @@ const serverTags = Array.from(tagSet).sort();
 const serverListHtml = serverTags.length
   ? serverTags.map(tag => {
       const slug = tagToSlug(tag);
-      const prefix = locale === 'en' ? '/en' : '';
+      const prefix = locale === 'en' ? '/en' : '/tr';
       const displayName = tag.replace(/-/g, ' ');
       return `<li class="cat-item"><a href="${prefix}/tag/${slug}/" class="cat-item-link" data-tag="${tag}"><span class="cat-pill">#${tag}</span><span style="flex:1;margin-left:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${displayName}</span></a></li>`;
     }).join('')

@@ -6,17 +6,24 @@ interface Props {
 
 const { locale = 'tr', currentPath = '/' } = Astro.props;
 
-// Generate alternate URLs (avoid duplicate /en prefixes)
+// Slug mapping for blog posts with different slugs in different languages
+const slugMap: Record<string, string> = {
+  // All slugs are now the same, no mapping needed
+};
+
+// Generate alternate URLs
 const getAlternateUrl = (targetLocale: string) => {
   const normalized = currentPath.startsWith('/') ? currentPath : `/${currentPath}`;
   if (targetLocale === 'tr') {
-    // Remove a single leading /en if present
-    const trPath = normalized.replace(/^\/en(?=\/|$)/, '');
-    return trPath === '' ? '/' : trPath;
+    // For Turkish
+    if (normalized === '/' || normalized === '/en' || normalized === '/en/') return '/tr';
+    if (normalized.startsWith('/en/')) return normalized.replace(/^\/en/, '/tr');
+    return normalized.replace(/^\/tr/, '/tr'); // Already Turkish
   } else {
-    // If already in /en, return as-is
-    if (normalized === '/en' || normalized.startsWith('/en/')) return normalized;
-    return normalized === '/' ? '/en' : `/en${normalized}`;
+    // For English
+    if (normalized === '/' || normalized === '/tr' || normalized === '/tr/') return '/en';
+    if (normalized.startsWith('/tr/')) return normalized.replace(/^\/tr/, '/en');
+    return normalized.replace(/^\/en/, '/en'); // Already English
   }
 };
 ---

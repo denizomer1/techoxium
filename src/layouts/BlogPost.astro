@@ -5,7 +5,6 @@ import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import BlogComment from '../components/BlogComment.astro';
 import FontSizeControl from '../components/FontSizeControl.astro';
-import TextToSpeech from '../components/TextToSpeech.astro';
 
 export interface LayoutProps {
 	title?: string;
@@ -93,11 +92,11 @@ const { title = '', description = '', pubDate, updatedDate, heroImage, locale = 
         <header class="post-header">
           <div class="post-meta">
             <time class="post-date">
-              <FormattedDate date={pubDate} />
+              <FormattedDate date={pubDate} locale={locale} />
             </time>
             {updatedDate && (
               <time class="post-updated">
-                Güncelleme: <FormattedDate date={updatedDate} />
+                Güncelleme: <FormattedDate date={updatedDate} locale={locale} />
               </time>
             )}
           </div>
@@ -110,7 +109,6 @@ const { title = '', description = '', pubDate, updatedDate, heroImage, locale = 
           
           <div class="accessibility-controls">
             <FontSizeControl locale={locale} />
-            <TextToSpeech locale={locale} />
             <div class="share-controls" aria-label="Share post">
               <button class="share-btn" id="share-x" title="Share on X" aria-label="Share on X">X</button>
               <button class="share-btn" id="share-copy" title="Copy link" aria-label="Copy link">

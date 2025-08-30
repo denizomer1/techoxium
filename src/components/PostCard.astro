@@ -8,9 +8,10 @@ interface Props {
   pubDate?: Date | string;
   heroImage?: string | undefined;
   large?: boolean;
+  locale?: string;
 }
 
-const { href, title, description = '', pubDate, heroImage, large = false } = Astro.props;
+const { href, title, description = '', pubDate, heroImage, large = false, locale = 'tr' } = Astro.props;
 const date = pubDate ? (pubDate instanceof Date ? pubDate : new Date(pubDate)) : undefined;
 ---
 
@@ -37,7 +38,7 @@ const date = pubDate ? (pubDate instanceof Date ? pubDate : new Date(pubDate)) :
     <div class="post-content">
       <header>
         <div class="post-meta">
-          {date && <FormattedDate date={date} />}
+          {date && <FormattedDate date={date} locale={locale} />}
         </div>
         <h2 class="post-title">{title}</h2>
       </header>

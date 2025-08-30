@@ -1,5 +1,5 @@
 ---
-interface Props { date?: Date | string | undefined }
+interface Props { date?: Date | string | undefined; locale?: string }
 
 const turkishMonths: Record<number, string> = {
   1: 'ocak', 2: 'şubat', 3: 'mart', 4: 'nisan', 
@@ -7,15 +7,21 @@ const turkishMonths: Record<number, string> = {
   9: 'eylül', 10: 'ekim', 11: 'kasım', 12: 'aralık'
 };
 
-const { date } = Astro.props as Props;
+const englishMonths: Record<number, string> = {
+  1: 'January', 2: 'February', 3: 'March', 4: 'April',
+  5: 'May', 6: 'June', 7: 'July', 8: 'August',
+  9: 'September', 10: 'October', 11: 'November', 12: 'December'
+};
+
+const { date, locale = 'tr' } = Astro.props as Props;
 const d = date ? (date instanceof Date ? date : new Date(date)) : undefined;
 
 let formatted = '';
 if (d) {
   const day = d.getDate();
-  const month = turkishMonths[d.getMonth() + 1];
+  const month = locale === 'en' ? englishMonths[d.getMonth() + 1] : turkishMonths[d.getMonth() + 1];
   const year = d.getFullYear();
-  formatted = `${day} ${month} ${year}`;
+  formatted = locale === 'en' ? `${month} ${day}, ${year}` : `${day} ${month} ${year}`;
 }
 ---
 {d ? <time datetime={d.toISOString()}>{formatted}</time> : <span aria-hidden="true"></span>}

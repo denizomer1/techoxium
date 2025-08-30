@@ -30,7 +30,7 @@ const filtered = posts.filter(p => postMatchesTag(p, tag));
             {filtered.map(p => {
               const post = /** @type {any} */ (p);
               return (
-                <li class="tag-item"><a href={`/${locale === 'en' ? 'en/' : ''}${post.id}/`}>{post.data.title}</a></li>
+                <li class="tag-item"><a href={`/${locale === 'en' ? 'en/' : 'tr/'}${post.id}/`}>{post.data.title}</a></li>
               );
             })}
           </ul>
