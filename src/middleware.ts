@@ -54,36 +54,38 @@ function detectPreferredLanguage(request: Request): string {
   return preferredLanguage;
 }
 
-// Basic authentication for Keystatic
-function checkAuth(request: Request): boolean {
-  const authHeader = request.headers.get('authorization');
-  
-  if (!authHeader || !authHeader.startsWith('Basic ')) {
-    return false;
-  }
-  
-  const credentials = authHeader.slice(6); // Remove 'Basic '
-  const decoded = atob(credentials);
-  const [username, password] = decoded.split(':');
-  
-  // Simple authentication - you can change these credentials
-  return username === 'admin' && password === '135790Bq';
-}
+// Keystatic authentication removed - now accessible without login
+// Basic authentication function removed
+// function checkAuth(request: Request): boolean {
+//   const authHeader = request.headers.get('authorization');
+//   
+//   if (!authHeader || !authHeader.startsWith('Basic ')) {
+//     return false;
+//   }
+//   
+//   const credentials = authHeader.slice(6); // Remove 'Basic '
+//   const decoded = atob(credentials);
+//   const [username, password] = decoded.split(':');
+//   
+//   // Simple authentication - you can change these credentials
+//   return username === 'admin' && password === '135790Bq';
+// }
 
 export const onRequest: MiddlewareHandler = async ({ request }, next) => {
   const url = new URL(request.url);
   
+  // Keystatic authentication removed - now accessible without login
   // Check if the request is for Keystatic admin
-  if (url.pathname.startsWith('/keystatic')) {
-    if (!checkAuth(request)) {
-      return new Response('Authentication required', {
-        status: 401,
-        headers: {
-          'WWW-Authenticate': 'Basic realm="Keystatic Admin"'
-        }
-      });
-    }
-  }
+  // if (url.pathname.startsWith('/keystatic')) {
+  //   if (!checkAuth(request)) {
+  //     return new Response('Authentication required', {
+  //       status: 401,
+  //       headers: {
+  //         'WWW-Authenticate': 'Basic realm="Keystatic Admin"'
+  //       }
+  //     });
+  //   }
+  // }
   
   // Language detection and redirection
   const preferredLanguage = detectPreferredLanguage(request);
