@@ -5,6 +5,7 @@ import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import BlogComment from '../components/BlogComment.astro';
 import FontSizeControl from '../components/FontSizeControl.astro';
+import { tagToSlug } from '../lib/tag-utils.js';
 
 export interface LayoutProps {
 	title?: string;
@@ -14,9 +15,10 @@ export interface LayoutProps {
 	heroImage?: string;
 	postSlug?: string;
 	locale?: string;
+	tags?: string[];
 }
 
-const { title = '', description = '', pubDate, updatedDate, heroImage, locale = 'tr' } = Astro.props as LayoutProps;
+const { title = '', description = '', pubDate, updatedDate, heroImage, locale = 'tr', tags = [] } = Astro.props as LayoutProps;
 ---
 
 <html lang={locale}>
@@ -122,6 +124,39 @@ const { title = '', description = '', pubDate, updatedDate, heroImage, locale = 
               </button>
             </div>
           </div>
+          
+          {tags && tags.length > 0 && (
+            <div class="post-tags">
+              <div class="tags-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 9h16l-2 11H6L4 9Z"/>
+                  <path d="M8 9V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v5"/>
+                  <path d="M9 20l.5-4"/>
+                  <path d="M14.5 16l.5 4"/>
+                  <path d="M8 12h.01"/>
+                  <path d="M16 12h.01"/>
+                </svg>
+                {locale === 'en' ? 'Tags' : 'Etiketler'}
+              </div>
+              <div class="tags-list">
+                {tags.map((tag) => (
+                  <a href={`/${locale === 'en' ? 'en/' : ''}tag/${tagToSlug(tag)}/`} class="tag-link">
+                    <span class="tag-icon">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 9h16l-2 11H6L4 9Z"/>
+                        <path d="M8 9V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v5"/>
+                        <path d="M9 20l.5-4"/>
+                        <path d="M14.5 16l.5 4"/>
+                        <path d="M8 12h.01"/>
+                        <path d="M16 12h.01"/>
+                      </svg>
+                    </span>
+                    <span class="tag-text">{tag}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
         </header>
 
         {heroImage && (
@@ -224,6 +259,104 @@ const { title = '', description = '', pubDate, updatedDate, heroImage, locale = 
       flex-direction: column;
       gap: 0.5rem;
     }
+  }
+  
+  .post-tags {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+    border-radius: 16px;
+    border: 1px solid rgba(102, 126, 234, 0.1);
+  }
+  
+  .tags-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: rgb(var(--gray));
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  .tags-label svg {
+    color: #667eea;
+  }
+  
+  .tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  
+  .tag-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 24px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 12px rgba(102, 126, 234, 0.3);
+    position: relative;
+    overflow: hidden;
+    text-transform: capitalize;
+    letter-spacing: 0.025em;
+  }
+  
+  .tag-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .tag-link:hover::before {
+    left: 100%;
+  }
+  
+  .tag-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+    background: linear-gradient(135deg, #5b6bc0 0%, #6b5b8c 100%);
+  }
+  
+  .tag-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+  }
+  
+  .tag-link:hover .tag-icon {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+  }
+  
+  .tag-icon svg {
+    width: 10px;
+    height: 10px;
+    color: white;
+  }
+  
+  .tag-text {
+    font-size: 0.875rem;
+    font-weight: 600;
+    white-space: nowrap;
   }
   
   .hero-image {
@@ -434,6 +567,39 @@ const { title = '', description = '', pubDate, updatedDate, heroImage, locale = 
     font-size: 0.9rem;
     color: inherit;
     display: inline-block;
+  }
+
+  /* Dark Mode Support */
+  :global(html.dark) .post-tags {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  :global(html.dark) .tags-label {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  
+  :global(html.dark) .tags-label svg {
+    color: #7fb3ff;
+  }
+  
+  :global(html.dark) .tag-link {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
+    color: #e6eefb;
+    box-shadow: 0 2px 12px rgba(255, 255, 255, 0.1);
+  }
+  
+  :global(html.dark) .tag-link:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15));
+    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+  }
+  
+  :global(html.dark) .tag-icon {
+    background: rgba(255, 255, 255, 0.15);
+  }
+  
+  :global(html.dark) .tag-link:hover .tag-icon {
+    background: rgba(255, 255, 255, 0.25);
   }
 
   /* Share buttons are static by default; hover triggers animation */

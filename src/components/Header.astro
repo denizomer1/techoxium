@@ -1049,21 +1049,54 @@ const aboutUrl = locale === 'en' ? '/en/about' : '/tr/about';
       } else {
         const urlPrefix = this.locale === 'en' ? '/en/' : '/tr/';
         filtered.slice(0, 8).forEach((post) => {
+          const isDark = document.documentElement.classList.contains('dark');
+          const textColor = isDark ? '#ffffff' : 'rgba(0,0,0,0.9)';
+          const descColor = isDark ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.7)';
+          const dateColor = isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)';
+          const imgBg = isDark ? 'rgba(255,255,255,0.15)' : '#f8f9fa';
+          const linkBg = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.02)';
+          const linkHoverBg = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.04)';
+
           const a = document.createElement('a');
           a.className = 'search-result';
           a.href = `${urlPrefix}${post.slug}/`;
           a.setAttribute('role', 'option');
+          a.style.cssText = `
+            display: block;
+            background: ${linkBg};
+            border: 1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)'};
+            border-radius: 8px;
+            margin: 6px 0;
+            box-shadow: 0 2px 8px ${isDark ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.08)'};
+            color: ${textColor};
+            text-decoration: none;
+            overflow: hidden;
+            transition: all 0.15s ease;
+          `;
 
-          const isDark = document.documentElement.classList.contains('dark');
-          const textColor = isDark ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.9)';
-          const descColor = isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)';
-          const dateColor = isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)';
-          const imgBg = isDark ? 'rgba(255,255,255,0.1)' : '#f8f9fa';
+          // Hover effect
+          a.addEventListener('mouseenter', () => {
+            a.style.background = linkHoverBg;
+            a.style.transform = 'translateY(-1px)';
+            a.style.boxShadow = `0 4px 12px ${isDark ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.12)'}`;
+          });
+          a.addEventListener('mouseleave', () => {
+            a.style.background = linkBg;
+            a.style.transform = 'translateY(0)';
+            a.style.boxShadow = `0 2px 8px ${isDark ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.08)'}`;
+          });
 
           const thumbHtml = post.heroImage ? `<div class="search-thumb" style="flex-shrink: 0; width: 64px; height: 48px;"><img src="${post.heroImage}" alt="" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; border-radius: 6px; background: ${imgBg}; display: block;"/></div>` : '';
           const titleHtml = `<div class="search-result-title" style="font-weight: 600; margin: 0; font-size: 0.9rem; line-height: 1.3; color: ${textColor}; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; white-space: normal;">${post.title || ''}</div>`;
           const descHtml = post.description ? `<div class="search-result-desc" style="font-size: 0.8rem; color: ${descColor}; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; margin: 0; line-height: 1.2;">${post.description}</div>` : '';
           const dateHtml = post.pubDate ? `<div class="search-result-date" style="font-size: 0.75rem; color: ${dateColor}; margin: 0; font-weight: 500;">${this.formatDate(post.pubDate)}</div>` : '';
+
+          const tagsHtml = post.tags && post.tags.length > 0 ? 
+            `<div class="search-result-tags" style="margin-top: 4px; display: flex; gap: 4px; flex-wrap: wrap;">
+              ${post.tags.slice(0, 3).map(tag => 
+                `<span style="font-size: 0.7rem; padding: 2px 6px; background: ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'}; color: ${isDark ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.7)'}; border-radius: 4px; font-weight: 500;">#${tag}</span>`
+              ).join('')}
+            </div>` : '';
 
           a.innerHTML = `
             <div class="search-result-row" style="display: flex; gap: 12px; align-items: flex-start; width: 100%; padding: 10px 12px; box-sizing: border-box;">
@@ -1072,6 +1105,7 @@ const aboutUrl = locale === 'en' ? '/en/about' : '/tr/about';
                 ${titleHtml}
                 ${descHtml}
                 ${dateHtml}
+                ${tagsHtml}
               </div>
             </div>
           `;
@@ -1084,7 +1118,11 @@ const aboutUrl = locale === 'en' ? '/en/about' : '/tr/about';
     }
 
     showResults(element) {
+      const isDark = document.documentElement.classList.contains('dark');
       element.style.display = 'block';
+      element.style.background = isDark ? 'rgba(15,20,25,0.95)' : 'rgba(255,255,255,0.95)';
+      element.style.backdropFilter = 'blur(20px)';
+      element.style.border = `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)'}`;
       element.classList.add('open');
     }
 

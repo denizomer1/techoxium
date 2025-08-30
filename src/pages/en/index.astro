@@ -55,6 +55,7 @@ const [firstPost, ...restPosts] = posts;
 							heroImage={firstPost.data.heroImage}
 							large={true}
 							locale={locale}
+							tags={firstPost.data.tags}
 						/>
 					</div>
 				)}
@@ -67,6 +68,7 @@ const [firstPost, ...restPosts] = posts;
 							pubDate={post.data.pubDate}
 							heroImage={post.data.heroImage}
 							locale={locale}
+							tags={post.data.tags}
 						/>
 					))}
 				</div>

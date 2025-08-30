@@ -1,9 +1,9 @@
 
 export default new Map([
-["src/content/blog/tr/apple-september-9-event.mdoc", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fblog%2Ftr%2Fapple-september-9-event.mdoc&astroContentModuleFlag=true")],
 ["src/content/blog/tr/asus-rtx5090-30th-anniversary.mdoc", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fblog%2Ftr%2Fasus-rtx5090-30th-anniversary.mdoc&astroContentModuleFlag=true")],
 ["src/content/blog/tr/china-brain-computer-interface.mdoc", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fblog%2Ftr%2Fchina-brain-computer-interface.mdoc&astroContentModuleFlag=true")],
 ["src/content/blog/tr/gamescom-2025.mdoc", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fblog%2Ftr%2Fgamescom-2025.mdoc&astroContentModuleFlag=true")],
+["src/content/blog/tr/apple-september-9-event.mdoc", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fblog%2Ftr%2Fapple-september-9-event.mdoc&astroContentModuleFlag=true")],
 ["src/content/blog/tr/gears-of-war-reloaded.mdoc", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fblog%2Ftr%2Fgears-of-war-reloaded.mdoc&astroContentModuleFlag=true")],
 ["src/content/blog/tr/meta-ai-crisis.mdoc", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fblog%2Ftr%2Fmeta-ai-crisis.mdoc&astroContentModuleFlag=true")],
 ["src/content/blog/tr/ps6-series-announcement.mdoc", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fblog%2Ftr%2Fps6-series-announcement.mdoc&astroContentModuleFlag=true")],
@@ -12,9 +12,9 @@ export default new Map([
 ["src/content/blog/tr/whatsapp-ai-writing-help.mdoc", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fblog%2Ftr%2Fwhatsapp-ai-writing-help.mdoc&astroContentModuleFlag=true")],
 ["src/content/blog/en/apple-september-9-event.mdoc", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fblog%2Fen%2Fapple-september-9-event.mdoc&astroContentModuleFlag=true")],
 ["src/content/blog/en/asus-rtx5090-30th-anniversary.mdoc", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fblog%2Fen%2Fasus-rtx5090-30th-anniversary.mdoc&astroContentModuleFlag=true")],
+["src/content/blog/en/gamescom-2025.mdoc", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fblog%2Fen%2Fgamescom-2025.mdoc&astroContentModuleFlag=true")],
 ["src/content/blog/en/china-brain-computer-interface.mdoc", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fblog%2Fen%2Fchina-brain-computer-interface.mdoc&astroContentModuleFlag=true")],
 ["src/content/blog/en/gears-of-war-reloaded.mdoc", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fblog%2Fen%2Fgears-of-war-reloaded.mdoc&astroContentModuleFlag=true")],
-["src/content/blog/en/gamescom-2025.mdoc", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fblog%2Fen%2Fgamescom-2025.mdoc&astroContentModuleFlag=true")],
 ["src/content/blog/en/meta-ai-crisis.mdoc", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fblog%2Fen%2Fmeta-ai-crisis.mdoc&astroContentModuleFlag=true")],
 ["src/content/blog/en/ps6-series-announcement.mdoc", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fblog%2Fen%2Fps6-series-announcement.mdoc&astroContentModuleFlag=true")],
 ["src/content/blog/en/rog-xbox.mdoc", () => import("astro:content-layer-deferred-module?astro%3Acontent-layer-deferred-module=&fileName=src%2Fcontent%2Fblog%2Fen%2Frog-xbox.mdoc&astroContentModuleFlag=true")],
