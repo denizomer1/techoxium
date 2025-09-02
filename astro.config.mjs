@@ -4,6 +4,7 @@ import sitemap from "@astrojs/sitemap";
 import cloudflare from "@astrojs/cloudflare";
 import markdoc from "@astrojs/markdoc";
 import preact from "@astrojs/preact";
+import keystatic from '@keystatic/astro';
 
 // https://astro.build/config
 export default defineConfig({
@@ -14,10 +15,14 @@ export default defineConfig({
       allowHTML: true,
     }),
     preact({ compat: true }),
+    keystatic(),
   ],
   vite: {
     ssr: {
       noExternal: ['@keystatic/astro', '@keystatic/core']
+    },
+    define: {
+      global: 'globalThis',
     },
   },
   i18n: {
