@@ -1009,3 +1009,4 @@ Temporary Items
 .directory
 .Trash-*
 .nfs*
+package-lock.json
