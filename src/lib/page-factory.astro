@@ -78,20 +78,25 @@ export const themeScript = `
 
 // Shared content fetching
 export async function getLocalizedPosts(locale: 'tr' | 'en') {
-  const collection = locale === 'en' ? 'blogEn' : 'blog';
-  const rawPosts = await getCollection(collection as any);
-  
-  return rawPosts
-    .map((p: any) => ({
-      ...p,
-      data: { 
-        ...p.data, 
-        pubDate: p.data.pubDate instanceof Date 
-          ? p.data.pubDate 
-          : new Date(p.data.pubDate as any) 
-      },
-    }))
-    .sort((a: any, b: any) => Number(b.data.pubDate) - Number(a.data.pubDate));
+  try {
+    const collection = locale === 'en' ? 'blogEn' : 'blog';
+    const rawPosts = await getCollection(collection);
+    
+    return rawPosts
+      .map((p: any) => ({
+        ...p,
+        data: { 
+          ...p.data, 
+          pubDate: p.data.pubDate instanceof Date 
+            ? p.data.pubDate 
+            : new Date(p.data.pubDate as any) 
+        },
+      }))
+      .sort((a: any, b: any) => Number(b.data.pubDate) - Number(a.data.pubDate));
+  } catch (error) {
+    console.error(`Error loading ${locale} posts:`, error);
+    return [];
+  }
 }
 
 // Shared structured data
