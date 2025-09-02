@@ -1,1 +1,3 @@
 /keystatic/* /keystatic/index.html 200
+/keystatic /keystatic/ 301
+/api/keystatic/* /api/keystatic/:splat 200

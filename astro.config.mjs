@@ -3,8 +3,7 @@ import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import cloudflare from "@astrojs/cloudflare";
 import markdoc from "@astrojs/markdoc";
-import react from "@astrojs/react";
-import keystatic from '@keystatic/astro';
+import preact from "@astrojs/preact";
 
 // https://astro.build/config
 export default defineConfig({
@@ -14,27 +13,11 @@ export default defineConfig({
     markdoc({
       allowHTML: true,
     }),
-    react(),
-    keystatic(),
+    preact({ compat: true }),
   ],
   vite: {
     ssr: {
       noExternal: ['@keystatic/astro', '@keystatic/core']
-    },
-    define: {
-      global: 'globalThis',
-    },
-    build: {
-      minify: 'esbuild',
-      rollupOptions: {
-        output: {
-          manualChunks: {
-            // Split large dependencies into separate chunks
-            vendor: ['@astrojs/markdoc', '@astrojs/mdx'],
-            keystatic: ['@keystatic/core', '@keystatic/astro'],
-          },
-        },
-      },
     },
   },
   i18n: {
@@ -45,11 +28,7 @@ export default defineConfig({
     }
   },
   output: "server",
-  adapter: cloudflare({
-    platformProxy: {
-      enabled: true,
-    },
-  }),
+  adapter: cloudflare(),
   image: {
     service: {
       entrypoint: "astro/assets/services/squoosh",
