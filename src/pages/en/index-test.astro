@@ -1,0 +1,32 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+const locale = 'en';
+---
+
+<html lang={locale}>
+<head>
+  <BaseHead title="Techoxium EN" description="English Blog" locale={locale} />
+</head>
+<body>
+  <Header locale={locale} />
+  <main>
+    <h1>English Blog</h1>
+    <p>This is the English version of the blog.</p>
+  </main>
+  <Footer />
+</body>
+</html>
+
+<style>
+  main {
+    padding: 2rem;
+    text-align: center;
+  }
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+</style>

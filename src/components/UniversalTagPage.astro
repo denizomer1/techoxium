@@ -1,0 +1,159 @@
+---
+// Universal Tag Page Component
+import BaseHead from './BaseHead.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import PostCard from './PostCard.astro';
+import { getCollection } from 'astro:content';
+import { postMatchesTag } from '../lib/tag-utils.js';
+import { createPageProps, themeScript } from '../lib/page-factory.astro';
+
+interface Props {
+  locale: 'tr' | 'en';
+  tag: string;
+}
+
+const { locale, tag } = Astro.props;
+
+// Get posts for the locale
+const collection = locale === 'en' ? 'blogEn' : 'blog';
+const posts = await getCollection(collection as any);
+const matchingPosts = posts
+  .filter((post: any) => postMatchesTag(post, tag))
+  .map((p: any) => ({
+    ...p,
+    data: { ...p.data, pubDate: p.data.pubDate instanceof Date ? p.data.pubDate : new Date(p.data.pubDate as any) },
+  }))
+  .sort((a: any, b: any) => Number(b.data.pubDate) - Number(a.data.pubDate));
+
+// Create page props
+const pageProps = createPageProps({
+  locale,
+  posts: matchingPosts,
+  pageType: 'tag',
+  tag
+});
+---
+
+<html lang={locale} class={Astro.cookies.get('theme')?.value === 'dark' ? 'dark' : ''}>
+<head>
+  <BaseHead 
+    title={pageProps.seoData.title} 
+    description={pageProps.seoData.description} 
+    locale={locale} 
+  />
+</head>
+<body>
+  <script set:html={themeScript} />
+  
+  <Header locale={locale} />
+  <main class="tag-main">
+    <div class="container">
+      <h1>#{tag}</h1>
+      {matchingPosts.length === 0 ? (
+        <p>{locale === 'en' ? `No posts found for tag "${tag}"` : `"${tag}" etiketi için yazı bulunamadı`}</p>
+      ) : (
+        <ul class="tag-list">
+          {matchingPosts.map((post: any) => (
+            <li class="tag-item">
+              <PostCard
+                href={pageProps.getPostUrl(post.id)}
+                title={post.data.title || 'Untitled'}
+                description={post.data.description || ''}
+                pubDate={post.data.pubDate}
+                heroImage={post.data.heroImage}
+                locale={locale}
+                tags={post.data.tags}
+              />
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </main>
+  <Footer />
+</body>
+</html>
+
+<style>
+  .tag-main { 
+    padding: 2rem 1rem; 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    min-height: calc(100vh - 200px);
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .tag-main h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #1a202c;
+    margin: 0 0 2rem 0;
+    text-align: center;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .tag-list { 
+    list-style: none; 
+    padding: 0; 
+    margin: 2rem 0; 
+    display: grid; 
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+
+  .tag-item {
+    transition: transform 0.2s ease;
+  }
+
+  .tag-item:hover {
+    transform: translateY(-2px);
+  }
+
+  .tag-main p {
+    text-align: center;
+    color: #718096;
+    font-size: 1.1rem;
+    margin: 3rem 0;
+    padding: 2rem;
+    background: #f7fafc;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+  }
+
+  /* DARK MODE */
+  :global(html.dark) .tag-main h1 {
+    color: #f5f7fa !important;
+    background: linear-gradient(135deg, #7fb3ff, #9f7aea) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+  }
+
+  :global(html.dark) .tag-main p {
+    background: #1a1d23 !important;
+    border-color: #2a2f3a !important;
+    color: #c7d0dc !important;
+  }
+
+  @media (max-width: 768px) {
+    .tag-main {
+      padding: 1rem;
+    }
+
+    .tag-main h1 {
+      font-size: 2rem;
+    }
+
+    .tag-list {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

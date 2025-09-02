@@ -1,0 +1,10 @@
+---
+import UniversalTagPage from '../../../components/UniversalTagPage.astro';
+
+export const prerender = false;
+
+const { tag } = Astro.params as { tag: string };
+const locale = 'en';
+---
+
+<UniversalTagPage locale={locale} tag={tag} />

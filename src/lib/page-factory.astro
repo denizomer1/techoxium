@@ -1,0 +1,117 @@
+---
+// Centralized page factory for consistent TR/EN structure
+import { getCollection } from 'astro:content';
+import { t } from '../i18n/utils';
+
+interface PageProps {
+  locale: 'tr' | 'en';
+  title?: string;
+  description?: string;
+  posts?: any[];
+  showFeatured?: boolean;
+  pageType?: 'home' | 'tag' | 'about';
+  tag?: string;
+}
+
+export function createPageProps({
+  locale,
+  title,
+  description,
+  posts = [],
+  showFeatured = false,
+  pageType = 'home',
+  tag
+}: PageProps) {
+  // Base URL construction
+  const baseUrl = locale === 'en' ? '/en' : '/tr';
+  
+  // Post URL construction
+  const getPostUrl = (postId: string) => `${baseUrl}/${postId}/`;
+  
+  // Default titles and descriptions
+  const defaultTitle = title || t(locale, 'site.title');
+  const defaultDescription = description || t(locale, 'site.description');
+  
+  // SEO data
+  const seoData = {
+    title: pageType === 'tag' && tag 
+      ? `${t(locale, 'blog.tag')} "${tag}" | ${t(locale, 'site.title')}`
+      : defaultTitle,
+    description: pageType === 'tag' && tag
+      ? `${tag} etiketli yazılar - ${t(locale, 'site.description')}`
+      : defaultDescription
+  };
+
+  return {
+    locale,
+    baseUrl,
+    getPostUrl,
+    seoData,
+    posts: posts.map(post => ({
+      ...post,
+      url: getPostUrl(post.id),
+      data: {
+        ...post.data,
+        pubDate: post.data.pubDate instanceof Date 
+          ? post.data.pubDate 
+          : new Date(post.data.pubDate as any)
+      }
+    })),
+    showFeatured,
+    pageType,
+    tag
+  };
+}
+
+// Theme detection script - centralized
+export const themeScript = `
+(function(){
+  const pref = document.cookie.match(/(?:^|; )theme=([^;]+)/)?.[1];
+  const sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if(pref === 'dark' || (!pref && sysDark)) {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+  }
+})();
+`;
+
+// Shared content fetching
+export async function getLocalizedPosts(locale: 'tr' | 'en') {
+  const collection = locale === 'en' ? 'blogEn' : 'blog';
+  const rawPosts = await getCollection(collection as any);
+  
+  return rawPosts
+    .map((p: any) => ({
+      ...p,
+      data: { 
+        ...p.data, 
+        pubDate: p.data.pubDate instanceof Date 
+          ? p.data.pubDate 
+          : new Date(p.data.pubDate as any) 
+      },
+    }))
+    .sort((a: any, b: any) => Number(b.data.pubDate) - Number(a.data.pubDate));
+}
+
+// Shared structured data
+export function getStructuredData(locale: 'tr' | 'en') {
+  const baseData = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Techoxium",
+    "description": t(locale, 'site.description'),
+    "url": "https://techoxium.com",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Techoxium",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://techoxium.com/logo.png"
+      }
+    }
+  };
+
+  return JSON.stringify(baseData);
+}
+---

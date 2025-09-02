@@ -1,0 +1,139 @@
+---
+// Universal Home Page Component
+import BaseHead from './BaseHead.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import PostCard from './PostCard.astro';
+import { createPageProps, getLocalizedPosts, themeScript, getStructuredData } from '../lib/page-factory.astro';
+import { t } from '../i18n/utils';
+
+interface Props {
+  locale: 'tr' | 'en';
+}
+
+const { locale } = Astro.props;
+
+// Get posts using centralized function
+const posts = await getLocalizedPosts(locale);
+const [firstPost, ...restPosts] = posts;
+
+// Create page props using centralized function
+const pageProps = createPageProps({
+  locale,
+  posts,
+  showFeatured: true,
+  pageType: 'home'
+});
+---
+
+<html lang={locale} class={Astro.cookies.get('theme')?.value === 'dark' ? 'dark' : ''}>
+  <head>
+    <BaseHead 
+      title={pageProps.seoData.title} 
+      description={pageProps.seoData.description} 
+      locale={locale} 
+    />
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json" set:html={getStructuredData(locale)} />
+  </head>
+  <body>
+    <script set:html={themeScript} />
+    
+    <Header locale={locale} />
+    <main>
+      <h1>{t(locale, 'blog.title')}</h1>
+      <section>
+        {firstPost && (
+          <div class="featured-list">
+            <PostCard
+              href={pageProps.getPostUrl(firstPost.id)}
+              title={firstPost.data.title || 'Untitled'}
+              description={firstPost.data.description || ''}
+              pubDate={firstPost.data.pubDate}
+              heroImage={firstPost.data.heroImage}
+              large={true}
+              locale={locale}
+              tags={firstPost.data.tags}
+            />
+          </div>
+        )}
+        <div class="post-list grid grid-2">
+          {restPosts.map((post) => (
+            <PostCard
+              href={pageProps.getPostUrl(post.id)}
+              title={post.data.title || 'Untitled'}
+              description={post.data.description || ''}
+              pubDate={post.data.pubDate}
+              heroImage={post.data.heroImage}
+              locale={locale}
+              tags={post.data.tags}
+            />
+          ))}
+        </div>
+      </section>
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  main {
+    margin: auto;
+    padding: 1rem;
+    width: 800px;
+    max-width: calc(100% - 2rem);
+    color: rgb(var(--accent-dark));
+    font-size: 20px;
+    line-height: 1.6;
+  }
+  
+  h1 {
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    margin-bottom: 1em;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .featured-list {
+    margin-bottom: 2rem;
+  }
+
+  .post-list {
+    display: grid;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .grid-2 {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+
+  /* Dark mode */
+  :global(html.dark) h1 {
+    color: #f5f7fa !important;
+    background: linear-gradient(135deg, #7fb3ff, #9f7aea) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+  }
+
+  @media (max-width: 720px) {
+    main {
+      padding: 1rem;
+    }
+    
+    h1 {
+      font-size: 3rem;
+    }
+    
+    .grid-2 {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
