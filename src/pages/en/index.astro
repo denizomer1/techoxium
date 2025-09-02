@@ -9,38 +9,30 @@ import { t } from '../../i18n/utils';
 const locale = 'en';
 const rawPosts = await getCollection('blogEn');
 const posts = rawPosts
-	.map((p) => ({
+	.map((p: any) => ({
 		...p,
 		data: { ...p.data, pubDate: p.data.pubDate instanceof Date ? p.data.pubDate : new Date(p.data.pubDate as any) },
 	}))
-	.sort((a, b) => Number(b.data.pubDate) - Number(a.data.pubDate));
+	.sort((a: any, b: any) => Number(b.data.pubDate) - Number(a.data.pubDate));
 const [firstPost, ...restPosts] = posts;
 ---
 
-<html lang={locale}>
+<html lang={locale} class={Astro.cookies.get('theme')?.value === 'dark' ? 'dark' : ''}>
 	<head>
 		<BaseHead title={t(locale, 'site.title')} description={t(locale, 'site.description')} locale={locale} />
-		
-		<!-- Structured Data for Website -->
-		<script type="application/ld+json" set:html={
-			JSON.stringify({
-				"@context": "https://schema.org",
-				"@type": "WebSite",
-				"name": "Techoxium",
-				"description": t(locale, 'site.description'),
-				"url": "https://techoxium.com",
-				"publisher": {
-					"@type": "Organization",
-					"name": "Techoxium",
-					"logo": {
-						"@type": "ImageObject",
-						"url": "https://techoxium.com/logo.png"
-					}
-				}
-			})
-		} />
 	</head>
 	<body>
+		<script>
+			(function(){
+				const pref = document.cookie.match(/(?:^|; )theme=([^;]+)/)?.[1];
+				const sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+				if(pref === 'dark' || (!pref && sysDark)) {
+					document.documentElement.classList.add('dark');
+				} else {
+					document.documentElement.classList.remove('dark');
+				}
+			})();
+		</script>
 		<Header locale={locale} />
 		<main>
 			<h1>{t(locale, 'blog.title')}</h1>
@@ -60,7 +52,7 @@ const [firstPost, ...restPosts] = posts;
 					</div>
 				)}
 				<div class="post-list grid grid-2">
-					{restPosts.map((post) => (
+					{restPosts.map((post: any) => (
 						<PostCard
 							href={`/en/${post.id}/`}
 							title={post.data.title || 'Untitled'}
@@ -74,16 +66,67 @@ const [firstPost, ...restPosts] = posts;
 				</div>
 			</section>
 		</main>
-		<Footer locale={locale} />
+		<Footer />
 	</body>
 </html>
 
 <style>
-	.featured-list { 
-		margin: 0 0 2rem; 
+	main {
+		margin: auto;
+		padding: 1rem;
+		width: 800px;
+		max-width: calc(100% - 2rem);
+		color: rgb(var(--accent-dark));
+		font-size: 20px;
+		line-height: 1.6;
 	}
 	
-	.featured-list .post-card { 
-		box-shadow: 0 14px 46px -10px rgba(var(--gray), 25%), 0 8px 22px -8px rgba(var(--gray), 12%); 
+	h1 {
+		font-size: 4rem;
+		font-weight: 700;
+		line-height: 1;
+		text-align: center;
+		margin-bottom: 1em;
+		background: linear-gradient(135deg, #667eea, #764ba2);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+
+	.featured-list {
+		margin-bottom: 2rem;
+	}
+
+	.post-list {
+		display: grid;
+		gap: 2rem;
+		margin-bottom: 2rem;
+	}
+
+	.grid-2 {
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	}
+
+	/* Dark mode */
+	:global(html.dark) h1 {
+		color: #f5f7fa !important;
+		background: linear-gradient(135deg, #7fb3ff, #9f7aea) !important;
+		-webkit-background-clip: text !important;
+		-webkit-text-fill-color: transparent !important;
+		background-clip: text !important;
+	}
+
+	@media (max-width: 720px) {
+		main {
+			padding: 1rem;
+		}
+		
+		h1 {
+			font-size: 3rem;
+		}
+		
+		.grid-2 {
+			grid-template-columns: 1fr;
+		}
 	}
 </style>

@@ -3,6 +3,8 @@ import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import cloudflare from "@astrojs/cloudflare";
 import markdoc from "@astrojs/markdoc";
+import react from "@astrojs/react";
+import keystatic from '@keystatic/astro';
 
 // https://astro.build/config
 export default defineConfig({
@@ -12,6 +14,8 @@ export default defineConfig({
     markdoc({
       allowHTML: true,
     }),
+    react(),
+    keystatic(),
   ],
   vite: {
     ssr: {

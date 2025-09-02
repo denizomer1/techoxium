@@ -1,0 +1,362 @@
+---
+import { getCollection } from 'astro:content';
+import { tagToSlug } from '../lib/tag-utils.js';
+
+interface Props {
+  locale?: string;
+}
+
+const { locale = 'tr' } = Astro.props;
+
+// Get all posts for the locale
+const collection = locale === 'en' ? 'blogEn' : 'blog';
+const posts = await getCollection(collection as any);
+
+// Extract and count tags
+const tagCounts = new Map<string, number>();
+posts.forEach((post: any) => {
+  (post.data.tags || []).forEach((tag: string) => {
+    tagCounts.set(tag, (tagCounts.get(tag) || 0) + 1);
+  });
+});
+
+// Convert to array and sort by count (most popular first)
+const sortedTags = Array.from(tagCounts.entries())
+  .sort((a, b) => b[1] - a[1])
+  .slice(0, 8); // Show max 8 categories
+---
+
+<div class="category-menu">
+  <button type="button" class="category-toggle" aria-haspopup="true" aria-expanded="false">
+    <span class="category-icon">#</span>
+    <span class="category-label">{locale === 'en' ? 'Categories' : 'Kategoriler'}</span>
+    <svg class="dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="6,9 12,15 18,9"></polyline>
+    </svg>
+  </button>
+
+  <div class="category-dropdown">
+    <div class="category-grid">
+      {sortedTags.map(([tag, count]) => {
+        const slug = tagToSlug(tag);
+        const prefix = locale === 'en' ? '/en' : '';
+        return (
+          <a href={`${prefix}/tag/${slug}/`} class="category-item">
+            <div class="category-content">
+              <svg class="tag-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M4 9h16l-2 11H6L4 9Z"/>
+                <path d="M8 9V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v5"/>
+                <path d="M9 20l.5-4"/>
+                <path d="M14.5 16l.5 4"/>
+                <path d="M8 12h.01"/>
+                <path d="M16 12h.01"/>
+              </svg>
+              <span class="category-name">{tag}</span>
+            </div>
+            <span class="category-count">{count}</span>
+          </a>
+        );
+      })}
+    </div>
+    
+    {sortedTags.length === 0 && (
+      <div class="no-categories">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="8" y1="15" x2="16" y2="15"/>
+          <line x1="9" y1="9" x2="9.01" y2="9"/>
+          <line x1="15" y1="9" x2="15.01" y2="9"/>
+        </svg>
+        <span>{locale === 'en' ? 'No categories yet' : 'Henüz kategori yok'}</span>
+      </div>
+    )}
+  </div>
+</div>
+
+<style>
+  .category-menu {
+    position: relative;
+    display: inline-block;
+  }
+
+  .category-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 12px;
+    color: #374151;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    backdrop-filter: blur(8px);
+  }
+
+  .category-toggle:hover {
+    background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.85));
+    border-color: rgba(0,0,0,0.12);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    transform: translateY(-1px);
+  }
+
+  .category-toggle[aria-expanded="true"] {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border-color: #667eea;
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+  }
+
+  .category-toggle[aria-expanded="true"] .dropdown-arrow {
+    transform: rotate(180deg);
+  }
+
+  .category-icon {
+    opacity: 0.8;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1;
+  }
+
+  .dropdown-arrow {
+    transition: transform 0.2s ease;
+    opacity: 0.7;
+  }
+
+  .category-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    min-width: 320px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 4px 16px rgba(0,0,0,0.08);
+    backdrop-filter: blur(16px);
+    padding: 1rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+  }
+
+  .category-menu[data-open] .category-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+
+  .category-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem;
+    background: rgba(255,255,255,0.6);
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 12px;
+    text-decoration: none;
+    color: #374151;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(4px);
+  }
+
+  .category-item:hover {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border-color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+  }
+
+  .category-content {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .tag-icon {
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+  }
+
+  .category-item:hover .tag-icon {
+    opacity: 1;
+  }
+
+  .category-name {
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: capitalize;
+  }
+
+  .category-count {
+    background: rgba(0,0,0,0.1);
+    color: #6b7280;
+    padding: 0.25rem 0.5rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    min-width: 1.5rem;
+    text-align: center;
+    transition: all 0.2s ease;
+  }
+
+  .category-item:hover .category-count {
+    background: rgba(255,255,255,0.25);
+    color: white;
+  }
+
+  .no-categories {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 2rem 1rem;
+    color: #9ca3af;
+    font-size: 0.875rem;
+    text-align: center;
+  }
+
+  .no-categories svg {
+    opacity: 0.5;
+  }
+
+  /* Dark Mode */
+  :global(html.dark) .category-toggle {
+    background: linear-gradient(135deg, rgba(30,30,40,0.9), rgba(30,30,40,0.7)) !important;
+    border-color: rgba(255,255,255,0.1) !important;
+    color: #e5e7eb !important;
+  }
+
+  :global(html.dark) .category-toggle:hover {
+    background: linear-gradient(135deg, rgba(30,30,40,0.95), rgba(30,30,40,0.85)) !important;
+    border-color: rgba(255,255,255,0.15) !important;
+  }
+
+  :global(html.dark) .category-toggle[aria-expanded="true"] {
+    background: linear-gradient(135deg, #7fb3ff, #6366f1) !important;
+    border-color: #7fb3ff !important;
+  }
+
+  :global(html.dark) .category-dropdown {
+    background: rgba(20,20,30,0.95) !important;
+    border-color: rgba(255,255,255,0.1) !important;
+  }
+
+  :global(html.dark) .category-item {
+    background: rgba(255,255,255,0.05) !important;
+    border-color: rgba(255,255,255,0.08) !important;
+    color: #e5e7eb !important;
+  }
+
+  :global(html.dark) .category-item:hover {
+    background: linear-gradient(135deg, #7fb3ff, #6366f1) !important;
+    border-color: #7fb3ff !important;
+  }
+
+  :global(html.dark) .category-count {
+    background: rgba(255,255,255,0.1) !important;
+    color: #9ca3af !important;
+  }
+
+  :global(html.dark) .category-item:hover .category-count {
+    background: rgba(255,255,255,0.2) !important;
+    color: white !important;
+  }
+
+  :global(html.dark) .no-categories {
+    color: #6b7280 !important;
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    .category-dropdown {
+      min-width: 280px;
+      right: 0;
+      left: auto;
+    }
+
+    .category-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  // Modern category dropdown functionality
+  (function() {
+    if (typeof window === 'undefined') return;
+
+    function initCategoryMenu() {
+      const menu = document.querySelector('.category-menu');
+      const toggle = document.querySelector('.category-toggle');
+      const dropdown = document.querySelector('.category-dropdown');
+
+      if (!menu || !toggle || !dropdown) return;
+
+      function openDropdown() {
+        menu?.setAttribute('data-open', '');
+        toggle?.setAttribute('aria-expanded', 'true');
+      }
+
+      function closeDropdown() {
+        menu?.removeAttribute('data-open');
+        toggle?.setAttribute('aria-expanded', 'false');
+      }
+
+      function toggleDropdown() {
+        if (menu?.hasAttribute('data-open')) {
+          closeDropdown();
+        } else {
+          openDropdown();
+        }
+      }
+
+      // Toggle on click
+      toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleDropdown();
+      });
+
+      // Close on outside click
+      document.addEventListener('click', (e) => {
+        if (!menu.contains(e.target as Node)) {
+          closeDropdown();
+        }
+      });
+
+      // Close on escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeDropdown();
+        }
+      });
+
+      // Keyboard navigation
+      toggle.addEventListener('keydown', (e) => {
+        const keyEvent = e as KeyboardEvent;
+        if (keyEvent.key === 'Enter' || keyEvent.key === ' ') {
+          e.preventDefault();
+          toggleDropdown();
+        }
+      });
+    }
+
+    // Initialize on DOM ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initCategoryMenu);
+    } else {
+      initCategoryMenu();
+    }
+  })();
+</script>

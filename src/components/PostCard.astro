@@ -9,9 +9,10 @@ interface Props {
   heroImage?: string | undefined;
   large?: boolean;
   locale?: string;
+  tags?: string[] | undefined;
 }
 
-const { href, title, description = '', pubDate, heroImage, large = false, locale = 'tr' } = Astro.props;
+const { href, title, description = '', pubDate, heroImage, large = false, locale = 'tr', tags } = Astro.props;
 const date = pubDate ? (pubDate instanceof Date ? pubDate : new Date(pubDate)) : undefined;
 ---
 
@@ -28,11 +29,6 @@ const date = pubDate ? (pubDate instanceof Date ? pubDate : new Date(pubDate)) :
           decoding="async"
         />
       )}
-      <div class="post-overlay">
-        <svg class="play-icon" viewBox="0 0 24 24" fill="white">
-          <path d="M8 5v14l11-7z"/>
-        </svg>
-      </div>
     </div>
     
     <div class="post-content">
@@ -45,10 +41,18 @@ const date = pubDate ? (pubDate instanceof Date ? pubDate : new Date(pubDate)) :
       
       {description && <p class="post-description">{description}</p>}
       
+      {tags && tags.length > 0 && (
+        <div class="post-tags">
+          {tags.map((tag) => (
+            <span class="tag">{tag}</span>
+          ))}
+        </div>
+      )}
+      
       <div class="read-more">
-        <span>Devamını Oku</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M5 12h14M12 5l7 7-7 7"/>
+        Devamını oku
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
         </svg>
       </div>
     </div>
@@ -56,187 +60,144 @@ const date = pubDate ? (pubDate instanceof Date ? pubDate : new Date(pubDate)) :
 </article>
 
 <style>
+  /* Base: LIGHT theme (default) */
   .post-card {
-    background: white;
-    border-radius: var(--border-radius);
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: var(--box-shadow);
-    transition: var(--transition);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.08);
+    transition: all .3s cubic-bezier(.4,0,.2,1);
     height: 100%;
     display: flex;
     flex-direction: column;
+    color: #1a202c;
   }
-  
-  .post-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 48px rgba(var(--gray), 40%);
+  .post-card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(0,0,0,0.12); }
+
+  .post-link { text-decoration:none; color:inherit; height:100%; display:flex; flex-direction:column; }
+  .post-image { position:relative; aspect-ratio:16/9; overflow:hidden; background:linear-gradient(45deg,#eef2f7,#d9dee5); }
+  .post-image img { width:100%; height:100%; object-fit:cover; transition:all .3s cubic-bezier(.4,0,.2,1); }
+  .post-card:hover .post-image img { transform:scale(1.05); }
+
+  .post-content { padding:1.25rem 1.5rem 1.5rem; flex:1; display:flex; flex-direction:column; gap:.85rem; }
+  .post-meta { font-size:.75rem; text-transform:uppercase; letter-spacing:.5px; font-weight:600; color:#667085; }
+  .post-title { font-size:1.2rem; font-weight:700; line-height:1.3; margin:0; color:#1a202c; transition:color .25s; }
+  .post-card--large .post-title { font-size:1.45rem; }
+  .post-card:hover .post-title { color:#2337ff; }
+  .post-description { color:#4a5568; line-height:1.55; font-size:.9rem; margin:0; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+
+  .post-tags { display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.25rem; }
+  .tag { background:rgba(35,55,255,.08); color:#344461; border:1px solid #d8e0ee; padding:.25rem .55rem; border-radius:999px; font-size:.65rem; font-weight:600; line-height:1; letter-spacing:.3px; transition:background .25s,color .25s,border-color .25s; }
+  .tag:hover { background:rgba(35,55,255,.18); color:#2337ff; border-color:#b7c6f9; }
+
+  .read-more { display:flex; align-items:center; gap:.35rem; font-weight:600; color:#2337ff; font-size:.75rem; margin-top:auto; text-transform:uppercase; letter-spacing:.6px; }
+  .read-more svg { width:14px; height:14px; transition:transform .3s; }
+  .post-card:hover .read-more svg { transform:translateX(4px); }
+
+  /* DARK MODE - Multiple selectors for reliability */
+  html.dark .post-card,
+  [data-theme="dark"] .post-card,
+  .dark .post-card,
+  body.dark .post-card {
+    background: #121317 !important;
+    border-color: #2a2f3a !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,.5), 0 8px 28px rgba(0,0,0,.55) !important;
+    color: #f5f7fa !important;
   }
-  
-  .post-link {
-    text-decoration: none;
-    color: inherit;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+
+  html.dark .post-title,
+  [data-theme="dark"] .post-title,
+  .dark .post-title,
+  body.dark .post-title {
+    color: #f5f7fa !important;
   }
-  
-  .post-image {
-    position: relative;
-    aspect-ratio: 16/9;
-    overflow: hidden;
-    background: linear-gradient(45deg, rgb(var(--gray-light)), rgb(var(--gray)));
+
+  html.dark .post-card:hover .post-title,
+  [data-theme="dark"] .post-card:hover .post-title,
+  .dark .post-card:hover .post-title,
+  body.dark .post-card:hover .post-title {
+    color: #7fb3ff !important;
   }
-  
-  .post-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: var(--transition);
+
+  html.dark .post-description,
+  [data-theme="dark"] .post-description,
+  .dark .post-description,
+  body.dark .post-description {
+    color: #c7d0dc !important;
   }
-  
-  .post-card:hover .post-image img {
-    transform: scale(1.05);
+
+  html.dark .post-meta,
+  [data-theme="dark"] .post-meta,
+  .dark .post-meta,
+  body.dark .post-meta {
+    color: #8b96a3 !important;
   }
-  
-  .post-overlay {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(0, 0, 0, 0.7);
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: var(--transition);
-    backdrop-filter: blur(10px);
+
+  html.dark .post-image,
+  [data-theme="dark"] .post-image,
+  .dark .post-image,
+  body.dark .post-image {
+    background: linear-gradient(45deg,#2a2f3a,#3a414d) !important;
   }
-  
-  .post-card:hover .post-overlay {
-    opacity: 1;
+
+  html.dark .tag,
+  [data-theme="dark"] .tag,
+  .dark .tag,
+  body.dark .tag {
+    background: #262c36 !important;
+    color: #d5dae0 !important;
+    border-color: #3a4150 !important;
   }
-  
-  .play-icon {
-    width: 24px;
-    height: 24px;
-    margin-left: 2px;
+
+  html.dark .tag:hover,
+  [data-theme="dark"] .tag:hover,
+  .dark .tag:hover,
+  body.dark .tag:hover {
+    background: #323a46 !important;
+    color: #7fb3ff !important;
+    border-color: #4d5665 !important;
   }
-  
-  .post-content {
-    padding: 1.5rem;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+
+  html.dark .read-more,
+  [data-theme="dark"] .read-more,
+  .dark .read-more,
+  body.dark .read-more {
+    color: #7fb3ff !important;
   }
-  
-  .post-meta {
-    font-size: 0.875rem;
-    color: rgb(var(--gray));
-    font-weight: 500;
+
+  html.dark .post-card:hover,
+  [data-theme="dark"] .post-card:hover,
+  .dark .post-card:hover,
+  body.dark .post-card:hover {
+    box-shadow: 0 14px 50px rgba(0,0,0,.65) !important;
   }
-  
-  .post-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    line-height: 1.3;
-    color: rgb(var(--black));
-    margin: 0;
-    transition: var(--transition);
+
+  /* System prefers-color-scheme fallback */
+  @media (prefers-color-scheme: dark) {
+    :root:not(.dark):not([data-theme="light"]) .post-card {
+      background: #121317 !important;
+      border-color: #2a2f3a !important;
+      color: #f5f7fa !important;
+    }
+    :root:not(.dark):not([data-theme="light"]) .post-title { color: #f5f7fa !important; }
+    :root:not(.dark):not([data-theme="light"]) .post-description { color: #c7d0dc !important; }
+    :root:not(.dark):not([data-theme="light"]) .post-meta { color: #8b96a3 !important; }
+    :root:not(.dark):not([data-theme="light"]) .post-image { background: linear-gradient(45deg,#2a2f3a,#3a414d) !important; }
+    :root:not(.dark):not([data-theme="light"]) .tag { background: #262c36 !important; color: #d5dae0 !important; border-color: #3a4150 !important; }
+    :root:not(.dark):not([data-theme="light"]) .read-more { color: #7fb3ff !important; }
+    :root:not(.dark):not([data-theme="light"]) .post-card:hover { box-shadow: 0 14px 50px rgba(0,0,0,.65) !important; }
   }
-  
-  .post-card--large .post-title {
-    font-size: 1.5rem;
-  }
-  
-  .post-card:hover .post-title {
-    color: var(--accent-light);
-  }
-  
-  .post-description {
-    color: rgb(var(--gray-dark));
-    line-height: 1.6;
-    flex: 1;
-    font-size: 0.95rem;
-    margin: 0;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  
-  .read-more {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-weight: 500;
-    color: var(--accent);
-    font-size: 0.875rem;
-    margin-top: auto;
-    transition: var(--transition);
-  }
-  
-  .read-more svg {
-    width: 16px;
-    height: 16px;
-    transition: var(--transition);
-  }
-  
-  .post-card:hover .read-more svg {
-    transform: translateX(4px);
-  }
-  
+
   @media (max-width: 768px) {
-    .post-content {
-      padding: 1rem;
-    }
-    
-    .post-title {
-      font-size: 1.125rem;
-    }
-    
-    .post-card--large .post-title {
-      font-size: 1.25rem;
-    }
-    
-    .post-overlay {
-      width: 50px;
-      height: 50px;
-    }
-    
-    .play-icon {
-      width: 20px;
-      height: 20px;
-    }
+    .post-content { padding:1rem 1.1rem 1.25rem; }
+    .post-title { font-size:1.05rem; }
+    .post-card--large .post-title { font-size:1.2rem; }
   }
-  
-  :global(html.dark) .post-card {
-    background: #2a2a38;
-  }
-  
-  :global(html.dark) .post-title {
-    /* Use a lighter blue in dark mode for better contrast and brand feel */
-    color: #7fb3ff;
-  }
-  
-  :global(html.dark) .post-description {
-    color: rgb(200, 200, 200);
-  }
-  
+
   @media (prefers-reduced-motion: reduce) {
-    .post-card:hover {
-      transform: none;
-    }
-    
-    .post-image img {
-      transform: none;
-    }
-    
-    .read-more svg {
-      transform: none;
-    }
+    .post-card:hover { transform:none; }
+    .post-image img { transform:none; }
+    .post-card:hover .read-more svg { transform:none; }
   }
 </style>

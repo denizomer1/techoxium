@@ -3,48 +3,133 @@ import BaseHead from '../../../components/BaseHead.astro';
 import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
 import { getCollection } from 'astro:content';
-import { postMatchesTag } from '../../../lib/tag-utils.js';
+import PostCard from '../../../components/PostCard.astro';
+import { t } from '../../../i18n/utils';
 
-const { params } = Astro;
-const tag = String(params.tag || '');
+export const prerender = false;
+
+const { tag } = Astro.params as { tag: string };
 const locale = 'en';
-const collection = 'blogEn';
-const posts = /** @type {any[]} */ (await getCollection(/** @type {any} */ (collection)));
 
-// allow matching by the displayed tag or by the kebab slug
-const filtered = posts.filter(p => postMatchesTag(p, tag));
+const posts = await getCollection('blogEn', ({ data }: { data: any }) => {
+	return data.tags?.some((t: string) => 
+		t.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '') === tag
+	);
+});
+
+const sortedPosts = posts
+	.map((p: any) => ({
+		...p,
+		data: { ...p.data, pubDate: p.data.pubDate instanceof Date ? p.data.pubDate : new Date(p.data.pubDate as any) },
+	}))
+	.sort((a: any, b: any) => Number(b.data.pubDate) - Number(a.data.pubDate));
+
+const tagTitle = tag.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
 ---
 
-<html lang="en">
-  <head>
-    <BaseHead title={`#${tag}`} locale={locale} />
-  </head>
-  <body>
-    <Header locale={locale} />
-    <main class="tag-main">
-      <div class="container">
-        <h1>#{tag}</h1>
-        {filtered.length ? (
-          <ul class="tag-list">
-            {filtered.map(p => {
-              const post = /** @type {any} */ (p);
-              return (
-                <li class="tag-item"><a href={`/${locale === 'en' ? 'en/' : ''}${post.id}/`}>{post.data.title}</a></li>
-              );
-            })}
-          </ul>
-        ) : (
-          <p>No posts in this category yet.</p>
-        )}
-      </div>
-    </main>
-    <Footer locale={locale} />
-  </body>
+<html lang={locale} class={Astro.cookies.get('theme')?.value === 'dark' ? 'dark' : ''}>
+	<head>
+		<BaseHead title={`${tagTitle} - ${t(locale, 'site.title')}`} description={`Posts about ${tagTitle}`} locale={locale} />
+	</head>
+	<body>
+		<script>
+			(function(){
+				const pref = document.cookie.match(/(?:^|; )theme=([^;]+)/)?.[1];
+				const sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+				if(pref === 'dark' || (!pref && sysDark)) {
+					document.documentElement.classList.add('dark');
+				} else {
+					document.documentElement.classList.remove('dark');
+				}
+			})();
+		</script>
+		<Header locale={locale} />
+		<main>
+			<h1>#{tagTitle}</h1>
+			<p>{sortedPosts.length} posts found</p>
+			<section>
+				<div class="post-list grid grid-2">
+					{sortedPosts.map((post: any) => (
+						<PostCard
+							href={`/en/${post.id}/`}
+							title={post.data.title || 'Untitled'}
+							description={post.data.description || ''}
+							pubDate={post.data.pubDate}
+							heroImage={post.data.heroImage}
+							locale={locale}
+							tags={post.data.tags}
+						/>
+					))}
+				</div>
+			</section>
+		</main>
+		<Footer />
+	</body>
 </html>
 
 <style>
-.tag-main { padding: 2rem 1rem; }
-.tag-list { list-style:none; padding:0; margin:1rem 0; display:grid; gap:1rem }
-.tag-item a { display:block; padding:1rem; background:var(--card-bg,#fff); border-radius:8px; box-shadow:var(--box-shadow); text-decoration:none }
-@media (prefers-color-scheme: dark) { .tag-item a { background:#2a2a38 } }
+	main {
+		margin: auto;
+		padding: 1rem;
+		width: 800px;
+		max-width: calc(100% - 2rem);
+		color: rgb(var(--accent-dark));
+		font-size: 20px;
+		line-height: 1.6;
+	}
+	
+	h1 {
+		font-size: 3rem;
+		font-weight: 700;
+		line-height: 1;
+		text-align: center;
+		margin-bottom: 1em;
+		background: linear-gradient(135deg, #667eea, #764ba2);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+
+	p {
+		text-align: center;
+		color: #666;
+		margin-bottom: 2rem;
+	}
+
+	.post-list {
+		display: grid;
+		gap: 2rem;
+		margin-bottom: 2rem;
+	}
+
+	.grid-2 {
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	}
+
+	/* Dark mode */
+	:global(html.dark) h1 {
+		color: #f5f7fa !important;
+		background: linear-gradient(135deg, #7fb3ff, #9f7aea) !important;
+		-webkit-background-clip: text !important;
+		-webkit-text-fill-color: transparent !important;
+		background-clip: text !important;
+	}
+
+	:global(html.dark) p {
+		color: #ccc !important;
+	}
+
+	@media (max-width: 720px) {
+		main {
+			padding: 1rem;
+		}
+		
+		h1 {
+			font-size: 2rem;
+		}
+		
+		.grid-2 {
+			grid-template-columns: 1fr;
+		}
+	}
 </style>

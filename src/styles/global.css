@@ -16,6 +16,43 @@
   --border-radius: 12px;
   --transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
   --header-height: 4rem;
+
+  /* Card specific variables */
+  --card-bg: white;
+  --card-border: rgba(var(--gray-light), 0.8);
+  --card-text: rgb(var(--black));
+  --card-text-muted: rgb(var(--gray));
+}
+
+/* Dark mode support - True black theme */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --gray-gradient: rgba(0, 0, 0, 0.9), rgb(0, 0, 0);
+    --card-bg: rgb(20, 20, 20);
+    --card-border: rgba(60, 60, 60, 0.5);
+    --card-text: rgb(255, 255, 255);
+    --card-text-muted: rgb(200, 200, 200);
+  }
+  
+  body {
+    background: linear-gradient(var(--gray-gradient)) no-repeat;
+    background-size: 100% 600px;
+    color: rgb(255, 255, 255);
+  }
+}
+
+[data-theme="dark"] {
+  --gray-gradient: rgba(0, 0, 0, 0.9), rgb(0, 0, 0);
+  --card-bg: rgb(20, 20, 20);
+  --card-border: rgba(60, 60, 60, 0.5);
+  --card-text: rgb(255, 255, 255);
+  --card-text-muted: rgb(200, 200, 200);
+}
+
+[data-theme="dark"] body {
+  background: linear-gradient(var(--gray-gradient)) no-repeat;
+  background-size: 100% 600px;
+  color: rgb(255, 255, 255);
 }
 
 @font-face {

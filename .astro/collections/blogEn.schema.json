@@ -5,7 +5,8 @@
       "type": "object",
       "properties": {
         "title": {
-          "type": "string"
+          "type": "string",
+          "default": "Yeni Blog Yazısı (TR)"
         },
         "description": {
           "type": "string"
