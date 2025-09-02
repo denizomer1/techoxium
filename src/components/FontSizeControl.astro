@@ -70,7 +70,7 @@ const { locale = 'tr' } = Astro.props;
   }
 </style>
 
-<script define:vars={{ locale }}>
+<script is:inline define:vars={{ locale }}>
   const decreaseBtn = document.getElementById('decrease-font');
   const increaseBtn = document.getElementById('increase-font');
   

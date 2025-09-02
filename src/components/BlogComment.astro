@@ -119,7 +119,7 @@ const { locale = 'tr' } = Astro.props;
   }
 </style>
 
-<script define:vars={{ locale, showCommentsText: t(locale, 'blog.showComments'), hideCommentsText: t(locale, 'blog.hideComments'), loadFailedText: locale === 'en' ? 'Comments failed to load. Please refresh the page.' : 'Yorumlar yüklenemedi. Lütfen sayfayı yenileyin.' }}>
+<script is:inline define:vars={{ locale, showCommentsText: t(locale, 'blog.showComments'), hideCommentsText: t(locale, 'blog.hideComments'), loadFailedText: locale === 'en' ? 'Comments failed to load. Please refresh the page.' : 'Yorumlar yüklenemedi. Lütfen sayfayı yenileyin.' }}>
   const toggle = document.getElementById('comment-toggle');
   const section = document.getElementById('comments-section');
   const toggleText = document.getElementById('toggle-text');

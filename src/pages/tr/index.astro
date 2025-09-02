@@ -22,7 +22,7 @@ const [firstPost, ...restPosts] = posts;
 		<BaseHead title={t(locale, 'site.title')} description={t(locale, 'site.description')} locale={locale} />
 		
 		<!-- Structured Data for Website -->
-		<script type="application/ld+json" set:html={
+		<script is:inline type="application/ld+json" set:html={
 			JSON.stringify({
 				"@context": "https://schema.org",
 				"@type": "WebSite",
