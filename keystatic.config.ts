@@ -2,13 +2,20 @@ import { config, fields, collection } from '@keystatic/core';
 
 export default config({
   storage: {
-    kind: 'local',
+    kind: 'github',
+    repo: 'denizomer1/techoxium',
+  },
+  ui: {
+    brand: { name: 'Techoxium CMS' },
+    navigation: {
+      Blog: ['blog', 'blogEn'],
+    },
   },
   collections: {
     blog: collection({
       label: 'Blog (TR)',
       slugField: 'title',
-      path: 'src/content/tr/*',
+      path: 'src/content/tr/**',
       format: { contentField: 'content' },
       schema: {
         title: fields.text({ 
@@ -39,7 +46,7 @@ export default config({
     blogEn: collection({
       label: 'Blog (EN)',
       slugField: 'title',
-      path: 'src/content/en/*',
+      path: 'src/content/en/**',
       format: { contentField: 'content' },
       schema: {
         title: fields.text({ 
