@@ -4,8 +4,10 @@ import BaseHead from './BaseHead.astro';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
 import PostCard from './PostCard.astro';
+import AdSense from './AdSense.astro';
 import { createPageProps, getLocalizedPosts, themeScript, getStructuredData } from '../lib/page-factory.astro';
 import { t } from '../i18n/utils';
+import { ADSENSE_CONFIG } from '../config/adsense.ts';
 
 interface Props {
   locale: 'tr' | 'en';
@@ -43,6 +45,12 @@ const pageProps = createPageProps({
     <Header locale={locale} />
     <main>
       <h1>{t(locale, 'blog.title')}</h1>
+      
+      <!-- Top banner ad -->
+      <div class="ad-container">
+        <AdSense slot={ADSENSE_CONFIG.slots.homeBanner} className="banner-ad" />
+      </div>
+      
       <section>
         {firstPost && (
           <div class="featured-list">
@@ -58,6 +66,12 @@ const pageProps = createPageProps({
             />
           </div>
         )}
+        
+        <!-- Mid-content ad -->
+        <div class="ad-container">
+          <AdSense slot={ADSENSE_CONFIG.slots.homeMidContent} className="mid-content-ad" />
+        </div>
+        
         <div class="post-list grid grid-2">
           {restPosts.map((post) => (
             <PostCard
@@ -112,6 +126,14 @@ const pageProps = createPageProps({
 
   .grid-2 {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+
+  .ad-container {
+    max-width: 100%;
+    margin: 2rem 0;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
   }
 
   /* Dark mode */

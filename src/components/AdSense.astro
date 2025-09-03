@@ -1,0 +1,59 @@
+---
+import { ADSENSE_CONFIG } from '../config/adsense.ts';
+
+interface Props {
+  client?: string;
+  slot: string;
+  format?: string;
+  style?: string;
+  responsive?: boolean;
+  className?: string;
+}
+
+const {
+  client = ADSENSE_CONFIG.client,
+  slot,
+  format = "auto",
+  style = "display:block",
+  responsive = true,
+  className = ""
+} = Astro.props as Props;
+---
+
+<ins class={`adsbygoogle ${className}`}
+     style={style}
+     data-ad-client={client}
+     data-ad-slot={slot}
+     data-ad-format={format}
+     data-full-width-responsive={responsive ? "true" : "false"}>
+</ins>
+
+<script is:inline>
+  (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+<style>
+  .adsbygoogle {
+    margin: 20px 0;
+    text-align: center;
+  }
+  
+  /* Responsive ad container */
+  .ad-container {
+    max-width: 100%;
+    overflow: hidden;
+  }
+  
+  /* Different ad sizes for different breakpoints */
+  @media (max-width: 768px) {
+    .adsbygoogle {
+      min-height: 250px;
+    }
+  }
+  
+  @media (min-width: 769px) {
+    .adsbygoogle {
+      min-height: 280px;
+    }
+  }
+</style>
