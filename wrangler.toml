@@ -18,7 +18,7 @@ enabled = true
 
 # Environment variables
 [vars]
-GITHUB_CLIENT_ID = "Iv23li6qdQDGA7F7SMft"
+GITHUB_CLIENT_ID = "Ov23lijBGrD16Xrp17yg"
 
 # Build configuration - required for Pages Functions
 [build]

@@ -4,6 +4,7 @@ export default config({
   storage: {
     kind: 'github',
     repo: 'denizomer1/techoxium',
+    branchPrefix: 'keystatic/',
   },
   ui: {
     brand: { name: 'Techoxium CMS' },
