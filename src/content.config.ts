@@ -17,12 +17,12 @@ const blogSchema = z.object({
 });
 
 const blog = defineCollection({
-  loader: glob({ base: "./src/content/tr", pattern: "*.{md,mdx,mdoc}" }),
+  loader: glob({ base: "./src/content/tr", pattern: "*.{md,mdx}" }),
   schema: blogSchema,
 });
 
 const blogEn = defineCollection({
-  loader: glob({ base: "./src/content/en", pattern: "*.{md,mdx,mdoc}" }),
+  loader: glob({ base: "./src/content/en", pattern: "*.{md,mdx}" }),
   schema: blogSchema,
 });
 

@@ -1,4 +1,6 @@
-import { config, fields, collection } from '@keystatic/core';
+import { config, fields, collection } from '@        content: fields.mdx({
+          label: 'Content',
+        }),static/core';
 
 export default config({
   storage: {
@@ -43,7 +45,7 @@ export default config({
           label: 'Hero Image Path', 
           validation: { isRequired: false } 
         }),
-        content: fields.mdx({
+        content: fields.markdoc({
           label: 'Content',
         }),
       },
@@ -78,7 +80,7 @@ export default config({
           label: 'Hero Image Path', 
           validation: { isRequired: false } 
         }),
-        content: fields.mdx({
+        content: fields.markdoc({
           label: 'Content',
         }),
       },

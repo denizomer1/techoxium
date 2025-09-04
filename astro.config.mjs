@@ -3,17 +3,19 @@ import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import cloudflare from "@astrojs/cloudflare";
 import markdoc from "@astrojs/markdoc";
+import mdx from "@astrojs/mdx";
 import preact from "@astrojs/preact";
 import keystatic from '@keystatic/astro';
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://techoxium.com",
+  site: "https://techoxium.denizomer10.workers.dev",
   integrations: [
     sitemap(),
     markdoc({
       allowHTML: true,
     }),
+    mdx(),
     preact({ compat: true }),
     keystatic(),
   ],
