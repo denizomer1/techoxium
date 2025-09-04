@@ -2,7 +2,8 @@ import { config, fields, collection } from '@keystatic/core';
 
 export default config({
   storage: {
-    kind: 'local',
+    kind: 'github',
+    repo: 'denizomer1/techoxium',
   },
   ui: {
     brand: { name: 'Techoxium CMS' },

@@ -1,6 +1,12 @@
 # Cloudflare Pages Environment Variables Kurulumu
 
-## 🚀 Keystatic'in Production'da Çalışması İçin Gerekli Ayarlar
+## 🚀 Keystatic'in GitHub Storage ile Production'da Çalışması İçin Gerekli Ayarlar
+
+### 0. GitHub App Kurulumu (Gerekli)
+1. GitHub'da https://github.com/settings/apps adresine gidin
+2. Mevcut GitHub App'inizi bulun (Client ID: Ov23liN27y5X4zgiO19x)
+3. **Client Secret**'i kopyalayın (aşağıda kullanacaksınız)
+4. **Repository access** ayarlarında `denizomer1/techoxium` repo'suna erişim olduğunu kontrol edin
 
 ### 1. Cloudflare Dashboard'a Giriş
 1. https://dash.cloudflare.com/ adresine gidin
@@ -15,14 +21,28 @@
 
 ### 3. Gerekli Variables'ları Ekleyin
 
-#### Variable 1: KEYSTATIC_SECRET
+#### Variable 1: KEYSTATIC_GITHUB_CLIENT_ID
+```
+Name: KEYSTATIC_GITHUB_CLIENT_ID
+Value: Ov23liN27y5X4zgiO19x
+Environment: Production
+```
+
+#### Variable 2: KEYSTATIC_GITHUB_CLIENT_SECRET
+```
+Name: KEYSTATIC_GITHUB_CLIENT_SECRET
+Value: 51322a8dc0ef1aa0377559442919e24d071ceef5
+Environment: Production
+```
+
+#### Variable 3: KEYSTATIC_SECRET
 ```
 Name: KEYSTATIC_SECRET
 Value: 08311b15eb98fdd93a85b1817ba69b86b1a26ba9ac4569417ac6a8ba8c5047ae
 Environment: Production
 ```
 
-#### Variable 2: SESSION_SECRET  
+#### Variable 4: SESSION_SECRET  
 ```
 Name: SESSION_SECRET
 Value: facec996e36f8aeb8508378bf16259d3af078a391e387db3f04d94466b844999
