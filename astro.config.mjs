@@ -24,6 +24,9 @@ export default defineConfig({
     define: {
       global: 'globalThis',
     },
+    optimizeDeps: {
+      exclude: ['@keystatic/core', '@keystatic/astro']
+    }
   },
   i18n: {
     defaultLocale: "tr",

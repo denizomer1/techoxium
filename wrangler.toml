@@ -17,6 +17,9 @@ preview_id = "e121541f75e04ac89d00131bb1376031"
 enabled = true
 
 # Environment variables
+[vars]
+KEYSTATIC_SECRET = "08311b15eb98fdd93a85b1817ba69b86b1a26ba9ac4569417ac6a8ba8c5047ae"
+SESSION_SECRET = "facec996e36f8aeb8508378bf16259d3af078a391e387db3f04d94466b844999"
 
 # Build configuration - required for Pages Functions
 [build]
