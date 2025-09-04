@@ -4,9 +4,14 @@
 
 ### 0. GitHub App Kurulumu (Gerekli)
 1. GitHub'da https://github.com/settings/apps adresine gidin
-2. Mevcut GitHub App'inizi bulun (Client ID: Ov23liN27y5X4zgiO19x)
-3. **Client Secret**'i kopyalayın (aşağıda kullanacaksınız)
-4. **Repository access** ayarlarında `denizomer1/techoxium` repo'suna erişim olduğunu kontrol edin
+2. Mevcut GitHub App'inizi bulun (Client ID: Iv23li6qdQDGA7F7SMft)
+3. **Authorization callback URL** bölümünde şu URL'leri ekleyin:
+   ```
+   https://techoxium.denizomer10.workers.dev/keystatic/auth/callback
+   http://127.0.0.1:4321/keystatic/auth/callback
+   ```
+4. **Repository permissions** ayarlarında `denizomer1/techoxium` repo'suna erişim olduğunu kontrol edin
+5. **Repository access** bölümünde "Selected repositories" seçip `techoxium` repo'sunu ekleyin
 
 ### 1. Cloudflare Dashboard'a Giriş
 1. https://dash.cloudflare.com/ adresine gidin
@@ -21,17 +26,17 @@
 
 ### 3. Gerekli Variables'ları Ekleyin
 
-#### Variable 1: KEYSTATIC_GITHUB_CLIENT_ID
+#### Variable 1: GITHUB_CLIENT_ID
 ```
-Name: KEYSTATIC_GITHUB_CLIENT_ID
-Value: Ov23liN27y5X4zgiO19x
+Name: GITHUB_CLIENT_ID
+Value: Iv23li6qdQDGA7F7SMft
 Environment: Production
 ```
 
-#### Variable 2: KEYSTATIC_GITHUB_CLIENT_SECRET
+#### Variable 2: GITHUB_CLIENT_SECRET
 ```
-Name: KEYSTATIC_GITHUB_CLIENT_SECRET
-Value: 51322a8dc0ef1aa0377559442919e24d071ceef5
+Name: GITHUB_CLIENT_SECRET
+Value: 31f7dc23f86146c38ac17f12501922aafe9470ad
 Environment: Production
 ```
 
@@ -59,7 +64,7 @@ Environment: Production
 ### 5. Deploy ve Test
 1. Variables eklendikten sonra **Save** butonuna tıklayın
 2. Yeni bir deploy otomatik olarak başlayacak
-3. Deploy tamamlandığında https://techoxium.com/keystatic adresini test edin
+3. Deploy tamamlandığında https://techoxium.denizomer10.workers.dev/keystatic adresini test edin
 
 ## 🔧 Sorun Giderme
 
@@ -75,9 +80,9 @@ Environment: Production
 - nodejs_compat flag'i aktif olmalı
 
 ### Test URL'leri:
-- Ana site: https://techoxium.com
-- Keystatic Admin: https://techoxium.com/keystatic
-- ads.txt: https://techoxium.com/ads.txt
+- Ana site: https://techoxium.denizomer10.workers.dev
+- Keystatic Admin: https://techoxium.denizomer10.workers.dev/keystatic
+- ads.txt: https://techoxium.denizomer10.workers.dev/ads.txt
 
 ## 📞 İletişim
 Sorun devam ederse:
