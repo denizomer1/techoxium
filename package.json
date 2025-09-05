@@ -21,11 +21,12 @@
     "@astrojs/sitemap": "^3.5.1",
     "@keystatic/astro": "^5.0.6",
     "@keystatic/core": "^0.5.48",
-    "@types/react": "^19.1.12",
-    "@types/react-dom": "^19.1.9",
+    "@types/node": "^24.3.1",
+    "@types/react": "^18.3.24",
+    "@types/react-dom": "^18.3.7",
     "astro": "^5.13.3",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "typescript": "^5.8.3"
   },
   "devDependencies": {
@@ -34,7 +35,7 @@
   "scripts": {
     "astro": "astro",
     "build": "astro build",
-    "build:cloudflare": "CLOUDFLARE_BUILD=true NODE_ENV=production astro build",
+    "build:cloudflare": "astro build",
     "test:unit": "node ./test/tag-utils.test.js",
     "cf-typegen": "wrangler types",
     "check": "npm run build:cloudflare && tsc && wrangler deploy --dry-run",
