@@ -36,10 +36,11 @@
     "astro": "astro",
     "build": "astro build",
     "build:cloudflare": "astro build",
+    "build:prod": "cp keystatic.config.prod.ts keystatic.config.ts && astro build && git checkout keystatic.config.ts",
     "test:unit": "node ./test/tag-utils.test.js",
     "cf-typegen": "wrangler types",
     "check": "npm run build:cloudflare && tsc && wrangler deploy --dry-run",
-    "deploy": "npm run build:cloudflare && wrangler deploy",
+    "deploy": "npm run build:prod && wrangler deploy",
     "dev": "astro dev",
     "preview": "astro build && wrangler dev"
   },
