@@ -1,7 +1,7 @@
 # Techoxium
 
 <div align="center">
-  <img src="public/logo.png" alt="Techoxium Logo" width="200" height="200">
+  <img src="public/images/logo.png" alt="Techoxium Logo" width="200" height="200">
   
   <p><strong>Modern Tech Blog Built with Astro 🚀</strong></p>
   
