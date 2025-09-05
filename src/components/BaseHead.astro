@@ -61,11 +61,14 @@ const ogImage = new globalThis.URL(image || DEFAULT_OG, Astro.url).toString();
 <meta property="twitter:description" content={metaDescription} />
 {ogImage && <meta property="twitter:image" content={ogImage} />}
 
-<!-- Google tag (gtag.js) -->
-<script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-7V9HE536V0"></script>
+<!-- Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7V9HE536V0"></script>
 <script is:inline>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'G-7V9HE536V0');
 </script>
+
+<!-- Netlify Identity for CMS -->
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>

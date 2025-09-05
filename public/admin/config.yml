@@ -1,0 +1,29 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "public/images"
+public_folder: "/images"
+
+collections:
+  - name: "blog"
+    label: "Blog Yazıları"
+    folder: "src/content"
+    create: true
+    slug: "{{slug}}"
+    extension: "mdoc"
+    format: "frontmatter"
+    fields:
+      - { label: "Başlık", name: "title", widget: "string" }
+      - { label: "Açıklama", name: "description", widget: "text", required: false }
+      - { label: "Yayın Tarihi", name: "pubDate", widget: "datetime" }
+      - { label: "Güncelleme Tarihi", name: "updatedDate", widget: "datetime", required: false }
+      - { label: "Ana Resim", name: "heroImage", widget: "image", required: false }
+      - { label: "Etiketler", name: "tags", widget: "list", required: false }
+      - { label: "İçerik", name: "body", widget: "markdown" }
+
+site_url: https://techoxium.com
+display_url: https://techoxium.com
+logo_url: https://techoxium.com/images/logo.png
+
+locale: 'tr'
