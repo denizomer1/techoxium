@@ -7,18 +7,8 @@ main = "dist/_worker.js/index.js"
 directory = "dist"
 binding = "ASSETS_MANUAL"
 
-# Add SESSION KV binding for Astro sessions
-[[kv_namespaces]]
-binding = "SESSION"
-id = "317b48de29d246528905c76e9592a892"
-preview_id = "e121541f75e04ac89d00131bb1376031"
-
 [observability]
 enabled = true
-
-# Environment variables
-[vars]
-GITHUB_CLIENT_ID = "Ov23lijBGrD16Xrp17yg"
 
 # Build configuration - required for Pages Functions
 [build]

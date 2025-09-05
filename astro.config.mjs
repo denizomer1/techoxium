@@ -12,7 +12,11 @@ export default defineConfig({
     mdx(),
   ],
   output: "server",
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    platformProxy: {
+      enabled: true
+    }
+  }),
   image: {
     service: {
       entrypoint: "astro/assets/services/squoosh",
