@@ -36,18 +36,6 @@ Bu yeni sürüm aşağıdaki gelişmiş özellikleri içermektedir:
 - ✅ Erişilebilirlik (a11y) iyileştirmeleri
 
 ---
-
-## ✨ Özellikler
-
-🔍 **Akıllı Arama** - Gerçek zamanlı blog yazısı arama
-📱 **Responsive Design** - Mobil-first yaklaşım
-🌙 **Dark/Light Theme** - Sistem tercihini takip eder
-⚡ **Lightning Fast** - Edge'de SSR ile ultra hızlı
-🎨 **Modern UI/UX** - Minimalist ve kullanıcı dostu
-🇹🇷 **Türkçe İçerik** - Tamamen Türkçe teknoloji blogu
-� **SEO Optimized** - Sitemap, meta tags, structured data
-📊 **Analytics Ready** - Production analytics desteği
-
 ## 🛠️ Yerel Geliştirme
 
 1. **Bağımlılıkları yükleyin:**
