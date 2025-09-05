@@ -3,7 +3,6 @@ import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import cloudflare from "@astrojs/cloudflare";
 import mdx from "@astrojs/mdx";
-import preact from "@astrojs/preact";
 
 // https://astro.build/config
 export default defineConfig({
@@ -11,7 +10,6 @@ export default defineConfig({
   integrations: [
     sitemap(),
     mdx(),
-    preact({ compat: true }),
   ],
   output: "server",
   adapter: cloudflare(),

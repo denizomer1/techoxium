@@ -1,3 +1,11 @@
+# ==========================================
+# ÖNEMLİ: Build ve Cache Klasörleri
+# ==========================================
+.astro/
+node_modules/
+dist/
+.wrangler/
+
 # Dependencies
 node_modules/
 npm-debug.log*
