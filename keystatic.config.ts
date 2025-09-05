@@ -4,22 +4,22 @@ export default config({
   storage: {
     kind: 'local',
   },
+  ui: {
+    brand: {
+      name: 'Techoxium'
+    }
+  },
   collections: {
     blog: collection({
       label: 'Blog Posts',
       slugField: 'title',
-      path: 'src/content/*',
+      path: 'src/content/{lang}/*',
       format: { contentField: 'content' },
       schema: {
         title: fields.slug({ name: { label: 'Title' } }),
-        description: fields.text({ 
-          label: 'Description',
-          multiline: true 
-        }),
-        pubDate: fields.date({ 
-          label: 'Publication Date',
-          defaultValue: { kind: 'today' }
-        }),
+        description: fields.text({ label: 'Description' }),
+        pubDate: fields.date({ label: 'Publication Date' }),
+        author: fields.text({ label: 'Author', defaultValue: 'Techoxium' }),
         heroImage: fields.image({
           label: 'Hero Image',
           directory: 'public/images',
@@ -27,15 +27,18 @@ export default config({
         }),
         tags: fields.array(
           fields.text({ label: 'Tag' }),
-          {
-            label: 'Tags',
-            itemLabel: props => props.value || 'Tag'
-          }
+          { label: 'Tags', itemLabel: props => props.value }
         ),
         content: fields.markdoc({
           label: 'Content',
-        }),
-      },
-    }),
-  },
+          options: {
+            image: {
+              directory: 'public/images',
+              publicPath: '/images/'
+            }
+          }
+        })
+      }
+    })
+  }
 });

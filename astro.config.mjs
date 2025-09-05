@@ -6,6 +6,9 @@ import markdoc from "@astrojs/markdoc";
 import react from "@astrojs/react";
 import keystatic from "@keystatic/astro";
 
+const isProduction = process.env.NODE_ENV === 'production';
+const isCloudflare = process.env.CLOUDFLARE_BUILD === 'true';
+
 // https://astro.build/config
 export default defineConfig({
   site: "https://techoxium.com",
@@ -15,7 +18,8 @@ export default defineConfig({
       allowHTML: true
     }), 
     react(),
-    keystatic()
+    // Only include Keystatic in development or non-Cloudflare builds
+    ...((!isProduction || !isCloudflare) ? [keystatic()] : [])
   ],
   output: "server",
   adapter: cloudflare({

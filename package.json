@@ -34,10 +34,11 @@
   "scripts": {
     "astro": "astro",
     "build": "astro build",
+    "build:cloudflare": "CLOUDFLARE_BUILD=true NODE_ENV=production astro build",
     "test:unit": "node ./test/tag-utils.test.js",
     "cf-typegen": "wrangler types",
-    "check": "astro build && tsc && wrangler deploy --dry-run",
-    "deploy": "npm run build && wrangler deploy",
+    "check": "npm run build:cloudflare && tsc && wrangler deploy --dry-run",
+    "deploy": "npm run build:cloudflare && wrangler deploy",
     "dev": "astro dev",
     "preview": "astro build && wrangler dev"
   },
