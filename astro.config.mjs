@@ -8,24 +8,44 @@ import markdoc from "@astrojs/markdoc";
 export default defineConfig({
   site: "https://techoxium.com",
   integrations: [
-    sitemap(), 
+    sitemap({
+      changefreq: 'weekly',
+      priority: 0.7,
+      lastmod: new Date(),
+    }), 
     markdoc({
       allowHTML: true
     })
   ],
   output: "server",
   adapter: cloudflare({
-    imageService: "passthrough",
+    imageService: "cloudflare",
     platformProxy: {
       enabled: true
     }
   }),
   image: {
     service: {
-      entrypoint: "astro/assets/services/sharp",
-    },
+      entrypoint: "astro/assets/services/cloudflare"
+    }
   },
   build: {
-    inlineStylesheets: "never",
+    inlineStylesheets: "auto",
   },
+  vite: {
+    build: {
+      minify: true,
+      cssMinify: true,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ['astro'],
+          }
+        }
+      }
+    },
+    ssr: {
+      external: ["node:fs/promises", "node:path", "node:url", "node:crypto"]
+    }
+  }
 });

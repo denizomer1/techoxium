@@ -1,29 +1,23 @@
 {
   "name": "techoxium",
-  "description": "Build a personal website, blog, or portfolio with Astro.",
+  "description": "Technology Element",
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.7",
     "@astrojs/markdoc": "^0.15.5",
     "@astrojs/rss": "^4.0.12",
     "@astrojs/sitemap": "^3.5.1",
-    "@types/node": "^24.3.1",
-    "astro": "^5.13.5",
-    "sharp": "^0.34.3",
-    "typescript": "^5.9.2"
+    "astro": "^5.13.5"
   },
   "devDependencies": {
     "wrangler": "^4.34.0"
   },
   "scripts": {
-    "astro": "astro",
     "build": "astro build",
-    "build:cloudflare": "astro build",
-    "test:unit": "node ./test/tag-utils.test.js",
-    "cf-typegen": "wrangler types",
-    "check": "npm run build && tsc && wrangler deploy --dry-run",
-    "deploy": "npm run build && wrangler deploy",
     "dev": "astro dev",
-    "preview": "npm run build && wrangler dev"
+    "preview": "astro preview",
+    "deploy": "astro build && wrangler pages deploy dist",
+    "deploy:preview": "astro build && wrangler pages deploy dist --env preview",
+    "cf-typegen": "wrangler types"
   },
   "engines": {
     "node": ">=18"

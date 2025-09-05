@@ -9,7 +9,7 @@
   "background_color": "#ffffff",
   "theme_color": "#2337ff",
   "icons": [
-    { "src": "/logo.png", "sizes": "128x128", "type": "image/png" },
+  { "src": "/logo.png", "sizes": "128x128", "type": "image/png" },
     { "src": "/favicon-alt.svg", "sizes": "128x128", "type": "image/svg+xml", "purpose": "any" }
   ]
 }

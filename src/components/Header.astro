@@ -9,7 +9,7 @@ const homeUrl = '/';
   <nav class="nav-container">
     <div class="nav-brand">
       <a href={homeUrl} class="brand-link">
-        <img src="/images/logo.png" alt={SITE_TITLE} width="32" height="32" />
+          <img src="/logo.png" alt={SITE_TITLE} width="32" height="32" />
         <span class="brand-text">{SITE_TITLE}</span>
       </a>
     </div>
@@ -479,7 +479,7 @@ const homeUrl = '/';
     border-color: #6366f1;
   }
 
-  /* Make logo visually white in dark mode. If you prefer a dedicated white PNG/SVG, replace `/logo.png` with the white asset and remove the filter. */
+  /* Make logo visually white in dark mode. If you prefer a dedicated white SVG variant, swap `/logo.svg` and remove the filter. */
   :global(html.dark) .brand-link img {
     filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
   }
