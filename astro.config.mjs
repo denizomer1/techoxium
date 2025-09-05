@@ -19,18 +19,11 @@ export default defineConfig({
   ],
   output: "server",
   adapter: cloudflare({
+    imageService: "passthrough",
     platformProxy: {
       enabled: true
     }
   }),
-  vite: {
-    define: {
-      global: 'globalThis',
-    },
-    ssr: {
-      external: ['react', 'react-dom']
-    }
-  },
   image: {
     service: {
       entrypoint: "astro/assets/services/squoosh",
