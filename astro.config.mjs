@@ -14,7 +14,9 @@ export default defineConfig({
     markdoc({
       allowHTML: true
     }), 
-    react(),
+    react({
+      experimentalReactChildren: true
+    }),
     keystatic()
   ],
   output: "server",

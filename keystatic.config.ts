@@ -6,7 +6,10 @@ export default config({
   },
   ui: {
     brand: {
-      name: 'Techoxium'
+      name: 'Techoxium CMS'
+    },
+    navigation: {
+      'Content': ['blog']
     }
   },
   collections: {
@@ -17,9 +20,18 @@ export default config({
       format: { contentField: 'content' },
       schema: {
         title: fields.slug({ name: { label: 'Title' } }),
-        description: fields.text({ label: 'Description' }),
-        pubDate: fields.date({ label: 'Publication Date' }),
-        author: fields.text({ label: 'Author', defaultValue: 'Techoxium' }),
+        description: fields.text({ 
+          label: 'Description',
+          multiline: true 
+        }),
+        pubDate: fields.date({ 
+          label: 'Publication Date',
+          defaultValue: { kind: 'today' }
+        }),
+        author: fields.text({ 
+          label: 'Author', 
+          defaultValue: 'Techoxium' 
+        }),
         heroImage: fields.image({
           label: 'Hero Image',
           directory: 'public/images',
@@ -27,7 +39,11 @@ export default config({
         }),
         tags: fields.array(
           fields.text({ label: 'Tag' }),
-          { label: 'Tags', itemLabel: props => props.value }
+          { 
+            label: 'Tags', 
+            itemLabel: props => props.value,
+            description: 'Add relevant tags for this post'
+          }
         ),
         content: fields.markdoc({
           label: 'Content',
