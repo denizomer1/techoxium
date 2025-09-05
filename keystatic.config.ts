@@ -2,12 +2,7 @@ import { config, fields, collection } from '@keystatic/core';
 
 export default config({
   storage: {
-    kind: 'github',
-    repo: {
-      owner: 'denizomer1',
-      name: 'techoxium'
-    },
-    // Using GitHub App authentication (more reliable)
+    kind: 'local',
   },
   ui: {
     brand: {
@@ -34,9 +29,6 @@ export default config({
         pubDate: fields.date({ 
           label: 'Publication Date',
           defaultValue: { kind: 'today' }
-        }),
-        updatedDate: fields.date({ 
-          label: 'Updated Date'
         }),
         author: fields.text({ 
           label: 'Author', 

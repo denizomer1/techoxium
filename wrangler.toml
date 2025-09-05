@@ -14,11 +14,3 @@ enabled = true
 [build]
 command = "npm run build:cloudflare"
 cwd = "."
-
-# Environment variables for production
-[vars]
-NODE_ENV = "production"
-
-# Ensure these secrets are set in Cloudflare Pages dashboard:
-# KEYSTATIC_GITHUB_CLIENT_ID
-# KEYSTATIC_GITHUB_CLIENT_SECRET

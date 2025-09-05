@@ -5,7 +5,6 @@ import Footer from './Footer.astro';
 import PostCard from './PostCard.astro';
 import { getCollection } from 'astro:content';
 import { postMatchesTag } from '../lib/tag-utils.js';
-import { createPageProps, themeScript } from '../lib/page-factory.astro';
 
 interface Props {
   tag: string;
@@ -23,24 +22,19 @@ const matchingPosts = posts
   }))
   .sort((a: any, b: any) => Number(b.data.pubDate) - Number(a.data.pubDate));
 
-// Create page props
-const pageProps = createPageProps({
-  posts: matchingPosts,
-  pageType: 'tag',
-  tag
-});
+// SEO data
+const title = `Etiket "${tag}" | Techoxium`;
+const description = `${tag} etiketli yazılar - Teknoloji ve bilim içerikleri`;
 ---
 
 <html lang="tr" class={Astro.cookies.get('theme')?.value === 'dark' ? 'dark' : ''}>
 <head>
   <BaseHead
-    title={pageProps.seoData.title}
-    description={pageProps.seoData.description}
+    title={title}
+    description={description}
   />
 </head>
 <body>
-  <script set:html={themeScript} />
-
   <Header />
   <main class="tag-main">
     <div class="container">
@@ -52,7 +46,7 @@ const pageProps = createPageProps({
           {matchingPosts.map((post: any) => (
             <li class="tag-item">
               <PostCard
-                href={pageProps.getPostUrl(post.id)}
+                href={`/${post.id}/`}
                 title={post.data.title || 'Untitled'}
                 description={post.data.description || ''}
                 pubDate={post.data.pubDate}

@@ -1,32 +1,14 @@
 {
   "name": "techoxium",
   "description": "Build a personal website, blog, or portfolio with Astro.",
-  "cloudflare": {
-    "label": "Astro Framework Starter",
-    "products": [
-      "Workers"
-    ],
-    "categories": [],
-    "icon_urls": [
-      "https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/5ca0ca32-e897-4699-d4c1-6b680512f000/public"
-    ],
-    "preview_image_url": "https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/33bbbf02-eda2-4d3f-b244-c27a280f3900/public",
-    "publish": true
-  },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.7",
     "@astrojs/markdoc": "^0.15.5",
-    "@astrojs/react": "^4.3.0",
     "@astrojs/rss": "^4.0.12",
     "@astrojs/sitemap": "^3.5.1",
-    "@keystatic/astro": "^5.0.6",
-    "@keystatic/core": "^0.5.48",
     "@types/node": "^24.3.1",
-    "@types/react": "^18.3.24",
-    "@types/react-dom": "^18.3.7",
     "astro": "^5.13.3",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "sharp": "^0.34.3",
     "typescript": "^5.8.3"
   },
   "devDependencies": {
@@ -36,13 +18,12 @@
     "astro": "astro",
     "build": "astro build",
     "build:cloudflare": "astro build",
-    "build:prod": "cp keystatic.config.prod.ts keystatic.config.ts && astro build && git checkout keystatic.config.ts",
     "test:unit": "node ./test/tag-utils.test.js",
     "cf-typegen": "wrangler types",
-    "check": "npm run build:cloudflare && tsc && wrangler deploy --dry-run",
-    "deploy": "npm run build:prod && wrangler deploy",
+    "check": "npm run build && tsc && wrangler deploy --dry-run",
+    "deploy": "npm run build && wrangler deploy",
     "dev": "astro dev",
-    "preview": "astro build && wrangler dev"
+    "preview": "npm run build && wrangler dev"
   },
   "engines": {
     "node": ">=18"
