@@ -672,7 +672,7 @@ const { title = '', description = '', pubDate, updatedDate, heroImage, tags = []
               // clear existing timer if any
               const existingTimer = (btnCopy).__copyTimer;
               if (existingTimer) clearTimeout(existingTimer);
-              btnCopy.innerHTML = '<span class="copied-text">Copied!</span>';
+              btnCopy.innerHTML = '<span class="copied-text">Kopyalandı!</span>';
               const t = window.setTimeout(() => {
                 if (btnCopy) btnCopy.innerHTML = prevInner;
                 (btnCopy).__copyTimer = undefined;
