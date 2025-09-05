@@ -29,9 +29,8 @@ const ogImage = new globalThis.URL(image || DEFAULT_OG, Astro.url).toString();
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
 
-<!-- Hreflang for internationalization -->
+<!-- Hreflang for Turkish content -->
 <link rel="alternate" hreflang="tr" href={`https://techoxium.com${Astro.url.pathname}`} />
-<link rel="alternate" hreflang="en" href={`https://techoxium.com/en${Astro.url.pathname}`} />
 <link rel="alternate" hreflang="x-default" href={`https://techoxium.com${Astro.url.pathname}`} />
 
 <!-- Primary Meta Tags -->

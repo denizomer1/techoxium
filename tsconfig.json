@@ -1,27 +1,11 @@
 {
-  "extends": "astro/tsconfigs/strictest",
-  "include": [
-    ".astro/types.d.ts",
-    "**/*"
-  ],
-  "exclude": [
-    "dist"
-  ],
+  "extends": "astro/tsconfigs/base",
   "compilerOptions": {
-    "strictNullChecks": true,
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ES2022"
-    ],
     "target": "ES2022",
-    "moduleResolution": "Bundler",
     "module": "ESNext",
+    "moduleResolution": "Bundler",
     "allowJs": true,
-    "skipLibCheck": true,
     "noEmit": true,
-    "allowImportingTsExtensions": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true
+    "strict": true
   }
 }
