@@ -3,7 +3,7 @@
   
   <p><strong>Teknolojinin Elementi Astro ile Geliştirildi 🚀</strong></p>
   
-  ![Version](https://img.shields.io/badge/version-v2.0.0-blue?style=for-the-badge)
+  ![Version](https://img.shields.io/badge/version-v1.0-blue?style=for-the-badge)
   ![Status](https://img.shields.io/badge/status-stable-green?style=for-the-badge)
   ![Astro](https://img.shields.io/badge/astro-v5.13.5-orange?style=for-the-badge)
   ![Cloudflare](https://img.shields.io/badge/deployed%20on-cloudflare-yellow?style=for-the-badge)
