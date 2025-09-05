@@ -90,10 +90,26 @@ Go to https://github.com/settings/apps/new:
 
 ### 3. Cloudflare Pages Environment Variables
 
-Set these as **"Secret"** type:
-- `KEYSTATIC_GITHUB_APP_ID`: [Your App ID]
-- `KEYSTATIC_GITHUB_APP_PRIVATE_KEY`: [Content of .pem file]
-- `KEYSTATIC_GITHUB_APP_INSTALLATION_ID`: [Installation ID]
+✅ **Your GitHub App Credentials:**
+- **Client ID**: `Iv23liMeqTsIllTigNsp`
+- **Client Secret**: `4e2ce6c805e4b55ce17d72dcec3b6cf89263ea38`
+
+**Add these to Cloudflare Pages** (Settings → Environment variables):
+
+Set as **"Secret"** type:
+- `KEYSTATIC_GITHUB_CLIENT_ID`: `Iv23liMeqTsIllTigNsp`
+- `KEYSTATIC_GITHUB_CLIENT_SECRET`: `4e2ce6c805e4b55ce17d72dcec3b6cf89263ea38`
+
+Set as **"Text"** type:
+- `NODE_ENV`: `production`
+
+🚨 **IMPORTANT**: 
+1. Go to Cloudflare Pages dashboard
+2. Select your `techoxium` project
+3. Go to Settings → Environment variables
+4. Click "Add variable" for each one above
+5. Set the TYPE correctly (Secret vs Text)
+6. Save all changes
 
 ### 4. Deploy & Test
 

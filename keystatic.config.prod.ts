@@ -6,7 +6,8 @@ export default config({
     repo: {
       owner: 'denizomer1',
       name: 'techoxium'
-    }
+    },
+    // Using GitHub App authentication (more reliable)
   },
   ui: {
     brand: {
