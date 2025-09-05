@@ -8,7 +8,7 @@ if (!slug) {
   return Astro.redirect('/en/404');
 }
 
-const posts = await getCollection('blogEn');
+const posts = await getCollection('blog');
 const post = posts.find((p) => p.id === slug);
 
 if (!post) {
@@ -21,7 +21,7 @@ const { Content } = await render(post);
 <html lang="en" class={Astro.cookies.get('theme')?.value === 'dark' ? 'dark' : ''}>
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/images/favicon-alt.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
   </head>

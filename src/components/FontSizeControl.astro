@@ -1,18 +1,11 @@
 ---
-import { t } from '../i18n/utils';
-
-interface Props {
-  locale?: string;
-}
-
-const { locale = 'tr' } = Astro.props;
 ---
 
 <div class="font-size-controls">
-  <button id="decrease-font" aria-label={t(locale, 'accessibility.decreaseFontSize')} title={t(locale, 'accessibility.decreaseFontSize')}>
+  <button id="decrease-font" aria-label="Yazı boyutunu küçült" title="Yazı boyutunu küçült">
     <span class="font-icon small">A</span>
   </button>
-  <button id="increase-font" aria-label={t(locale, 'accessibility.increaseFontSize')} title={t(locale, 'accessibility.increaseFontSize')}>
+  <button id="increase-font" aria-label="Yazı boyutunu büyüt" title="Yazı boyutunu büyüt">
     <span class="font-icon large">A</span>
   </button>
 </div>
@@ -70,7 +63,7 @@ const { locale = 'tr' } = Astro.props;
   }
 </style>
 
-<script is:inline define:vars={{ locale }}>
+<script is:inline>
   const decreaseBtn = document.getElementById('decrease-font');
   const increaseBtn = document.getElementById('increase-font');
   

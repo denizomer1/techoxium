@@ -5,17 +5,14 @@ import Header from './Header.astro';
 import Footer from './Footer.astro';
 import PostCard from './PostCard.astro';
 import { getCollection } from 'astro:content';
-import { t } from '../i18n/utils';
 
 interface Props {
-  locale: 'tr' | 'en';
 }
 
-const { locale } = Astro.props;
+const { } = Astro.props;
 
 // Get posts directly without factory
-const collection = locale === 'en' ? 'blogEn' : 'blog';
-const rawPosts = await getCollection(collection as any);
+const rawPosts = await getCollection('blog');
 const posts = rawPosts
   .map((p: any) => ({
     ...p,
@@ -24,15 +21,14 @@ const posts = rawPosts
   .sort((a: any, b: any) => Number(b.data.pubDate) - Number(a.data.pubDate));
 
 const [firstPost, ...restPosts] = posts;
-const baseUrl = locale === 'en' ? '/en' : '/tr';
+const baseUrl = '/';
 ---
 
-<html lang={locale} class={Astro.cookies.get('theme')?.value === 'dark' ? 'dark' : ''}>
+<html lang="tr" class={Astro.cookies.get('theme')?.value === 'dark' ? 'dark' : ''}>
   <head>
     <BaseHead 
-      title={t(locale, 'site.title')} 
-      description={t(locale, 'site.description')} 
-      locale={locale} 
+      title="Techoxium - Teknoloji ve Bilim Blogu" 
+      description="Teknoloji, bilim ve güncel gelişmeler hakkında Türkçe içerikler." 
     />
     
     <!-- Structured Data -->
@@ -41,7 +37,7 @@ const baseUrl = locale === 'en' ? '/en' : '/tr';
         "@context": "https://schema.org",
         "@type": "WebSite",
         "name": "Techoxium",
-        "description": t(locale, 'site.description'),
+        "description": "Teknoloji, bilim ve güncel gelişmeler hakkında Türkçe içerikler.",
         "url": "https://techoxium.com",
         "publisher": {
           "@type": "Organization",
@@ -67,9 +63,9 @@ const baseUrl = locale === 'en' ? '/en' : '/tr';
       })();
     </script>
     
-    <Header locale={locale} />
+    <Header />
     <main>
-      <h1>{t(locale, 'blog.title')}</h1>
+      <h1>Blog</h1>
       <section>
         {firstPost && (
           <div class="featured-list">
@@ -80,7 +76,6 @@ const baseUrl = locale === 'en' ? '/en' : '/tr';
               pubDate={firstPost.data.pubDate}
               heroImage={firstPost.data.heroImage}
               large={true}
-              locale={locale}
               tags={firstPost.data.tags}
             />
           </div>
@@ -93,7 +88,6 @@ const baseUrl = locale === 'en' ? '/en' : '/tr';
               description={post.data.description || ''}
               pubDate={post.data.pubDate}
               heroImage={post.data.heroImage}
-              locale={locale}
               tags={post.data.tags}
             />
           ))}

@@ -10,15 +10,6 @@ declare module 'astro:content' {
 }
 
 declare module 'astro:content' {
-	interface Render {
-		'.mdoc': Promise<{
-			Content(props: Record<string, any>): import('astro').MarkdownInstance<{}>['Content'];
-			headings: import('astro').MarkdownHeading[];
-		}>;
-	}
-}
-
-declare module 'astro:content' {
 	export interface RenderResult {
 		Content: import('astro/runtime/server/index.js').AstroComponentFactory;
 		headings: import('astro').MarkdownHeading[];
@@ -187,14 +178,6 @@ declare module 'astro:content' {
   body?: string;
   collection: "blog";
   data: InferEntrySchema<"blog">;
-  rendered?: RenderedContent;
-  filePath?: string;
-}>;
-"blogEn": Record<string, {
-  id: string;
-  body?: string;
-  collection: "blogEn";
-  data: InferEntrySchema<"blogEn">;
   rendered?: RenderedContent;
   filePath?: string;
 }>;

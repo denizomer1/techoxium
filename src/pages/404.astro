@@ -9,7 +9,7 @@ const description = 'Aradığınız sayfa bulunamadı. Ana sayfaya dönerek diğ
 
 <html lang="tr">
   <head>
-    <BaseHead title={title} description={description} locale="tr" />
+    <BaseHead title={title} description={description} />
     <script is:inline type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -27,7 +27,7 @@ const description = 'Aradığınız sayfa bulunamadı. Ana sayfaya dönerek diğ
   </head>
 
   <body>
-    <Header locale="tr" />
+    <Header />
     
     <main class="error-page">
       <div class="error-container">
@@ -39,7 +39,6 @@ const description = 'Aradığınız sayfa bulunamadı. Ana sayfaya dönerek diğ
           </p>
           <div class="error-actions">
             <a href="/" class="error-btn primary">Ana Sayfaya Dön</a>
-            <a href="/blog" class="error-btn secondary">Blog'a Git</a>
           </div>
         </div>
         <div class="error-visual">

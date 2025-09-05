@@ -1,8 +1,8 @@
 ---
 import '../styles/global.css';
 
-interface Props { title: string; description?: string; image?: string | undefined; locale?: string }
-const { title, description = '', image = '', locale = 'tr' } = Astro.props as Props;
+interface Props { title: string; description?: string; image?: string | undefined }
+const { title, description = '', image = '' } = Astro.props as Props;
 // Use a concise default site description for social previews when none provided
 const DEFAULT_DESCRIPTION = 'Teknolojinin Elementi';
 const metaDescription = description && description.trim().length > 0 ? description : DEFAULT_DESCRIPTION;
@@ -16,9 +16,9 @@ const ogImage = new globalThis.URL(image || DEFAULT_OG, Astro.url).toString();
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <meta name="theme-color" content="#2337ff" />
-<link rel="icon" href="/logo.png" />
-<link rel="apple-touch-icon" href="/logo.png" />
-<link rel="icon" type="image/svg+xml" href="/favicon-alt.svg" />
+<link rel="icon" href="/images/logo.png" />
+<link rel="apple-touch-icon" href="/images/logo.png" />
+<link rel="icon" type="image/svg+xml" href="/images/favicon-alt.svg" />
 <link rel="manifest" href="/site.webmanifest" />
 <meta name="generator" content={Astro.generator} />
 
@@ -52,7 +52,7 @@ const ogImage = new globalThis.URL(image || DEFAULT_OG, Astro.url).toString();
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={metaDescription} />
-<meta property="og:locale" content={locale === 'en' ? 'en_US' : 'tr_TR'} />
+<meta property="og:locale" content="tr_TR" />
 {ogImage && <meta property="og:image" content={ogImage} />}
 
 <!-- Twitter -->
@@ -70,7 +70,3 @@ const ogImage = new globalThis.URL(image || DEFAULT_OG, Astro.url).toString();
   gtag('js', new Date());
   gtag('config', 'G-7V9HE536V0');
 </script>
-
-<!-- Google AdSense -->
-<script is:inline async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8927381570299660"
-     crossorigin="anonymous"></script>

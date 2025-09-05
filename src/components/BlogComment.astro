@@ -1,11 +1,4 @@
 ---
-import { t } from '../i18n/utils';
-
-export interface Props {
-  locale?: string;
-}
-
-const { locale = 'tr' } = Astro.props;
 ---
 
 <div class="comments-container">
@@ -13,7 +6,7 @@ const { locale = 'tr' } = Astro.props;
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
     </svg>
-    <span id="toggle-text">{t(locale, 'blog.showComments')}</span>
+    <span id="toggle-text">Yorumları Göster</span>
     <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M6 9l6 6 6-6"/>
     </svg>
@@ -119,7 +112,7 @@ const { locale = 'tr' } = Astro.props;
   }
 </style>
 
-<script is:inline define:vars={{ locale, showCommentsText: t(locale, 'blog.showComments'), hideCommentsText: t(locale, 'blog.hideComments'), loadFailedText: locale === 'en' ? 'Comments failed to load. Please refresh the page.' : 'Yorumlar yüklenemedi. Lütfen sayfayı yenileyin.' }}>
+<script is:inline define:vars={{ showCommentsText: 'Yorumları Göster', hideCommentsText: 'Yorumları Gizle', loadFailedText: 'Yorumlar yüklenemedi. Lütfen sayfayı yenileyin.' }}>
   const toggle = document.getElementById('comment-toggle');
   const section = document.getElementById('comments-section');
   const toggleText = document.getElementById('toggle-text');

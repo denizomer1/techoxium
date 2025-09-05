@@ -1,20 +1,17 @@
 ---
 // Centralized page factory for consistent TR/EN structure
 import { getCollection } from 'astro:content';
-import { t } from '../i18n/utils';
 
 interface PageProps {
-  locale: 'tr' | 'en';
   title?: string;
   description?: string;
   posts?: any[];
   showFeatured?: boolean;
-  pageType?: 'home' | 'tag' | 'about';
+  pageType?: 'home' | 'tag';
   tag?: string;
 }
 
 export function createPageProps({
-  locale,
   title,
   description,
   posts = [],
@@ -23,27 +20,26 @@ export function createPageProps({
   tag
 }: PageProps) {
   // Base URL construction
-  const baseUrl = locale === 'en' ? '/en' : '/tr';
-  
+  const baseUrl = '/';
+
   // Post URL construction
-  const getPostUrl = (postId: string) => `${baseUrl}/${postId}/`;
-  
+  const getPostUrl = (postId: string) => `${baseUrl}${postId}/`;
+
   // Default titles and descriptions
-  const defaultTitle = title || t(locale, 'site.title');
-  const defaultDescription = description || t(locale, 'site.description');
-  
+  const defaultTitle = title || 'Techoxium - Teknoloji ve Bilim Blogu';
+  const defaultDescription = description || 'Teknoloji, bilim ve güncel gelişmeler hakkında Türkçe içerikler.';
+
   // SEO data
   const seoData = {
-    title: pageType === 'tag' && tag 
-      ? `${t(locale, 'blog.tag')} "${tag}" | ${t(locale, 'site.title')}`
+    title: pageType === 'tag' && tag
+      ? `Etiket "${tag}" | Techoxium`
       : defaultTitle,
     description: pageType === 'tag' && tag
-      ? `${tag} etiketli yazılar - ${t(locale, 'site.description')}`
+      ? `${tag} etiketli yazılar - Teknoloji ve bilim içerikleri`
       : defaultDescription
   };
 
   return {
-    locale,
     baseUrl,
     getPostUrl,
     seoData,
@@ -52,8 +48,8 @@ export function createPageProps({
       url: getPostUrl(post.id),
       data: {
         ...post.data,
-        pubDate: post.data.pubDate instanceof Date 
-          ? post.data.pubDate 
+        pubDate: post.data.pubDate instanceof Date
+          ? post.data.pubDate
           : new Date(post.data.pubDate as any)
       }
     })),
@@ -77,35 +73,34 @@ export const themeScript = `
 `;
 
 // Shared content fetching
-export async function getLocalizedPosts(locale: 'tr' | 'en') {
+export async function getLocalizedPosts() {
   try {
-    const collection = locale === 'en' ? 'blogEn' : 'blog';
-    const rawPosts = await getCollection(collection);
-    
+    const rawPosts = await getCollection('blog');
+
     return rawPosts
       .map((p: any) => ({
         ...p,
-        data: { 
-          ...p.data, 
-          pubDate: p.data.pubDate instanceof Date 
-            ? p.data.pubDate 
-            : new Date(p.data.pubDate as any) 
+        data: {
+          ...p.data,
+          pubDate: p.data.pubDate instanceof Date
+            ? p.data.pubDate
+            : new Date(p.data.pubDate as any)
         },
       }))
       .sort((a: any, b: any) => Number(b.data.pubDate) - Number(a.data.pubDate));
   } catch (error) {
-    console.error(`Error loading ${locale} posts:`, error);
+    console.error('Error loading posts:', error);
     return [];
   }
 }
 
 // Shared structured data
-export function getStructuredData(locale: 'tr' | 'en') {
+export function getStructuredData() {
   const baseData = {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "Techoxium",
-    "description": t(locale, 'site.description'),
+    "description": "Teknoloji, bilim ve güncel gelişmeler hakkında Türkçe içerikler.",
     "url": "https://techoxium.com",
     "publisher": {
       "@type": "Organization",

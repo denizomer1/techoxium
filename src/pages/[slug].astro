@@ -1,0 +1,74 @@
+---
+import { getCollection, render } from 'astro:content';
+import BlogPost from '../layouts/BlogPost.astro';
+
+const { slug } = Astro.params;
+
+if (!slug) {
+  return Astro.redirect('/404');
+}
+
+const posts = await getCollection('blog');
+const post = posts.find((p) => p.id === slug);
+
+if (!post) {
+  return Astro.redirect('/404');
+}
+
+const { Content } = await render(post);
+---
+
+<html lang="tr" class={Astro.cookies.get('theme')?.value === 'dark' ? 'dark' : ''}>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/images/favicon-alt.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+  </head>
+
+  <body>
+    <BlogPost {...post.data} postSlug={post.id}>
+      <Content />
+    </BlogPost>
+  </body>
+</html>
+
+<script>
+  // Theme detection and application
+  (function() {
+    if (typeof window === 'undefined') return;
+
+    function getTheme() {
+      // Check cookie first
+      const cookieTheme = document.cookie.split('; ').find(row => row.startsWith('theme='))?.split('=')[1];
+      if (cookieTheme) return cookieTheme;
+
+      // Check localStorage
+      const storedTheme = localStorage.getItem('theme');
+      if (storedTheme) return storedTheme;
+
+      // Check system preference
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    function applyTheme(theme: 'dark' | 'light') {
+      const html = document.documentElement;
+      if (theme === 'dark') {
+        html.classList.add('dark');
+      } else {
+        html.classList.remove('dark');
+      }
+    }
+
+    // Apply theme on load
+    const theme = getTheme() as 'dark' | 'light';
+    applyTheme(theme);
+
+    // Listen for system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      if (!document.cookie.includes('theme=')) {
+        applyTheme(e.matches ? 'dark' : 'light');
+      }
+    });
+  })();
+</script>

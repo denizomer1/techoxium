@@ -2,41 +2,17 @@
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import cloudflare from "@astrojs/cloudflare";
-import markdoc from "@astrojs/markdoc";
 import mdx from "@astrojs/mdx";
 import preact from "@astrojs/preact";
-import keystatic from '@keystatic/astro';
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://techoxium.denizomer10.workers.dev",
+  site: "https://techoxium.com",
   integrations: [
     sitemap(),
-    markdoc({
-      allowHTML: true,
-    }),
     mdx(),
     preact({ compat: true }),
-    keystatic(),
   ],
-  vite: {
-    ssr: {
-      noExternal: ['@keystatic/astro', '@keystatic/core']
-    },
-    define: {
-      global: 'globalThis',
-    },
-    optimizeDeps: {
-      exclude: ['@keystatic/core', '@keystatic/astro']
-    }
-  },
-  i18n: {
-    defaultLocale: "tr",
-    locales: ["tr", "en"],
-    routing: {
-      prefixDefaultLocale: false
-    }
-  },
   output: "server",
   adapter: cloudflare(),
   image: {

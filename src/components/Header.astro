@@ -1,27 +1,21 @@
 ---
 import CategoryMenu from './CategoryMenu.astro';
 import { SITE_TITLE } from '../consts';
-import { t } from '../i18n/utils';
 
-interface Props {
-  locale?: string;
-}
-
-const { locale = 'tr' } = Astro.props;
-const homeUrl = locale === 'en' ? '/en' : '/tr';
+const homeUrl = '/';
 ---
 
 <header class="main-header">
   <nav class="nav-container">
     <div class="nav-brand">
       <a href={homeUrl} class="brand-link">
-        <img src="/logo.png" alt={SITE_TITLE} width="32" height="32" />
+        <img src="/images/logo.png" alt={SITE_TITLE} width="32" height="32" />
         <span class="brand-text">{SITE_TITLE}</span>
       </a>
     </div>
     
     <div class="nav-header-actions">
-      <button class="theme-toggle" id="theme-toggle" aria-label={t(locale, 'nav.themeToggle') || 'Tema değiştir'}>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Tema değiştir">
         <div class="theme-icon">
           <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="5"/>
@@ -33,7 +27,7 @@ const homeUrl = locale === 'en' ? '/en' : '/tr';
         </div>
       </button>
       
-      <button class="nav-toggle" id="nav-toggle" aria-label={t(locale, 'nav.toggleMenu') || 'Menüyü aç/kapat'}>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menüyü aç/kapat">
         <span></span>
         <span></span>
         <span></span>
@@ -48,7 +42,7 @@ const homeUrl = locale === 'en' ? '/en' : '/tr';
               <circle cx="11" cy="11" r="7"/>
               <line x1="16.65" y1="16.65" x2="22" y2="22"/>
             </svg>
-            <input type="text" placeholder={t(locale, 'nav.search')} class="search-input" autocomplete="off" />
+            <input type="text" placeholder="Ara..." class="search-input" autocomplete="off" />
             <button class="search-clear" style="display: none;">&times;</button>
           </div>
           <div class="search-results"></div>
@@ -60,7 +54,7 @@ const homeUrl = locale === 'en' ? '/en' : '/tr';
       </div>
       
       <div class="nav-actions-desktop">
-  <CategoryMenu locale={locale} />
+  <CategoryMenu />
 
         <div class="nav-search">
           <div class="modern-search">
@@ -69,12 +63,12 @@ const homeUrl = locale === 'en' ? '/en' : '/tr';
                 <circle cx="11" cy="11" r="7"/>
                 <line x1="16.65" y1="16.65" x2="22" y2="22"/>
               </svg>
-              <input type="text" placeholder={t(locale, 'nav.search')} class="search-input" autocomplete="off" />
+              <input type="text" placeholder="Ara..." class="search-input" autocomplete="off" />
               <button class="search-clear" style="display: none;">&times;</button>
             </div>
             <div class="search-results"></div>
           </div>
-        </div>        <button class="theme-toggle theme-toggle-desktop" id="theme-toggle-desktop" aria-label={t(locale, 'nav.themeToggle') || 'Tema değiştir'}>
+        </div>        <button class="theme-toggle theme-toggle-desktop" id="theme-toggle-desktop" aria-label="Tema değiştir">
           <div class="theme-icon">
             <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="12" cy="12" r="5"/>
@@ -1042,7 +1036,7 @@ const homeUrl = locale === 'en' ? '/en' : '/tr';
         empty.textContent = noResultsText;
         resultsElement.appendChild(empty);
       } else {
-        const urlPrefix = this.locale === 'en' ? '/en/' : '/tr/';
+        const urlPrefix = '/';
         filtered.slice(0, 8).forEach((post) => {
           const isDark = document.documentElement.classList.contains('dark');
           const textColor = isDark ? '#ffffff' : 'rgba(0,0,0,0.9)';
@@ -1089,7 +1083,7 @@ const homeUrl = locale === 'en' ? '/en' : '/tr';
           const tagsHtml = post.tags && post.tags.length > 0 ? 
             `<div class="search-result-tags" style="margin-top: 4px; display: flex; gap: 4px; flex-wrap: wrap;">
               ${post.tags.slice(0, 3).map(tag => 
-                `<span style="font-size: 0.7rem; padding: 2px 6px; background: ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'}; color: ${isDark ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.7)'}; border-radius: 4px; font-weight: 500;">#${tag}</span>`
+                `<a href="/tag/${tag}" style="font-size: 0.7rem; padding: 2px 6px; background: ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'}; color: ${isDark ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.7)'}; border-radius: 4px; font-weight: 500; text-decoration: none; display: inline-block;">#${tag}</a>`
               ).join('')}
             </div>` : '';
 

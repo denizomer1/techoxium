@@ -2,15 +2,8 @@
 import { getCollection } from 'astro:content';
 import { tagToSlug } from '../lib/tag-utils.js';
 
-interface Props {
-  locale?: string;
-}
-
-const { locale = 'tr' } = Astro.props;
-
-// Get all posts for the locale
-const collection = locale === 'en' ? 'blogEn' : 'blog';
-const posts = await getCollection(collection as any);
+// Get all posts
+const posts = await getCollection('blog');
 
 // Extract and count tags
 const tagCounts = new Map<string, number>();
@@ -29,7 +22,7 @@ const sortedTags = Array.from(tagCounts.entries())
 <div class="category-menu">
   <button type="button" class="category-toggle" aria-haspopup="true" aria-expanded="false">
     <span class="category-icon">#</span>
-    <span class="category-label">{locale === 'en' ? 'Categories' : 'Kategoriler'}</span>
+    <span class="category-label">Kategoriler</span>
     <svg class="dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <polyline points="6,9 12,15 18,9"></polyline>
     </svg>
@@ -39,9 +32,8 @@ const sortedTags = Array.from(tagCounts.entries())
     <div class="category-grid">
       {sortedTags.map(([tag, count]) => {
         const slug = tagToSlug(tag);
-        const prefix = locale === 'en' ? '/en' : '';
         return (
-          <a href={`${prefix}/tag/${slug}/`} class="category-item">
+          <a href={`/tag/${slug}/`} class="category-item">
             <div class="category-content">
               <svg class="tag-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M4 9h16l-2 11H6L4 9Z"/>
@@ -67,7 +59,7 @@ const sortedTags = Array.from(tagCounts.entries())
           <line x1="9" y1="9" x2="9.01" y2="9"/>
           <line x1="15" y1="9" x2="15.01" y2="9"/>
         </svg>
-        <span>{locale === 'en' ? 'No categories yet' : 'Henüz kategori yok'}</span>
+        <span>Henüz kategori yok</span>
       </div>
     )}
   </div>
