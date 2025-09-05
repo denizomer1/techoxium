@@ -1,15 +1,14 @@
 import { config, fields, collection } from '@keystatic/core';
 
 export default config({
-  storage: process.env.NODE_ENV === 'production' 
-    ? {
-        kind: 'github',
-        repo: 'denizomer1/techoxium',
-        // GitHub App configuration (more reliable than OAuth)
-      }
-    : {
-        kind: 'local',
-      },
+  storage: {
+    kind: 'github',
+    repo: {
+      owner: 'denizomer1',
+      name: 'techoxium'
+    },
+    // Using GitHub App authentication (more reliable)
+  },
   ui: {
     brand: {
       name: 'Techoxium CMS'
