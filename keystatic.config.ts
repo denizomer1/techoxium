@@ -1,10 +1,14 @@
 import { config, fields, collection } from '@keystatic/core';
 
 export default config({
-  storage: {
-    kind: 'github',
-    repo: 'denizomer1/techoxium',
-  },
+  storage: process.env.NODE_ENV === 'production' 
+    ? {
+        kind: 'github',
+        repo: 'denizomer1/techoxium',
+      }
+    : {
+        kind: 'local',
+      },
   ui: {
     brand: {
       name: 'Techoxium CMS'
@@ -30,6 +34,9 @@ export default config({
         pubDate: fields.date({ 
           label: 'Publication Date',
           defaultValue: { kind: 'today' }
+        }),
+        updatedDate: fields.date({ 
+          label: 'Updated Date'
         }),
         author: fields.text({ 
           label: 'Author', 

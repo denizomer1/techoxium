@@ -1,8 +1,0 @@
----
-const { makeHandler } = await import('@keystatic/astro')
-const keystaticHandler = makeHandler({
-  config: (await import('../../../keystatic.config')).default,
-})
-
-export const ALL = keystaticHandler
----

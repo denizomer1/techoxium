@@ -1,30 +1,41 @@
 # Keystatic CMS Setup
 
-## Setting up GitHub OAuth for Production
+## Current Setup Status
 
-1. Create a GitHub OAuth App:
-   - Go to https://github.com/settings/applications/new
-   - Application name: `Techoxium CMS`
-   - Homepage URL: `https://techoxium.pages.dev`
-   - Authorization callback URL: `https://techoxium.pages.dev/api/keystatic/github/oauth/callback`
+✅ **Astro integrations installed**: React, Markdoc, Keystatic  
+✅ **Keystatic configuration created**: `keystatic.config.ts`  
+✅ **Environment variables configured**: GitHub OAuth credentials  
+✅ **Content structure**: Turkish blog posts in `src/content/*.mdoc`  
 
-2. Add Environment Variables to Cloudflare Pages:
-   - Go to your Cloudflare Pages project settings
-   - Navigate to Settings → Environment variables
-   - Add these environment variables (set both as **"Secret"** type for security):
-     - `KEYSTATIC_GITHUB_CLIENT_ID`: `Ov23lio9kYetquoZUUpm` (Secret)
-     - `KEYSTATIC_GITHUB_CLIENT_SECRET`: `2474f391a1c34fab05b0831aca6a9982dca219fc` (Secret)
+## GitHub OAuth Configuration
 
-3. After setup, access your CMS at:
-   - Production: `https://techoxium.pages.dev/keystatic`
-   - Local development: `http://localhost:4321/keystatic`
+Your GitHub OAuth App is configured with:
+- **Client ID**: `Ov23lio9kYetquoZUUpm`
+- **Client Secret**: `2474f391a1c34fab05b0831aca6a9982dca219fc`
+- **Callback URL**: `https://techoxium.pages.dev/api/keystatic/github/oauth/callback`
 
-## Content Structure
+## Cloudflare Pages Environment Variables
 
-- Turkish content: `src/content/*.mdoc`
-- English content: `src/content/en/*.mdoc` (planned)
-- Images: `public/images/`
+Add these to your Cloudflare Pages project (Settings → Environment variables):
+- `KEYSTATIC_GITHUB_CLIENT_ID`: `Ov23lio9kYetquoZUUpm` (Secret)
+- `KEYSTATIC_GITHUB_CLIENT_SECRET`: `2474f391a1c34fab05b0831aca6a9982dca219fc` (Secret)
+- `NODE_ENV`: `production` (Text)
 
-## API Endpoints
+## Access Points
 
-- Posts API: `/api/posts.json?locale=tr` or `/api/posts.json?locale=en`
+- **Production CMS**: `https://techoxium.pages.dev/keystatic`
+- **Local Development**: `http://localhost:4321/keystatic`
+- **API Endpoint**: `/api/posts.json`
+
+## Content Management
+
+- **Storage**: Local for development, GitHub for production
+- **Content Path**: `src/content/*.mdoc`
+- **Image Path**: `public/images/`
+- **Supported Formats**: Markdoc (.mdoc files)
+
+## Next Steps
+
+1. Deploy to Cloudflare Pages with environment variables
+2. Access the CMS at `/keystatic` on your deployed site
+3. Authenticate with GitHub to manage content
