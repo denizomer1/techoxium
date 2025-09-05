@@ -113,24 +113,8 @@ export const SOCIAL_LINKS = {
 | `npm run deploy` | Cloudflare deploy |
 | `npm run check` | Type check + lint |
 
-## 📊 Performance
-
-- **Lighthouse Score:** 95+ 
-- **Core Web Vitals:** Excellent
-- **Bundle Size:** ~1.3MB (gzipped: ~268KB)
-- **Build Time:** ~1.5s
-- **Edge Latency:** <50ms globally
-
 ## 📄 Lisans
 
 [LICENSE](LICENSE) dosyasını inceleyin
 
-❤️ ile geliştiriliyor
-
-<p>
-  <a href="https://techoxium.com">🌐 Canlı Site</a> •
-  <a href="https://github.com/denizomer1/techoxium">📱 GitHub</a> •
-  <a href="https://x.com/techoxium">🐦 Twitter</a> •
-  <a href="https://www.youtube.com/@techoxium">📺 YouTube</a>
-</p>
 </div>
