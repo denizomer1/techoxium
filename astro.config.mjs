@@ -2,14 +2,16 @@
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import cloudflare from "@astrojs/cloudflare";
-import mdx from "@astrojs/mdx";
+import markdoc from "@astrojs/markdoc";
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://techoxium.com",
   integrations: [
     sitemap(),
-    mdx(),
+    markdoc({
+      allowHTML: true
+    }),
   ],
   output: "server",
   adapter: cloudflare({
