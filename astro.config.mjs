@@ -15,7 +15,7 @@ export default defineConfig({
       allowHTML: true
     }), 
     react({
-      experimentalReactChildren: true
+      include: ["**/keystatic/**", "**/node_modules/@keystatic/**"]
     }),
     keystatic()
   ],

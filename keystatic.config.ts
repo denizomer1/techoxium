@@ -19,10 +19,12 @@ export default config({
       path: 'src/content/*',
       format: { contentField: 'content' },
       schema: {
-        title: fields.slug({ name: { label: 'Title' } }),
+        title: fields.slug({ 
+          name: { label: 'Title' }
+        }),
         description: fields.text({ 
           label: 'Description',
-          multiline: true 
+          multiline: true
         }),
         pubDate: fields.date({ 
           label: 'Publication Date',
@@ -30,7 +32,7 @@ export default config({
         }),
         author: fields.text({ 
           label: 'Author', 
-          defaultValue: 'Techoxium' 
+          defaultValue: 'Techoxium'
         }),
         heroImage: fields.image({
           label: 'Hero Image',
@@ -41,8 +43,7 @@ export default config({
           fields.text({ label: 'Tag' }),
           { 
             label: 'Tags', 
-            itemLabel: props => props.value,
-            description: 'Add relevant tags for this post'
+            itemLabel: props => props.value || 'Empty tag'
           }
         ),
         content: fields.markdoc({
