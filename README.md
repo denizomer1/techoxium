@@ -1,18 +1,43 @@
 # 🚀 Techoxium
 
-<div align="center">
-  <img src="public/images/logo.png" alt="Techoxium Logo" width="120" height="120">
-  
-  **Teknolojinin Elementi - Modern Türkçe Teknoloji Blogu**
-  
-  ![Astro](https://img.shields.io/badge/Astro-5.13.3-FF5D01?style=flat-square&logo=astro&logoColor=white)
-  ![TypeScript](https://img.shields.io/badge/TypeScript-5.8.3-3178C6?style=flat-square&logo=typescript&logoColor=white)
-  ![Cloudflare](https://img.shields.io/badge/Cloudflare-Workers-F38020?style=flat-square&logo=cloudflare&logoColor=white)
-  ![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
+# Techoxium
 
-  [🌐 Canlı Site](https://techoxium.com) • [📝 Blog Yazıları](https://techoxium.com/blog) • [🔖 Etiketler](https://techoxium.com/tag/technology)
+<div align="center">
+  <img src="public/logo.png" alt="Techoxium Logo" width="200" height="200">
+  
+  <p><strong>Teknolojinin Elementi Astro ile Geliştirildi 🚀</strong></p>
+  
+  ![Version](https://img.shields.io/badge/version-v2.0.0-blue?style=for-the-badge)
+  ![Status](https://img.shields.io/badge/status-stable-green?style=for-the-badge)
+  ![Astro](https://img.shields.io/badge/astro-v5.13.5-orange?style=for-the-badge)
+  ![Cloudflare](https://img.shields.io/badge/deployed%20on-cloudflare-yellow?style=for-the-badge)
 
 </div>
+
+## ✨ Özellikler
+
+- 🔍 **Gelişmiş Arama** - Akıllı arama algoritması ve anlık sonuçlar
+- 📱 **Duyarlı Tasarım** - Masaüstü ve mobil cihazlarda mükemmel performans
+- 🌙 **Koyu/Açık Tema** - Gelişmiş tema geçişi ve otomatik sistem teması
+- ⚡ **Yüksek Performans** - Astro SSR ve Cloudflare optimizasyonu
+- 🎨 **Modern UI/UX** - Glassmorphism tasarım ve akıcı animasyonlar
+- 🎥 **Video Desteği** - YouTube videoları için optimizasyonlu gömme
+- 💬 **Dinamik Yorumlar** - Disqus entegrasyonu ile interaktif yorumlar
+- 🏷️ **Etiket Sistemi** - Gelişmiş kategorizasyon ve filtreleme
+- 📊 **SEO Optimizasyonu** - Schema.org ve Open Graph meta veriler
+- 🔗 **Sosyal Medya** - Platform entegrasyonları ve paylaşım özellikleri
+
+## 🚀 v1.0 Kararlı Sürüm
+
+Bu yeni sürüm aşağıdaki gelişmiş özellikleri içermektedir:
+- ✅ Tamamen yeniden yazılmış arama sistemi
+- ✅ Video içerik desteği (YouTube iframe optimizasyonu)
+- ✅ Gelişmiş blog düzen sistemi
+- ✅ Dinamik yorum sistemi entegrasyonu
+- ✅ Cloudflare Image Service optimizasyonu
+- ✅ Modern glassmorphism tasarım dili
+- ✅ Gelişmiş SEO ve meta veri yapısı
+- ✅ Erişilebilirlik (a11y) iyileştirmeleri
 
 ---
 
@@ -27,101 +52,43 @@
 � **SEO Optimized** - Sitemap, meta tags, structured data
 📊 **Analytics Ready** - Production analytics desteği
 
-## 🛠️ Tech Stack
+## 🛠️ Yerel Geliştirme
 
-| Kategori | Teknoloji |
-|----------|-----------|
-| **Framework** | Astro 5.13.3 (SSR) |
-| **Adapter** | Cloudflare Workers |
-| **Styling** | Modern CSS + CSS Variables |
-| **Content** | Markdoc (.mdoc files) |
-| **Search** | Client-side JavaScript |
-| **Images** | Sharp (optimization) |
-| **Deploy** | Wrangler CLI |
+1. **Bağımlılıkları yükleyin:**
+   ```bash
+   npm install
+   ```
 
-## � Hızlı Başlangıç
+2. **Geliştirme sunucusunu başlatın:**
+   ```bash
+   npm run dev
+   ```
 
-### Geliştirme
+3. **Tarayıcınızda açın:**
+   ```
+   http://localhost:4321
+   ```
 
-```bash
-# Projeyi klonla
-git clone https://github.com/denizomer1/techoxium.git
-cd techoxium
+## 🏗️ Üretim İçin Derleme
 
-# Bağımlılıkları yükle
-npm install
+1. **Projeyi derleyin:**
+   ```bash
+   npm run build
+   ```
 
-# Development server'ı başlat
-npm run dev
-# 🌐 http://localhost:4321
-```
+2. **Yerel önizleme:**
+   ```bash
+   npm run preview
+   ```
 
-### Production Build
+3. **Cloudflare Pages'e dağıtım:**
+   ```bash
+   npm run deploy
+   ```
 
-```bash
-# Static build (development)
-npm run build
+## 🌐 Deployment ve Hosting
 
-# Cloudflare Workers build
-npm run build:cloudflare
-
-# Local preview (Wrangler)
-npm run preview
-```
-
-### Deploy
-
-```bash
-# Cloudflare'ye deploy et
-npm run deploy
-
-# Dry run (test)
-npx wrangler deploy --dry-run
-```
-
-## 📁 Proje Yapısı
-
-```
-techoxium/
-├── 📄 astro.config.mjs      # Astro konfigürasyonu
-├── 📄 wrangler.toml         # Cloudflare Workers config
-├── 📁 src/
-│   ├── 📁 components/       # Astro components
-│   ├── 📁 content/          # Blog yazıları (.mdoc)
-│   ├── 📁 layouts/          # Page layouts
-│   ├── 📁 pages/            # Route pages
-│   ├── 📁 styles/           # Global CSS
-│   └── 📁 lib/              # Utility functions
-├── 📁 public/
-│   ├── 📁 images/          # Static images
-│   ├── 📁 fonts/           # Atkinson fonts
-│   ├── 📄 robots.txt       # SEO robots
-│   └── 📄 site.webmanifest # PWA manifest
-└── 📄 package.json
-```
-
-## 📝 İçerik Yönetimi
-
-Blog yazıları `src/content/` dizininde `.mdoc` formatında:
-
-```yaml
----
-title: "Yazı Başlığı"
-description: "Kısa açıklama"
-pubDate: 2025-09-05
-heroImage: "/images/hero.jpg"
-tags: ["teknoloji", "yapay-zeka"]
----
-
-Yazı içeriği buraya...
-```
-
-### Yeni Yazı Ekleme
-
-1. `src/content/` dizininde yeni `.mdoc` dosyası oluştur
-2. Frontmatter'ı doldur
-3. Markdown içeriği yaz
-4. `npm run build` ile derle
+Bu proje **Cloudflare Workers** ve **Cloudflare Pages** için optimize edilmiştir:
 
 ## 🎨 Özelleştirme
 
@@ -146,7 +113,7 @@ Yazı içeriği buraya...
 
 ```typescript
 export const SOCIAL_LINKS = {
-  youtube: 'https://www.youtube.com/@TechOxium',
+  youtube: 'https://www.youtube.com/@techoxium',
   nxt: 'https://sosyal.teknofest.app/@techoxium',
 }
 ```
@@ -170,30 +137,16 @@ export const SOCIAL_LINKS = {
 - **Build Time:** ~1.5s
 - **Edge Latency:** <50ms globally
 
-## 🤝 Katkıda Bulunma
-
-1. Fork yapın
-2. Feature branch oluşturun (`git checkout -b feature/amazing-feature`)
-3. Commit yapın (`git commit -m 'Add amazing feature'`)
-4. Push yapın (`git push origin feature/amazing-feature`)
-5. Pull Request açın
-
 ## 📄 Lisans
 
-Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için [LICENSE](LICENSE) dosyasına bakın.
+[LICENSE](LICENSE) dosyasını inceleyin
 
-## 📧 İletişim
+❤️ ile geliştiriliyor
 
-- **Website:** [techoxium.com](https://techoxium.com)
-- **YouTube:** [@TechOxium](https://www.youtube.com/@TechOxium)
-- **GitHub:** [@denizomer1](https://github.com/denizomer1)
-
----
-
-<div align="center">
-  
-**⭐ Projeyi beğendiyseniz star vermeyi unutmayın!**
-
-Made with ❤️ and ☕ in Turkey 🇹🇷
-
+<p>
+  <a href="https://techoxium.com">🌐 Canlı Site</a> •
+  <a href="https://github.com/denizomer1/techoxium">📱 GitHub</a> •
+  <a href="https://x.com/techoxium">🐦 Twitter</a> •
+  <a href="https://www.youtube.com/@techoxium">📺 YouTube</a>
+</p>
 </div>
