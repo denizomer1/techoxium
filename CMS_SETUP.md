@@ -17,12 +17,91 @@ Your GitHub OAuth App is configured with:
 - **Homepage URL**: `https://techoxium.pages.dev`
 - **Authorization callback URL**: `https://techoxium.pages.dev/api/keystatic/github/oauth/callback`
 
-🔧 **Fix Steps for 404 Error on Pages:**
-1. Go to https://github.com/settings/developers
-2. Click on your "Techoxium CMS" OAuth App
-3. Verify the Authorization callback URL is: `https://techoxium.pages.dev/api/keystatic/github/oauth/callback`
-4. Make sure there are NO trailing slashes or extra paths
-5. Save changes
+## ⚠️ Current Issue: GitHub OAuth 404 on Production
+
+**Problem**: OAuth callback endpoint returns 404 on Cloudflare Pages
+**Status**: Investigating Keystatic + Cloudflare adapter compatibility
+
+## 🔧 Immediate Workaround
+
+### Option 1: Local Development + Git Push
+1. Use local CMS: `npm run dev` → `http://127.0.0.1:4321/keystatic`
+2. Create/edit content locally
+3. Commit and push changes:
+   ```bash
+   git add .
+   git commit -m "Update content via local CMS"
+   git push
+   ```
+4. Cloudflare Pages will auto-deploy
+
+### Option 2: Direct File Editing
+1. Edit `.mdoc` files directly in `src/content/`
+2. Use the existing file format:
+   ```yaml
+   ---
+   title: "Your Title"
+   description: "Description"
+   pubDate: "2025-09-05"
+   heroImage: "/images/your-image.png"
+   tags: ["tag1", "tag2"]
+   ---
+   
+   Your content here...
+   ```
+
+## 🔄 Current Investigation
+
+- ✅ Repository is PUBLIC
+- ✅ OAuth App configured correctly  
+- ✅ Environment variables set
+- ❌ Keystatic API routes not working on Cloudflare Pages
+- 🔍 Checking Astro + Cloudflare + Keystatic compatibility
+
+# Keystatic CMS Setup - GitHub App (Recommended)
+
+## ✅ GitHub App Setup (Official Method)
+
+### 1. Create GitHub App
+Go to https://github.com/settings/apps/new:
+
+**Basic Information:**
+- GitHub App name: `Techoxium CMS`
+- Homepage URL: `https://techoxium.pages.dev`
+- User authorization callback URL: `https://techoxium.pages.dev/api/keystatic/github/oauth/callback`
+- Setup URL: `https://techoxium.pages.dev/keystatic`
+- Webhook URL: `https://techoxium.pages.dev/api/keystatic/github/webhook`
+- Webhook secret: `keystatic-webhook-secret-2025`
+
+**Repository permissions:**
+- Contents: Read and write
+- Metadata: Read  
+- Pull requests: Write
+
+**Subscribe to events:**
+- Push
+- Pull request
+
+### 2. Install App & Get Credentials
+
+1. Install the app on `denizomer1/techoxium` repository
+2. Generate a private key (download .pem file)
+3. Note the App ID and Installation ID
+
+### 3. Cloudflare Pages Environment Variables
+
+Set these as **"Secret"** type:
+- `KEYSTATIC_GITHUB_APP_ID`: [Your App ID]
+- `KEYSTATIC_GITHUB_APP_PRIVATE_KEY`: [Content of .pem file]
+- `KEYSTATIC_GITHUB_APP_INSTALLATION_ID`: [Installation ID]
+
+### 4. Deploy & Test
+
+```bash
+npm run deploy
+```
+
+Then access: `https://techoxium.pages.dev/keystatic`
 
 ## Cloudflare Pages Environment Variables
 

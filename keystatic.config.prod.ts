@@ -3,7 +3,10 @@ import { config, fields, collection } from '@keystatic/core';
 export default config({
   storage: {
     kind: 'github',
-    repo: 'denizomer1/techoxium',
+    repo: {
+      owner: 'denizomer1',
+      name: 'techoxium'
+    }
   },
   ui: {
     brand: {
