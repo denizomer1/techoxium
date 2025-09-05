@@ -1,11 +1,8 @@
 import { getCollection } from 'astro:content';
 
-export async function GET(context: { url: { searchParams: URLSearchParams } }) {
-  const locale = context.url.searchParams.get('locale') || 'tr';
-  const collection = locale === 'en' ? 'blogEn' : 'blog';
-  
+export async function GET() {
   try {
-    const posts = await getCollection(collection as any);
+    const posts = await getCollection('blog');
     const items = posts.map((p: any) => ({
       id: p.id,
       slug: p.slug ?? p.id,

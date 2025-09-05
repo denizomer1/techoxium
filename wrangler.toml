@@ -14,3 +14,7 @@ enabled = true
 [build]
 command = "npm run build:cloudflare"
 cwd = "."
+
+# Environment variables for production
+[vars]
+NODE_ENV = "production"
