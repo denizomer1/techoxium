@@ -17,9 +17,8 @@ export default defineConfig({
     markdoc({
       allowHTML: true
     }), 
-    react(),
-    // Only include Keystatic in development or non-Cloudflare builds
-    ...((!isProduction || !isCloudflare) ? [keystatic()] : [])
+    // Include React and Keystatic unless it's a production Cloudflare build
+    ...(!(isProduction && isCloudflare) ? [react(), keystatic()] : [])
   ],
   output: "server",
   adapter: cloudflare({

@@ -13,7 +13,7 @@ export default config({
     blog: collection({
       label: 'Blog Posts',
       slugField: 'title',
-      path: 'src/content/{lang}/*',
+      path: 'src/content/*',
       format: { contentField: 'content' },
       schema: {
         title: fields.slug({ name: { label: 'Title' } }),

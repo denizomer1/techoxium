@@ -12,5 +12,5 @@ enabled = true
 
 # Build configuration - required for Pages Functions
 [build]
-command = "npm run build"
+command = "npm run build:cloudflare"
 cwd = "."
