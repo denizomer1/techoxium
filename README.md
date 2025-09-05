@@ -1,7 +1,3 @@
-# 🚀 Techoxium
-
-# Techoxium
-
 <div align="center">
   <img src="public/logo.png" alt="Techoxium Logo" width="200" height="200">
   
