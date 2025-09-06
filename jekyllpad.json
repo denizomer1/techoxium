@@ -23,6 +23,23 @@
     }
     ,
     {
+      "id": "posts",
+      "label": "Posts",
+      "path": "src/content",
+      "pattern": "**/*.md",
+      "format": "markdown",
+      "visible": true,
+      "frontMatter": {
+        "title": "title",
+        "description": "description",
+        "date": "date",
+        "tags": "tags",
+        "image": "image",
+        "layout": "layout"
+      }
+    }
+    ,
+    {
       "id": "pages",
       "label": "Pages",
       "path": "src/pages",
