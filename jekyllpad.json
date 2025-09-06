@@ -10,6 +10,7 @@
       "path": "src/content",
       "pattern": "**/*.md",
       "format": "markdown",
+  "visible": true,
       "frontMatter": {
         "title": "title",
         "description": "description",
@@ -25,8 +26,9 @@
       "id": "pages",
       "label": "Pages",
       "path": "src/pages",
-      "pattern": "**/*.{md,mdx,markdown}",
+  "pattern": "**/*.{md,mdx,markdown}",
       "format": "markdown",
+  "visible": true,
       "frontMatter": {
         "title": "title",
         "description": "description",
@@ -37,8 +39,20 @@
     }
   ],
   "media": {
-    "path": "public/images"
+    "paths": [
+      "public/images",
+  "public",
+  "public/fonts"
+    ],
+    "extensions": ["png","jpg","jpeg","webp","gif","svg","avif","mp4","webm"],
+    "recursive": true
   },
+  "ignore": [
+    "node_modules",
+    "dist",
+    ".git",
+    "public/.DS_Store"
+  ],
   "settings": {
     "defaultAuthor": "denizomer1",
     "dateFormat": "YYYY-MM-DD"
