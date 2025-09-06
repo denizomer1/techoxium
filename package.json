@@ -3,7 +3,6 @@
   "description": "Technology Element",
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.7",
-    "@astrojs/markdoc": "^0.15.5",
     "@astrojs/rss": "^4.0.12",
     "@astrojs/sitemap": "^3.5.1",
     "astro": "^5.13.5"
