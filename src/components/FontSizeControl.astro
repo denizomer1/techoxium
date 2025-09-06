@@ -10,59 +10,6 @@
   </button>
 </div>
 
-<style>
-  .font-size-controls {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-  }
-  
-  .font-size-controls button {
-    width: 40px;
-    height: 40px;
-    border: 2px solid var(--gray-light);
-    border-radius: var(--border-radius);
-    background: var(--gray-gradient);
-    color: var(--gray-dark);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .font-size-controls button:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.3);
-  }
-  
-  .font-size-controls button:active {
-    transform: translateY(0);
-  }
-  
-  .font-icon {
-    font-weight: bold;
-    font-family: serif;
-    transition: all 0.2s ease;
-  }
-  
-  .font-icon.small {
-    font-size: 14px;
-  }
-  
-  .font-icon.large {
-    font-size: 20px;
-  }
-  
-  .font-size-controls button:hover .font-icon {
-    transform: scale(1.1);
-  }
-</style>
-
 <script is:inline>
   const decreaseBtn = document.getElementById('decrease-font');
   const increaseBtn = document.getElementById('increase-font');
