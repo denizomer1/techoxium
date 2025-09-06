@@ -8,7 +8,7 @@
       "id": "blog",
       "label": "Blog",
       "path": "src/content",
-      "pattern": "*.md",
+      "pattern": "**/*.md",
       "format": "markdown",
       "frontMatter": {
         "title": "title",
@@ -17,6 +17,21 @@
         "updatedDate": "updatedDate",
         "tags": "tags",
         "image": "image",
+        "layout": "layout"
+      }
+    }
+    ,
+    {
+      "id": "pages",
+      "label": "Pages",
+      "path": "src/pages",
+      "pattern": "**/*.{md,mdx,markdown}",
+      "format": "markdown",
+      "frontMatter": {
+        "title": "title",
+        "description": "description",
+        "date": "date",
+        "tags": "tags",
         "layout": "layout"
       }
     }
