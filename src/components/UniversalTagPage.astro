@@ -4,13 +4,20 @@ import Header from './Header.astro';
 import Footer from './Footer.astro';
 import PostCard from './PostCard.astro';
 import { getCollection } from 'astro:content';
-import { postMatchesTag } from '../lib/tag-utils.js';
+import { postMatchesTag } from '../global';
 
 interface Props {
-  tag: string;
+  tag?: string;
 }
 
-const { tag } = Astro.props;
+const { tag: propTag } = Astro.props;
+
+// Get tag from props or URL params (for page usage)
+const tag = propTag || (Astro.params as { tag?: string }).tag;
+
+if (!tag) {
+  throw new Error('Tag parameter is required');
+}
 
 // Get posts
 const posts = await getCollection('blog');
@@ -25,6 +32,9 @@ const matchingPosts = posts
 // SEO data
 const title = `Etiket "${tag}" | Techoxium`;
 const description = `${tag} etiketli yazılar - Teknoloji ve bilim içerikleri`;
+
+// Set prerender to false for dynamic tag pages
+export const prerender = false;
 ---
 
 <html lang="tr" class={Astro.cookies.get('theme')?.value === 'dark' ? 'dark' : ''}>

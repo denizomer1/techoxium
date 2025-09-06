@@ -1,9 +1,5 @@
 ---
 import UniversalTagPage from '../../components/UniversalTagPage.astro';
-
-export const prerender = false;
-
-const { tag } = Astro.params as { tag: string };
 ---
 
-<UniversalTagPage tag={tag} />
+<UniversalTagPage />
