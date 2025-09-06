@@ -118,3 +118,14 @@ export const SOCIAL_LINKS = {
 [LICENSE](LICENSE) dosyasını inceleyin
 
 </div>
+
+## 📝 JekyllPad Desteği
+
+Bu depo JekyllPad ile uyumludur. Bir görsel düzenleyici üzerinden içerik eklemek/güncellemek için:
+
+- Tarayıcıde https://jekyllpad.com/start adresine gidin ve GitHub ile giriş yapın.
+- Depoyu seçin (veya gerekiyorsa public/private erişim yetkisi verin).
+- JekyllPad, kök dizinde bulunan `jekyllpad.json` dosyasını okuyarak `src/content` içindeki markdown dosyalarını ve `public/images` içindeki medyaları algılar.
+- Değişiklikleri kaydettikten sonra JekyllPad doğrudan depoya commit atar; siteniz CI/CD ile otomatik olarak güncellenir.
+
+Not: İçerik frontmatter alanlarınız (`title`, `date`, `tags`, `image`, `layout`) `jekyllpad.json` içinde eşlenmiştir; özel alan eklemek isterseniz `jekyllpad.json`'u güncelleyin.

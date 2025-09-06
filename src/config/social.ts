@@ -12,7 +12,7 @@
 
 export const SOCIAL_LINKS = {
   // Main social platforms
-  youtube: 'https://www.youtube.com/@TechOxium',
+  youtube: 'https://www.youtube.com/@techoxium',
   nxt: 'https://sosyal.teknofest.app/@techoxium',
 } as const;
 
