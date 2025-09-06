@@ -8,8 +8,8 @@ export async function GET() {
       slug: p.slug ?? p.id,
       title: p.data.title ?? '',
       description: p.data.description ?? '',
-      pubDate: p.data.pubDate ? String(p.data.pubDate) : '',
-      heroImage: p.data.heroImage ?? null,
+  date: p.data.date ? String(p.data.date) : '',
+  image: p.data.image ?? null,
       tags: p.data.tags ?? [],
       // generate a kebab-case slug for each tag for robust routing
       tagSlugs: (p.data.tags || []).map((t: string) => String(t).toLowerCase().replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-')),

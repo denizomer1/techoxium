@@ -5,27 +5,28 @@ interface Props {
   href: string;
   title: string;
   description?: string;
-  pubDate?: Date | string;
-  heroImage?: string | undefined;
+  date?: Date | string;
+  image?: string | undefined;
   large?: boolean;
   tags?: string[] | undefined;
 }
 
-const { href, title, description = '', pubDate, heroImage, large = false, tags } = Astro.props;
-const date = pubDate ? (pubDate instanceof Date ? pubDate : new Date(pubDate)) : undefined;
+const { href, title, description = '', date: postDate, image, large = false, tags } = Astro.props;
+const date = postDate ? (postDate instanceof Date ? postDate : new Date(postDate)) : undefined;
 ---
 
 <article class={`post-card${large ? ' post-card--large' : ''}`}>
   <a href={href} class="post-link">
     <div class="post-image">
-      {heroImage && (
+      {image && (
         <img 
-          src={heroImage} 
+          src={image} 
           alt={title}
           width={720}
           height={360}
           loading="lazy"
           decoding="async"
+          onerror="this.style.display='none'"
         />
       )}
     </div>

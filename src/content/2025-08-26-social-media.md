@@ -1,9 +1,10 @@
 ---
 title: "Bizi Sosyal Medyada Takip Edin"
 description: "Sosyal medya hesaplarımızı takip ederek en güncel haberlerden haberdar olabilirsiniz."
-pubDate: "2025-08-26"
-heroImage: "/images/social_media.webp"
+date: "2025-08-26"
+image: "/images/social_media.webp"
 tags: ["social-media"]
+layout: post
 ---
 Sosyal medya hesaplarımızda bizi takip ederek en güncel haberler, etkinlikler ve duyurulardan ilk siz haberdar olabilirsiniz. Instagram ve YouTube hesaplarımızda topluluğumuzla etkileşimde bulunabilir, özel içeriklere ulaşabilirsiniz.
 

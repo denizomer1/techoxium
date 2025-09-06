@@ -1,9 +1,10 @@
 ---
 title: "PlayStation 6 Serisi Duyuruldu: Yeni Nesil Oyun Konsolu"
 description: "Sony, PlayStation 6 serisini resmi olarak duyurdu. Yeni konsolun özellikleri, çıkış tarihi ve fiyat bilgileri hakkında ilk detaylar."
-pubDate: "2025-08-28"
-heroImage: "/images/ps6-console.webp"
+date: "2025-08-28"
+image: "/images/ps6-console.webp"
 tags: ["gaming"]
+layout: post
 ---
 
 PS6 serisi, Xbox Series S'e benzer şekilde daha küçük ve ekonomik bir seçenek dahil olmak üzere üç farklı model ile piyasaya sürülecek.

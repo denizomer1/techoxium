@@ -1,9 +1,10 @@
 ---
 title: "WhatsApp'a AI Yazma Yardımı Özelliği Geliyor"
 description: "WhatsApp, kullanıcıların mesajlarını yazmalarına yardımcı olacak yapay zeka destekli yeni bir özellik üzerinde çalışıyor. Bu özellik nasıl çalışacak?"
-pubDate: "2025-09-03"
-heroImage: "/images/wp-ai.webp"
+date: "2025-09-03"
+image: "/images/wp-ai.webp"
 tags: ["ai"]
+layout: post
 ---
 
 WhatsApp, mesaj yazma ve düzenleme deneyimini geliştirmek için yeni bir AI destekli özellik yayınladı. "Yazma Yardımı" olarak adlandırılan bu özellik, kullanıcıların mesajlarını daha etkili ve doğru bir şekilde oluşturmasına yardımcı oluyor.

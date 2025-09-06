@@ -1,9 +1,10 @@
 ---
 title: "ASUS RTX 5090 30. Yıl Özel Sürümü: Büyüleyici Tasarım ve Performansla Geliyor"
 description: "ASUS'un RTX 5090 30. yıl özel sürümü, muhteşem tasarımı ve yüksek performansıyla dikkat çekiyor. Özel ambalajı ve sınırlı üretimiyle koleksiyonerlerin gözdesi olacak."
-pubDate: "2025-09-01"
-heroImage: "/images/asus-rtx-5090.webp"
+date: "2025-09-01"
+image: "/images/asus-rtx-5090.webp"
 tags: ["technology"]
+layout: post
 ---
 
 # Asus'un 30. Yılına Özel RTX 5090 Ekran Kartı

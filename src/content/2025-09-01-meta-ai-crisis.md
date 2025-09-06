@@ -1,9 +1,10 @@
 ---
 title: "Meta AI Krizi: Yapay Zeka Tartışmalarının Odağında"
 description: "Meta'nın yapay zeka stratejileri ve son dönemde yaşanan tartışmalar teknoloji dünyasını hareketlendiriyor. AI güvenliği ve etik konuları mercek altında."
-pubDate: "2025-09-01"
-heroImage: "/images/meta-image.webp"
+date: "2025-09-01"
+image: "/images/meta-image.webp"
 tags: ["ai"]
+layout: post
 ---
 
 ## Meta’da Yapay Zeka Krizi

@@ -1,9 +1,10 @@
 ---
 title: "Gears of War: Reloaded PC Game Pass'te Yayınlandı"
 description: "Gears of War serisinin PC versiyonu artık Game Pass abonelerine sunuluyor."
-pubDate: "2025-08-26"
-heroImage: "/images/Gearsofwar108.webp"
+date: "2025-08-26"
+image: "/images/Gearsofwar108.webp"
 tags: ["gaming"]
+layout: post
 ---
 
 Microsoft, Gears of War serisinin PC versiyonunu Game Pass abonelerine sundu. Gears of War: Reloaded, orijinal serinin hayranları ve yeni oyuncular için güncellenmiş özelliklerle PC platformunda erişilebilir hale geldi.

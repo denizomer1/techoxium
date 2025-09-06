@@ -10,18 +10,18 @@ import { tagToSlug } from '../lib/tag-utils.js';
 export interface LayoutProps {
 	title?: string;
 	description?: string;
-	pubDate?: Date | string;
+	date?: Date | string;
 	updatedDate?: Date | string;
-	heroImage?: string;
+	image?: string;
 	tags?: string[];
 }
 
-const { title = '', description = '', pubDate, updatedDate, heroImage, tags = [] } = Astro.props as LayoutProps;
+const { title = '', description = '', date, updatedDate, image, tags = [] } = Astro.props as LayoutProps;
 ---
 
 <html lang="tr">
   <head>
-    <BaseHead title={title} description={description} image={heroImage} />
+    <BaseHead title={title} description={description} image={image} />
     
     <!-- Structured Data for Article -->
     <script is:inline type="application/ld+json" set:html={
@@ -30,9 +30,9 @@ const { title = '', description = '', pubDate, updatedDate, heroImage, tags = []
         "@type": "Article",
         "headline": title,
         "description": description,
-        "image": heroImage ? new URL(heroImage, Astro.site).toString() : new URL('/logo.png', Astro.site).toString(),
-        "datePublished": pubDate ? new Date(pubDate).toISOString() : undefined,
-        "dateModified": updatedDate ? new Date(updatedDate).toISOString() : (pubDate ? new Date(pubDate).toISOString() : undefined),
+        "image": image ? new URL(image, Astro.site).toString() : new URL('/logo.png', Astro.site).toString(),
+        "datePublished": date ? new Date(date).toISOString() : undefined,
+        "dateModified": updatedDate ? new Date(updatedDate).toISOString() : (date ? new Date(date).toISOString() : undefined),
         "author": {
           "@type": "Person",
           "name": "Techoxium",
@@ -86,7 +86,7 @@ const { title = '', description = '', pubDate, updatedDate, heroImage, tags = []
         <header class="post-header">
           <div class="post-meta">
             <time class="post-date">
-              <FormattedDate date={pubDate} />
+              <FormattedDate date={date} />
             </time>
             {updatedDate && (
               <time class="post-updated">
@@ -150,10 +150,10 @@ const { title = '', description = '', pubDate, updatedDate, heroImage, tags = []
           )}
         </header>
 
-        {heroImage && (
+        {image && (
           <div class="hero-image">
             <img 
-              src={heroImage} 
+              src={image} 
               alt={title}
               width={1200}
               height={630}

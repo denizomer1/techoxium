@@ -1,9 +1,10 @@
 ---
 title: "Çin'den Çığır Açan Beyin-Bilgisayar Arayüzü Teknolojisi"
 description: "Çinli araştırmacılar, felçli hastalar için geliştirdikleri beyin-bilgisayar arayüzü ile büyük bir başarı elde etti. Bu teknoloji nasıl çalışıyor?"
-pubDate: "2025-09-02"
-heroImage: "/images/brain.webp"
+date: "2025-09-02"
+image: "/images/brain.webp"
 tags: ["ai"]
+layout: post
 ---
 
 Çin, beyin-bilgisayar arayüzü (BCI) teknolojisinde önemli ilerlemeler kaydederek küresel teknoloji arenasında öne çıkıyor. Bu alanda yapılan yatırımlar ve araştırmalar, Çin'in teknoloji stratejisinin bir parçası olarak dikkat çekiyor.

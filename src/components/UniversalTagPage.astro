@@ -18,9 +18,9 @@ const matchingPosts = posts
   .filter((post: any) => postMatchesTag(post, tag))
   .map((p: any) => ({
     ...p,
-    data: { ...p.data, pubDate: p.data.pubDate instanceof Date ? p.data.pubDate : new Date(p.data.pubDate as any) },
+    data: { ...p.data, date: p.data.date instanceof Date ? p.data.date : new Date(p.data.date as any) },
   }))
-  .sort((a: any, b: any) => Number(b.data.pubDate) - Number(a.data.pubDate));
+  .sort((a: any, b: any) => Number(b.data.date) - Number(a.data.date));
 
 // SEO data
 const title = `Etiket "${tag}" | Techoxium`;
@@ -49,8 +49,8 @@ const description = `${tag} etiketli yazılar - Teknoloji ve bilim içerikleri`;
                 href={`/${post.id}/`}
                 title={post.data.title || 'Untitled'}
                 description={post.data.description || ''}
-                pubDate={post.data.pubDate}
-                heroImage={post.data.heroImage}
+                date={post.data.date}
+                image={post.data.image}
                 tags={post.data.tags}
               />
             </li>

@@ -1,9 +1,10 @@
 ---
 title: "Apple'ın 9 Eylül Etkinliği: iPhone 16 Serisi ve Yenilikler"
 description: "Apple'ın merakla beklenen 9 Eylül etkinliğinde iPhone 16 serisi, Apple Watch yenilikleri ve daha fazlası tanıtılacak. Etkinlik öncesi beklentiler ve sızıntılar."
-pubDate: "2025-09-05"
-heroImage: "/images/apple-etkinlik.webp"
+date: "2025-09-05"
+image: "/images/apple-etkinlik.webp"
 tags: ["apple"]
+layout: post
 ---
 
 Apple, her yıl düzenlediği Eylül etkinliğiyle yeni ürün serilerini ve teknoloji güncellemelerini duyuruyor. 9 Eylül 2025'te gerçekleşecek lansman, şirketin donanım ve yazılım stratejisinin önemli bir göstergesi olacak.
