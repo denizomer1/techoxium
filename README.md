@@ -3,7 +3,7 @@
 
   <p><strong>Teknolojinin Elementi Astro ile Geliştirildi 🚀</strong></p>
 
-  ![Version](https://img.shields.io/badge/version-v2.0-blue?style=for-the-badge)
+  ![Version](https://img.shields.io/badge/version-v2.1-blue?style=for-the-badge)
   ![Status](https://img.shields.io/badge/status-stable-green?style=for-the-badge)
   ![Astro](https://img.shields.io/badge/astro-v5.13.5-orange?style=for-the-badge)
   ![Cloudflare](https://img.shields.io/badge/deployed%20on-cloudflare-yellow?style=for-the-badge)
@@ -25,36 +25,107 @@
 - 🎯 **Modüler Mimari** - Temiz kod yapısı ve yeniden kullanılabilir bileşenler
 - 🚀 **Hızlı Yükleme** - Optimize edilmiş font yükleme ve performans
 
-## 🚀 v2.0 Kararlı Sürüm
+## 🚀 v2.1 Kararlı Sürüm (2025-09-07)
 
-Bu yeni sürüm aşağıdaki gelişmiş özellikleri içermektedir:
+Bu sürüm aşağıdaki yeni özellikleri ve iyileştirmeleri içermektedir:
 
-### 🎯 **Çekirdek İyileştirmeler**
-- ✅ **TypeScript Konsolidasyonu** - Tüm yardımcı fonksiyonlar `global.ts` altında toplandı
-- ✅ **Bileşen Organizasyonu** - Daha temiz ve tutarlı bileşen isimlendirmesi
-- ✅ **Font Modernizasyonu** - Inter font ailesi ile modern tipografi
-- ✅ **Performans Optimizasyonu** - Daha hızlı yükleme ve daha iyi kullanıcı deneyimi
+### 🎯 **Yeni Özellikler**
+- ✅ **Pages CMS Entegrasyonu** - GitHub tabanlı içerik yönetimi sistemi
+- ✅ **İçerik Organizasyonu** - Blog yazıları `src/content/blog/` klasörüne taşındı
+- ✅ **Gelişmiş İçerik Yapılandırması** - Güncellenmiş `content.config.ts` şeması
+- ✅ **Resim Yol Optimizasyonu** - Yerel resimler için `/images/` yolu desteği
+- ✅ **İsteğe Bağlı Contentful Entegrasyonu** - Bulut tabanlı içerik yönetimi seçeneği
 
 ### 🔧 **Teknik Geliştirmeler**
-- ✅ **Tamamen yeniden yazılmış arama sistemi**
-- ✅ **Video içerik desteği (YouTube iframe optimizasyonu)**
-- ✅ **Gelişmiş blog düzen sistemi**
-- ✅ **Dinamik yorum sistemi entegrasyonu**
-- ✅ **Cloudflare Image Service optimizasyonu**
-- ✅ **Modern glassmorphism tasarım dili**
-- ✅ **Gelişmiş SEO ve meta veri yapısı**
-- ✅ **Erişilebilirlik (a11y) iyileştirmeleri**
-- ✅ **TypeScript tip güvenliği**
-- ✅ **Modüler bileşen mimarisi**
+- ✅ **Pages CMS Yapılandırması** - `.pages.yml` ile tam içerik kontrolü
+- ✅ **İçerik Şeması Güncellemesi** - Frontmatter alanları ile uyumlu şema
+- ✅ **Resim Yönetimi** - Yerel ve Contentful resim desteği
+- ✅ **İçerik Yükleyici Optimizasyonu** - Doğru klasör yapısı için güncellenmiş yollar
 
 ### 🎨 **Kullanıcı Deneyimi**
-- ✅ **İyileştirilmiş hashtag navigasyonu**
-- ✅ **Daha hızlı sayfa yükleme**
-- ✅ **Optimize edilmiş font yükleme**
-- ✅ **Temiz ve tutarlı kod yapısı**
+- ✅ **Kolay İçerik Düzenleme** - Pages CMS arayüzü ile görsel düzenleme
+- ✅ **Otomatik Resim İşleme** - Yerel resimler için optimize edilmiş yollar
+- ✅ **Gelişmiş İçerik Yönetimi** - Etiket ve tarih bazlı organizasyon
 
 ---
-## 🛠️ Yerel Geliştirme
+## 📦 Pages CMS Entegrasyonu
+
+Bu proje **Pages CMS** ile entegre edilmiştir. Bu sayede blog içeriklerini GitHub üzerinden kolayca düzenleyebilirsiniz.
+
+### Kurulum
+
+1. **GitHub'da Depo Oluşturun:**
+   - Bu projeyi GitHub'a yükleyin
+   - `.pages.yml` dosyasının repo kökünde olduğundan emin olun
+
+2. **Pages CMS'e Bağlanın:**
+   - [Pages CMS](https://app.pagescms.org) adresine gidin
+   - GitHub hesabınızla giriş yapın
+   - Bu repo'yu seçin
+
+3. **İçerik Düzenlemeye Başlayın:**
+   - Blog yazılarınızı `src/content/blog/` klasöründen yönetin
+   - Görsel arayüz ile markdown dosyalarını düzenleyin
+   - Resimleri `public/` klasörüne yükleyin
+
+### Özellikler
+
+- 🔧 **Görsel Düzenleme** - Markdown dosyalarını web arayüzü ile düzenleyin
+- 📸 **Resim Yönetimi** - Resimleri doğrudan yükleyin ve yerleştirin
+- 🏷️ **Etiket Sistemi** - İçerikleri etiketlerle kategorize edin
+- 📅 **Tarih Yönetimi** - Yayın tarihlerini kolayca ayarlayın
+- 🔍 **Arama ve Filtreleme** - İçerikleri hızlıca bulun
+
+### Özellikler
+
+- ☁️ **Bulut Tabanlı** - İçeriklerinizi her yerden yönetin
+- 🎨 **Rich Text Editörü** - Gelişmiş metin düzenleme
+- 📱 **API Tabanlı** - RESTful API ile entegrasyon
+- 🔄 **Otomatik Senkronizasyon** - Değişiklikler anında yansır
+- 🌐 **Çok Dilli Destek** - Farklı diller için içerik yönetimi
+
+### Kullanım
+
+Contentful aktif olduğunda:
+- Blog yazıları Contentful'dan çekilir
+- Yerel markdown dosyaları yedek olarak kullanılır
+- "Edit on Contentful" bağlantısı görünür
+
+Contentful devre dışı olduğunda:
+- Yerel `src/content/blog/` klasöründeki dosyalar kullanılır
+- Tamamen offline çalışır
+
+## 🏗️ Proje Yapısı
+
+```
+src/
+├── components/           # Yeniden organize edilmiş bileşenler
+│   ├── BaseHead.astro    # Meta veriler ve SEO
+│   ├── Header.astro      # Ana navigasyon
+│   ├── Footer.astro      # Alt kısım ve sosyal medya
+│   ├── PostCard.astro    # Blog kartı bileşeni
+│   ├── Social.astro      # Sosyal medya bağlantıları
+│   └── ...
+├── layouts/              # Sayfa düzenleri
+│   ├── BlogPost.astro    # Blog yazısı düzeni
+├── pages/                # Sayfa rotaları
+│   ├── api/              # API endpoints
+│   │   └── posts.json.ts # Blog yazıları API'si
+│   ├── [slug].astro      # Dinamik blog yazısı sayfası
+│   └── ...
+├── content/              # ✅ Blog içerikleri
+│   └── blog/             # ✅ Blog yazıları
+├── lib/                  # Yardımcı kütüphaneler
+│   └── contentful.ts     # Contentful entegrasyonu
+├── global.ts             # ✓ Konsolide edilmiş yardımcı fonksiyonlar
+├── content.config.ts     # ✅ Güncellenmiş içerik koleksiyonları
+└── env.d.ts             # TypeScript tanımları
+
+.pages.yml                # ✅ Pages CMS yapılandırması
+public/                   # Resimler ve statik dosyalar
+├── images/               # Blog resimleri
+└── ...
+```
 
 1. **Bağımlılıkları yükleyin:**
    ```bash
@@ -125,27 +196,59 @@ export const SOCIAL_CONFIG = {
 }
 ```
 
-## 🏗️ Proje Yapısı
+## 📂 İçerik Yapısı
 
-```
-src/
-├── components/           # Yeniden organize edilmiş bileşenler
-│   ├── BaseHead.astro    # Meta veriler ve SEO
-│   ├── Header.astro      # Ana navigasyon
-│   ├── Footer.astro      # Alt kısım ve sosyal medya
-│   ├── HomePage.astro    # Ana sayfa bileşeni
-│   ├── TagPage.astro     # Etiket sayfası bileşeni
-│   ├── PostCard.astro    # Blog kartı bileşeni
-│   ├── Social.astro      # Sosyal medya bağlantıları
-│   └── ...
-├── layouts/              # Sayfa düzenleri
-├── pages/                # Sayfa rotaları
-│   ├── api/              # API endpoints
-│   ├── tag/              # Dinamik etiket rotaları
-│   └── ...
-├── global.ts             # ✓ Konsolide edilmiş yardımcı fonksiyonlar
-├── content.config.ts     # İçerik koleksiyonları
-└── env.d.ts             # TypeScript tanımları
+### Blog Yazıları
+- **Konum**: `src/content/blog/`
+- **Format**: YAML frontmatter + Markdown
+- **Şema Alanları**:
+  - `title`: Yazı başlığı
+  - `description`: Kısa açıklama
+  - `date`: Yayın tarihi
+  - `image`: Kapak resmi yolu
+  - `tags`: Etiketler dizisi
+  - `layout`: Sayfa düzeni (genellikle "post")
+
+### Resimler
+- **Konum**: `public/images/`
+- **Yol Formatı**: `/images/resim-adi.jpg`
+- **Desteklenen Formatlar**: JPG, PNG, WebP, SVG
+
+### İçerik Yönetimi Akışı
+
+1. **Pages CMS ile Düzenleme**:
+   - GitHub üzerinden görsel düzenleme
+   - Otomatik commit ve deploy
+   - Takım çalışması desteği
+
+3. **Yerel Markdown Düzenleme**:
+   - Klasik markdown editörü
+   - Git versiyon kontrolü
+   - Offline çalışma
+
+### API Endpoints
+
+- `GET /api/posts.json`: Blog yazıları listesi
+  - Parametre: `?locale=tr` (varsayılan: tr)
+  - Dönüş: JSON formatında yazı listesi
+
+### İçerik Şeması
+
+```typescript
+// src/content.config.ts
+const blogSchema = z.object({
+  title: z.string().default('Yeni Blog Yazısı (TR)'),
+  description: z.string().optional(),
+  date: z.union([z.string(), z.date()]).transform((val) => 
+    val instanceof Date ? val : new Date(val)
+  ),
+  updatedDate: z.union([z.string(), z.date()]).transform((val) => 
+    val instanceof Date ? val : new Date(val)
+  ).optional(),
+  tags: z.array(z.string()).optional(),
+  image: z.string().optional(),
+  layout: z.string().optional(),
+});
 ```
 
 ## 🔧 Scripts
@@ -159,7 +262,15 @@ src/
 | `npm run deploy` | Cloudflare deploy |
 | `npm run check` | Type check + lint |
 
-## � Changelog
+## 📝 Changelog
+
+### v2.1.0 (2025-09-07)
+- 🎯 **Pages CMS Entegrasyonu**: GitHub tabanlı içerik yönetimi sistemi eklendi
+- 📁 **İçerik Organizasyonu**: Blog yazıları `src/content/blog/` klasörüne taşındı
+- 🔧 **İçerik Yapılandırması**: `content.config.ts` şeması güncellendi
+- 🖼️ **Resim Yol Optimizasyonu**: Yerel resimler için `/images/` yolu desteği
+- ☁️ **Contentful Entegrasyonu**: İsteğe bağlı bulut tabanlı CMS desteği
+- 📄 **Dokümantasyon**: Detaylı CMS kurulum ve kullanım kılavuzu
 
 ### v2.0.0 (2025-09-07)
 - 🎯 **TypeScript Konsolidasyonu**: Tüm yardımcı fonksiyonlar `global.ts` altında toplandı
