@@ -1,6 +1,9 @@
 media:
-  input: public
-  output: /
+  - name: images
+    label: Images
+    input: public/images
+    output: /images
+    categories: [image]
 
 content:
   - name: blog
