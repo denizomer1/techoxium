@@ -34,34 +34,3 @@ content:
       default:
         sort: pubDate
         order: desc
-  - name: blogEn
-    label: Blog Posts (EN)
-    type: collection
-    path: src/content/blog/en
-    format: yaml-frontmatter
-    fields:
-      - name: title
-        label: Title
-        type: string
-        required: true
-      - name: description
-        label: Description
-        type: text
-        required: true
-      - name: pubDate
-        label: Publish Date
-        type: date
-        required: true
-      - name: updatedDate
-        label: Updated Date
-        type: date
-      - name: heroImage
-        label: Hero Image
-        type: image
-    view:
-      fields: [title, pubDate, description]
-      primary: title
-      sort: [pubDate, title]
-      default:
-        sort: pubDate
-        order: desc
