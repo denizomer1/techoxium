@@ -6,8 +6,9 @@ content:
   - name: blog
     label: Blog Posts (TR)
     type: collection
-    path: src/content/blog
+    path: src/content
     format: yaml-frontmatter
+    filename: '{date}-{title}.md'
     fields:
       - name: title
         label: Title
@@ -17,20 +18,26 @@ content:
         label: Description
         type: text
         required: true
-      - name: pubDate
+      - name: date
         label: Publish Date
         type: date
         required: true
-      - name: updatedDate
-        label: Updated Date
-        type: date
-      - name: heroImage
+      - name: image
         label: Hero Image
         type: image
+      - name: tags
+        label: Tags
+        type: string
+        list: true
+      - name: layout
+        label: Layout
+        type: string
+        hidden: true
+        default: post
     view:
-      fields: [title, pubDate, description]
+      fields: [title, date, description]
       primary: title
-      sort: [pubDate, title]
+      sort: [date, title]
       default:
-        sort: pubDate
+        sort: date
         order: desc
