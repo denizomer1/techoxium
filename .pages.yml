@@ -28,7 +28,9 @@ content:
       - name: youtube_video
         label: YouTube Video ID
         type: string
-        description: Sadece YouTube video ID'sini girin (örn: SOKm9dDOSC8)
+        description: YouTube video ID'sini girin (örn: SOKm9dDOSC8)
+        required: false
+        hint: Sadece video ID'sini girin, tam URL girmeyin
       - name: tags
         label: Tags
         type: string

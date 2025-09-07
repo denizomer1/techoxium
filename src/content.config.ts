@@ -14,7 +14,12 @@ const blogSchema = z.object({
   // Optional tags/categories as an array of strings
   tags: z.array(z.string()).optional(),
   image: z.string().optional(),
-  youtube_video: z.string().optional(),
+  youtube_video: z.string().optional().refine((val) => {
+    if (!val) return true; // Allow empty values
+    return /^[a-zA-Z0-9_-]{11}$/.test(val); // Validate YouTube video ID format
+  }, {
+    message: "YouTube video ID 11 karakter olmalı ve sadece harf, rakam, - ve _ içerebilir"
+  }),
   layout: z.string().optional(),
 });
 
