@@ -28,7 +28,6 @@ content:
       - name: youtube_video
         label: YouTube Video ID
         type: string
-        description: YouTube video ID'sini girin (örn: SOKm9dDOSC8)
       - name: tags
         label: Tags
         type: string
