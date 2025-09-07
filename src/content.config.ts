@@ -14,6 +14,7 @@ const blogSchema = z.object({
   // Optional tags/categories as an array of strings
   tags: z.array(z.string()).optional(),
   image: z.string().optional(),
+  youtube_video: z.string().optional(),
   layout: z.string().optional(),
 });
 

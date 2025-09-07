@@ -14,9 +14,10 @@ export interface LayoutProps {
 	updatedDate?: Date | string;
 	image?: string;
 	tags?: string[];
+	youtube_video?: string;
 }
 
-const { title = '', description = '', date, updatedDate, image, tags = [] } = Astro.props as LayoutProps;
+const { title = '', description = '', date, updatedDate, image, tags = [], youtube_video } = Astro.props as LayoutProps;
 ---
 
 <html lang="tr">
@@ -160,6 +161,19 @@ const { title = '', description = '', date, updatedDate, image, tags = [] } = As
               loading="eager"
               decoding="async"
             />
+          </div>
+        )}
+
+        {youtube_video && (
+          <div class="video-wrap">
+            <iframe 
+              src={`https://www.youtube.com/embed/${youtube_video}`}
+              title="YouTube video player" 
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              referrerpolicy="strict-origin-when-cross-origin" 
+              allowfullscreen
+            ></iframe>
           </div>
         )}
 

@@ -25,6 +25,10 @@ content:
       - name: image
         label: Hero Image
         type: image
+      - name: youtube_video
+        label: YouTube Video ID
+        type: string
+        description: Sadece YouTube video ID'sini girin (örn: SOKm9dDOSC8)
       - name: tags
         label: Tags
         type: string
