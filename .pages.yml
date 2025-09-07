@@ -8,7 +8,7 @@ content:
     type: collection
     path: src/content/blog
     format: yaml-frontmatter
-    filename: '{date}-{title}.md'
+    filename: '{year}-{month}-{day}-{title}.md'
     fields:
       - name: title
         label: Title
@@ -22,12 +22,14 @@ content:
         label: Publish Date
         type: date
         required: true
+        options:
+          format: yyyy-MM-dd
       - name: image
         label: Hero Image
         type: image
       - name: youtube_video
         label: YouTube Video ID
-        type: string
+        type: text
         description: YouTube video ID'sini girin (örn: SOKm9dDOSC8)
         required: false
         hint: Sadece video ID'sini girin, tam URL girmeyin
@@ -45,7 +47,7 @@ content:
         type: rich-text
         required: true
     view:
-      fields: [title, date, description]
+      fields: [title, date, description, youtube_video]
       primary: title
       sort: [date, title]
       default:
