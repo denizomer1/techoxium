@@ -3,6 +3,7 @@ title: "Gears of War: Reloaded PC Game Pass'te Yayınlandı"
 description: "Gears of War serisinin PC versiyonu artık Game Pass abonelerine sunuluyor."
 date: "2025-08-26"
 image: "/images/Gearsofwar108.webp"
+youtube_video: "OXR3osSIxTo"
 tags: ["gaming"]
 layout: post
 ---
@@ -17,7 +18,3 @@ Microsoft, Gears of War serisinin PC versiyonunu Game Pass abonelerine sundu. Ge
 - Güncellenmiş kontroller ve kullanıcı deneyimi
 
 Gears of War serisinin PC platformundaki bu yeni versiyonu, serinin zengin oyun deneyimini daha geniş bir kitleye ulaştırmayı hedefliyor.
-
-<div class="video-wrap">
-	<iframe src="https://www.youtube.com/embed/OXR3osSIxTo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-</div>
