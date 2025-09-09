@@ -1,5 +1,5 @@
 ---
-title: "Apple'ın 9 Eylül Etkinliği: iPhone 16 Serisi ve Yenilikler"
+title: "Apple'ın 9 Eylül Etkinliği: iPhone 17 Serisi ve Yenilikler"
 description: |-
   Apple'ın merakla beklenen 9 Eylül etkinliğinde iPhone 17 serisi 
 
