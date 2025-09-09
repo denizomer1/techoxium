@@ -36,11 +36,11 @@ Aşırı ısınma sorununa çözüm olarak **buhar odalı soğutma sistemi** get
 
 iPhone 17 Pro serisinin kamera sistemi **önemli yenilikler** içeriyor:
 
-*   **48MP Telefoto lensi** 3.5x optik zum sunarken, yüksek çözünürlük sayesinde **dijital olarak 5x zum**kalitesinde sonuçlar verebiliyor .
+*   **48MP Telefoto lensi** 3.5x optik zum sunarken, yüksek çözünürlük sayesinde **dijital olarak 5x zum** kalitesinde sonuçlar verebiliyor .
     
 *   **Mekanik diyafram** özelliği, profesyonel fotoğraf makinelerinde olduğu gibi **diyafram açıklığını manuel olarak ayarlayabilme** imkanı tanıyor. Bu özellik, alan derinliği kontrolünü önemli ölçüde artırıyor .
     
-*   **Ön kamera 24MP** çözünürlüğe yükseltilerek selfie kalitesi önemli ölçüde iyileştirilmiş .
+*   **Ön kamera 18MP** çözünürlüğe yükseltilerek selfie kalitesi önemli ölçüde iyileştirilmiş .
     
 *   **Çift yönlü video kaydı** özelliği, aynı anda hem ön hem arka kameralarla video çekimine imkan tanıyor .
     
@@ -85,7 +85,7 @@ En dikkat çekici yenilik **kalp atış hızı algılama** özelliği. Bu özell
 
 ### 3\. Pil Ömrü ve Dayanıklılık
 
-Tek şarjla **8 saate kadar** dinleme süresi sunan AirPods Pro 3, şarj kutusuyla birlikte **24 saate kadar**kullanım imkanı tanıyor .
+Tek şarjla **8 saate kadar** dinleme süresi sunan AirPods Pro 3, şarj kutusuyla birlikte **24 saate kadar** kullanım imkanı tanıyor .
 
 **IP57** toz ve su direnci standardı, spor aktiviteleri ve yağmurlu hava koşullarında güvenle kullanılabilme imkanı sunuyor .
 
